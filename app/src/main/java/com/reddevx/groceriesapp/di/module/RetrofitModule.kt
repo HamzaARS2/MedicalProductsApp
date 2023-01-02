@@ -1,5 +1,6 @@
 package com.reddevx.groceriesapp.di.module
 
+import com.reddevx.groceriesapp.api.CategoryService
 import com.reddevx.groceriesapp.api.CustomerService
 import com.reddevx.groceriesapp.api.ProductService
 import com.reddevx.groceriesapp.model.Customer
@@ -35,6 +36,11 @@ object RetrofitModule {
     @Provides
     fun provideProductService(retrofit: Retrofit): ProductService =
         retrofit.create(ProductService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideCategoryService(retrofit: Retrofit): CategoryService =
+        retrofit.create(CategoryService::class.java)
 
 
 }
