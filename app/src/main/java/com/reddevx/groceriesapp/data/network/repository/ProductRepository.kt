@@ -8,8 +8,6 @@ class ProductRepository @Inject constructor(
     private val service: ProductService
 ): IRepository<Product,Int> {
     override suspend fun insert(data: Product): Product {
-
-        // TODO: share on gitHub
         return service.insertProduct(data)
     }
 
