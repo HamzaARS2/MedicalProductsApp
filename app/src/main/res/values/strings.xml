@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GroceriesApp</string>
+    <string name="signup">Signup</string>
+    <string name="login">login</string>
+</resources>
