@@ -24,7 +24,7 @@ interface CustomerService {
     suspend fun updateCustomer(customer: Customer): Customer
 
     @DELETE("/customer/delete/{docId}")
-    suspend fun deleteCustomer(@Path("docId") docId: String): Boolean
+    suspend fun deleteCustomer(@Path("docId") docId: String): String
 
 
 }

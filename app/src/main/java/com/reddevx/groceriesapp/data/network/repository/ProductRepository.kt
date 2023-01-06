@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ProductRepository @Inject constructor(
     private val service: ProductService
-): IRepository<Product,Int> {
+): ICRUDRepository<Product,Int> {
     override suspend fun insert(data: Product): Product {
         return service.insertProduct(data)
     }

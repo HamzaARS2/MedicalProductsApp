@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class CategoryRepository @Inject constructor(
     private val service: CategoryService
-) : IRepository<Category,Int> {
+) : ICRUDRepository<Category,Int> {
     override suspend fun insert(data: Category): Category {
         return service.insertCategory(data)
     }

@@ -40,6 +40,7 @@ class CustomerRepository @Inject constructor(
             val customer = retrieve(user.uid)
             Resource.Success(customer)
         } catch (e: Exception) {
+            logout()
             e.printStackTrace()
             Resource.Failure(e)
         }
@@ -61,12 +62,12 @@ class CustomerRepository @Inject constructor(
         return service.retrieveAllCustomers()
     }
 
-    override suspend fun update(data: Customer): Customer {
+    override suspend fun update(id: String, data: Customer): Customer {
         return service.updateCustomer(data)
     }
 
-    override suspend fun delete(id: String) {
-        service.deleteCustomer(id)
+    override suspend fun delete(id: String): String {
+       return service.deleteCustomer(id)
     }
 
 

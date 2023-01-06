@@ -1,7 +1,12 @@
 package com.reddevx.groceriesapp.di.module
 
+import com.reddevx.groceriesapp.data.network.repository.CategoryRepository
+import com.reddevx.groceriesapp.data.network.repository.ICRUDRepository
+import com.reddevx.groceriesapp.data.network.repository.ProductRepository
 import com.reddevx.groceriesapp.data.network.repository.auth.IAuthRepository
 import com.reddevx.groceriesapp.data.network.repository.auth.customer.CustomerRepository
+import com.reddevx.groceriesapp.model.Category
+import com.reddevx.groceriesapp.model.Product
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,5 +19,10 @@ abstract class ImplModule {
 
     @Singleton
     @Binds
-    abstract fun provideAuthImpl(repository: CustomerRepository) : IAuthRepository
+    abstract fun bindAuthImpl(repository: CustomerRepository) : IAuthRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindCrudRepoImpl(repository: CategoryRepository): ICRUDRepository<Category,Int>
+
 }
