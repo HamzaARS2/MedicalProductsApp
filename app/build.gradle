@@ -69,6 +69,8 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
     // Ssp
     implementation 'com.intuit.ssp:ssp-android:1.1.0'
+    // Epoxy
+    implementation "com.airbnb.android:epoxy:5.1.1"
 
 
 
