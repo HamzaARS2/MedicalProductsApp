@@ -5,4 +5,9 @@
         <item name="cornerRadius">@dimen/_12sdp</item>
         <item name="backgroundTint">#53B175</item>
     </style>
+
+    <style name="AddProductBtnStyle">
+        <item name="cornerRadius">@dimen/_20sdp</item>
+        <item name="backgroundTint">#53B175</item>
+    </style>
 </resources>
