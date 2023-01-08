@@ -65,4 +65,5 @@
 
     <color name="main_btn_color">#53B175</color>
     <color name="subtitle_color">#7C7C7C</color>
+    <color name="title_color">#181725</color>
 </resources>
