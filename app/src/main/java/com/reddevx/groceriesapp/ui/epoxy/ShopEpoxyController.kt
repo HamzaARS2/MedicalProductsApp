@@ -16,8 +16,8 @@ class ShopEpoxyController: TypedEpoxyController<List<Product>>() {
             .id("shop_header")
             .addTo(this)
 
-        ShopSection()
-            .id("shop_section")
+        ShopSection("Exclusive Offer")
+            .id("shop_section_1")
             .addTo(this)
 
         if (data == null) {
@@ -32,8 +32,18 @@ class ShopEpoxyController: TypedEpoxyController<List<Product>>() {
             )
         }
         carousel {
-           id("carousel")
-            numViewsToShowOnScreen(6F)
+           id("exclusive_offer_carousel")
+            numViewsToShowOnScreen(2F)
+            models(products)
+        }
+
+        ShopSection("On Sale")
+            .id("shop_section_2")
+            .addTo(this)
+
+        carousel {
+            id("on_sale_carousel")
+            numViewsToShowOnScreen(2F)
             models(products)
         }
 
@@ -46,8 +56,11 @@ class ShopHeader: ViewBindingKotlinModel<ShopHeaderItemBinding>(R.layout.shop_he
     }
 }
 
-class ShopSection: ViewBindingKotlinModel<ShopSectionTitleItemBinding>(R.layout.shop_section_title_item) {
+data class ShopSection(
+    val sectionTitle: String
+): ViewBindingKotlinModel<ShopSectionTitleItemBinding>(R.layout.shop_section_title_item) {
     override fun ShopSectionTitleItemBinding.bind() {
+        shopSectionTitleTv.text = sectionTitle
     }
 }
 

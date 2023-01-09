@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/shopFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -15,4 +15,9 @@
         android:name="com.reddevx.groceriesapp.ui.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.reddevx.groceriesapp.ui.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop" />
 </navigation>
