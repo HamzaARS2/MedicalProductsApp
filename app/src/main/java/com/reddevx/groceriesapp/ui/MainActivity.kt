@@ -9,6 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import com.reddevx.groceriesapp.databinding.ActivityMainBinding
 import com.reddevx.groceriesapp.data.network.Resource
 import com.reddevx.groceriesapp.ui.auth.RegisterViewModel
+import com.reddevx.groceriesapp.utils.setBlackStatusBarIcons
+import com.reddevx.groceriesapp.utils.setFullScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setFullScreen(window,binding.root)
+        setBlackStatusBarIcons(window)
 //        binding.signupBtn.setOnClickListener {
 //            val name = binding.nameEdt.text.toString()
 //            val email = binding.emailEdt.text.toString()

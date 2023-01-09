@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ShopFragment">
+    tools:context=".ui.ShopFragment"
+    android:fitsSystemWindows="true">
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/epoxy_rv"
