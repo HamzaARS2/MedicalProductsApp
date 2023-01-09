@@ -26,7 +26,7 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val controller = ShopEpoxyController()
+        val controller = ShopEpoxyController(requireContext())
         binding.epoxyRv.setController(controller)
         controller.setData(getProducts(),getCategories())
 

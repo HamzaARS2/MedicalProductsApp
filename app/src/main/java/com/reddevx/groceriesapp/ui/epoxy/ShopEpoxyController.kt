@@ -1,6 +1,9 @@
 package com.reddevx.groceriesapp.ui.epoxy
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.widget.Toast
 import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.carousel
 import com.reddevx.groceriesapp.R
@@ -10,9 +13,12 @@ import com.reddevx.groceriesapp.databinding.ShopProductItemBinding
 import com.reddevx.groceriesapp.databinding.ShopSectionTitleItemBinding
 import com.reddevx.groceriesapp.model.Category
 import com.reddevx.groceriesapp.model.Product
+import com.reddevx.groceriesapp.ui.MainActivity
 import com.reddevx.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
 
-class ShopEpoxyController: Typed2EpoxyController<List<Product>,List<Category>>() {
+class ShopEpoxyController(
+    val context: Context
+): Typed2EpoxyController<List<Product>,List<Category>>() {
 
     override fun buildModels(products: List<Product>?, categories: List<Category>?) {
         ShopHeader()
@@ -27,9 +33,9 @@ class ShopEpoxyController: Typed2EpoxyController<List<Product>,List<Category>>()
             return
         }
         val productsModels = mutableListOf<ShopProduct>()
-        products.forEachIndexed { index, p ->
+        products.forEachIndexed { index, product ->
             productsModels.add(
-                ShopProduct(p).apply {
+                ShopProduct(product,::onProductAddToCartClick).apply {
                     id(index)
                 }
             )
@@ -48,7 +54,7 @@ class ShopEpoxyController: Typed2EpoxyController<List<Product>,List<Category>>()
             val categoriesModels = mutableListOf<ShopCategory>()
             categories.forEachIndexed { index, category ->
                 categoriesModels.add(
-                    ShopCategory(category).apply {
+                    ShopCategory(category,::onCategoryClick).apply {
                         id(index)
                     }
                 )
@@ -85,6 +91,14 @@ class ShopEpoxyController: Typed2EpoxyController<List<Product>,List<Category>>()
 
 
     }
+
+    private fun onCategoryClick(name: String) {
+        Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onProductAddToCartClick(name: String) {
+        Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
+    }
 }
 
 class ShopHeader: ViewBindingKotlinModel<ShopHeaderItemBinding>(R.layout.shop_header_item) {
@@ -101,19 +115,27 @@ data class ShopSection(
 }
 
 data class ShopProduct(
-    val product: Product
+    val product: Product,
+    val onProductAddToCartClick: (name: String) -> Unit
 ): ViewBindingKotlinModel<ShopProductItemBinding>(R.layout.shop_product_item) {
     override fun ShopProductItemBinding.bind() {
+        shopProductAddBtn.setOnClickListener {
+            onProductAddToCartClick("Organic Bananas")
+        }
     }
 
 }
 
 data class ShopCategory(
-    val category: Category
+    val category: Category,
+    val onCategoryClick: (name: String) -> Unit
 ): ViewBindingKotlinModel<PopularCategoryItemBinding>(R.layout.popular_category_item) {
     override fun PopularCategoryItemBinding.bind() {
         popularCategoryImv.setImageResource(category.image)
         popularCategoryNameTv.text = category.name
         root.setCardBackgroundColor(Color.parseColor(category.color))
+        root.setOnClickListener {
+            onCategoryClick(category.name)
+        }
     }
 }
