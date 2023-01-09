@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.reddevx.groceriesapp.R
 import com.reddevx.groceriesapp.databinding.FragmentShopBinding
+import com.reddevx.groceriesapp.model.Category
 import com.reddevx.groceriesapp.model.Product
 import com.reddevx.groceriesapp.ui.epoxy.ShopEpoxyController
 
@@ -27,9 +28,12 @@ class ShopFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val controller = ShopEpoxyController()
         binding.epoxyRv.setController(controller)
-        controller.setData(getProducts())
+        controller.setData(getProducts(),getCategories())
 
     }
+
+    private fun getCategories(): List<Category> =
+        listOf()
 
     private fun getProducts(): List<Product> =
         listOf(

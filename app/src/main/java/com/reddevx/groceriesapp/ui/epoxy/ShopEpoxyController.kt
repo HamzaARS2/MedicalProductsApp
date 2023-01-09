@@ -1,17 +1,19 @@
 package com.reddevx.groceriesapp.ui.epoxy
 
-import com.airbnb.epoxy.TypedEpoxyController
+import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.carousel
 import com.reddevx.groceriesapp.R
+import com.reddevx.groceriesapp.databinding.PopularCategoryItemBinding
 import com.reddevx.groceriesapp.databinding.ShopHeaderItemBinding
 import com.reddevx.groceriesapp.databinding.ShopProductItemBinding
 import com.reddevx.groceriesapp.databinding.ShopSectionTitleItemBinding
+import com.reddevx.groceriesapp.model.Category
 import com.reddevx.groceriesapp.model.Product
 import com.reddevx.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
 
-class ShopEpoxyController: TypedEpoxyController<List<Product>>() {
-    override fun buildModels(data: List<Product>?) {
+class ShopEpoxyController: Typed2EpoxyController<List<Product>,List<Category>>() {
 
+    override fun buildModels(products: List<Product>?, categories: List<Category>?) {
         ShopHeader()
             .id("shop_header")
             .addTo(this)
@@ -20,21 +22,21 @@ class ShopEpoxyController: TypedEpoxyController<List<Product>>() {
             .id("shop_section_1")
             .addTo(this)
 
-        if (data == null) {
+        if (products == null) {
             return
         }
-        val products = mutableListOf<ShopProduct>()
-        data.forEachIndexed { index, p ->
-            products.add(
+        val productsModels = mutableListOf<ShopProduct>()
+        products.forEachIndexed { index, p ->
+            productsModels.add(
                 ShopProduct(p).apply {
                     id(index)
                 }
             )
         }
         carousel {
-           id("exclusive_offer_carousel")
+            id("exclusive_offer_carousel")
             numViewsToShowOnScreen(2F)
-            models(products)
+            models(productsModels)
         }
 
         ShopSection("On Sale")
@@ -44,7 +46,22 @@ class ShopEpoxyController: TypedEpoxyController<List<Product>>() {
         carousel {
             id("on_sale_carousel")
             numViewsToShowOnScreen(2F)
-            models(products)
+            models(productsModels)
+        }
+
+        ShopSection("Popular Categories")
+            .id("shop_section_3")
+            .addTo(this)
+
+        if (categories == null) return
+
+        val categoriesModels = mutableListOf<ShopCategory>()
+        categories.forEachIndexed { index, category ->
+            categoriesModels.add(
+                ShopCategory(category).apply {
+                    id(index)
+                }
+            )
         }
 
 
@@ -70,4 +87,12 @@ data class ShopProduct(
     override fun ShopProductItemBinding.bind() {
     }
 
+}
+
+data class ShopCategory(
+    val category: Category
+): ViewBindingKotlinModel<PopularCategoryItemBinding>(R.layout.popular_category_item) {
+    override fun PopularCategoryItemBinding.bind() {
+
+    }
 }
