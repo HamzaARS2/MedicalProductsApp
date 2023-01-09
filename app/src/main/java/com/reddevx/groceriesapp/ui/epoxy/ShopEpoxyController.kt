@@ -1,5 +1,6 @@
 package com.reddevx.groceriesapp.ui.epoxy
 
+import android.graphics.Color
 import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.carousel
 import com.reddevx.groceriesapp.R
@@ -38,9 +39,29 @@ class ShopEpoxyController: Typed2EpoxyController<List<Product>,List<Category>>()
             numViewsToShowOnScreen(2F)
             models(productsModels)
         }
+        if (categories != null) {
+            ShopSection("Popular Categories")
+                .id("shop_section_2")
+                .addTo(this)
+
+
+            val categoriesModels = mutableListOf<ShopCategory>()
+            categories.forEachIndexed { index, category ->
+                categoriesModels.add(
+                    ShopCategory(category).apply {
+                        id(index)
+                    }
+                )
+            }
+            carousel {
+                id("popular_categories_carousel")
+                numViewsToShowOnScreen(1.5F)
+                models(categoriesModels)
+            }
+        }
 
         ShopSection("On Sale")
-            .id("shop_section_2")
+            .id("shop_section_3")
             .addTo(this)
 
         carousel {
@@ -49,20 +70,18 @@ class ShopEpoxyController: Typed2EpoxyController<List<Product>,List<Category>>()
             models(productsModels)
         }
 
-        ShopSection("Popular Categories")
-            .id("shop_section_3")
+        ShopSection("Most Rated")
+            .id("shop_section_4")
             .addTo(this)
 
-        if (categories == null) return
-
-        val categoriesModels = mutableListOf<ShopCategory>()
-        categories.forEachIndexed { index, category ->
-            categoriesModels.add(
-                ShopCategory(category).apply {
-                    id(index)
-                }
-            )
+        carousel {
+            id("most_rated_carousel")
+            numViewsToShowOnScreen(2F)
+            models(productsModels)
         }
+
+
+
 
 
     }
@@ -93,6 +112,8 @@ data class ShopCategory(
     val category: Category
 ): ViewBindingKotlinModel<PopularCategoryItemBinding>(R.layout.popular_category_item) {
     override fun PopularCategoryItemBinding.bind() {
-
+        popularCategoryImv.setImageResource(category.image)
+        popularCategoryNameTv.text = category.name
+        root.setCardBackgroundColor(Color.parseColor(category.color))
     }
 }

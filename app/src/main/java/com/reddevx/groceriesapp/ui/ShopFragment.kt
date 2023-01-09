@@ -33,7 +33,11 @@ class ShopFragment : Fragment() {
     }
 
     private fun getCategories(): List<Category> =
-        listOf()
+        listOf(
+            Category(name = "Fruits & Vegetables"),
+            Category(name = "Bakery & Snacks", image = R.drawable.baker_category_image,
+                color = "#40D3B0E0")
+        )
 
     private fun getProducts(): List<Product> =
         listOf(
