@@ -86,10 +86,6 @@ class ShopEpoxyController(
             models(productsModels)
         }
 
-
-
-
-
     }
 
     private fun onCategoryClick(name: String) {
@@ -120,7 +116,7 @@ data class ShopProduct(
 ): ViewBindingKotlinModel<ShopProductItemBinding>(R.layout.shop_product_item) {
     override fun ShopProductItemBinding.bind() {
         shopProductAddBtn.setOnClickListener {
-            onProductAddToCartClick("Organic Bananas")
+            onProductAddToCartClick("Added to cart")
         }
     }
 

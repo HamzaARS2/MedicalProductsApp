@@ -17,4 +17,9 @@
     <string name="exclusive_offer">Exclusive Offer</string>
     <string name="see_all">See all</string>
     <string name="organic_bananas">Organic Bananas</string>
+    <string name="shop">Shop</string>
+    <string name="explore">Explore</string>
+    <string name="cart">Cart</string>
+    <string name="favorite">Favorite</string>
+    <string name="account">Account</string>
 </resources>

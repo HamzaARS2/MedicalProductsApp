@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item
+        android:id="@+id/main_menu_item_shop"
+        android:icon="@drawable/ic_shop"
+        android:title="@string/shop"
+        />
+    <item
+        android:id="@+id/main_menu_item_explore"
+        android:icon="@drawable/ic_explore"
+        android:title="@string/explore"
+        />
+    <item
+        android:id="@+id/main_menu_item_cart"
+        android:icon="@drawable/ic_cart"
+        android:title="@string/cart"
+        />
+    <item
+        android:id="@+id/main_menu_item_favorites"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/favorite"
+        />
+    <item
+        android:id="@+id/main_menu_item_account"
+        android:icon="@drawable/ic_account"
+        android:title="@string/account"
+        />
 </menu>

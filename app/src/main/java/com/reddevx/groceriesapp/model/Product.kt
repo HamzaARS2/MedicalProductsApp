@@ -8,5 +8,7 @@ data class Product(
     val name: String = "",
     val description: String = "",
     val price: BigDecimal = BigDecimal("0.00"),
-    val quantity: Int = 0
+    val priceUnit: String = "",
+    val nutrition: String = "",
+    val image: String = ""
 )

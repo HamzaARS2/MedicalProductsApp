@@ -10,4 +10,17 @@
         <item name="cornerRadius">@dimen/_20sdp</item>
         <item name="backgroundTint">#53B175</item>
     </style>
+
+    <style name="BottomNavBarTextStyle" parent="TextAppearance.Material3.TitleSmall" >
+        <item name="fontFamily">@font/gilroy_semi_bold</item>
+    </style>
+    
+    <style name="CustomIndicatorStyle" parent="@style/Widget.Material3.BottomNavigationView.ActiveIndicator" >
+        <item name="android:color">@color/main_btn_color</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="colorSurface">@android:color/holo_red_dark</item>
+        <item name="colorOnSurfaceVariant">@android:color/holo_green_dark</item>
+    </style>
 </resources>

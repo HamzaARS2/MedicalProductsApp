@@ -8,7 +8,7 @@
     <color name="md_theme_light_secondary">#4F6353</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
     <color name="md_theme_light_secondaryContainer">#D2E8D4</color>
-    <color name="md_theme_light_onSecondaryContainer">#0D1F13</color>
+    <color name="md_theme_light_onSecondaryContainer">#0D1F13</color>53B175 <!-- #0D1F13 old color -->
     <color name="md_theme_light_tertiary">#3A646F</color>
     <color name="md_theme_light_onTertiary">#FFFFFF</color>
     <color name="md_theme_light_tertiaryContainer">#BEEAF6</color>
