@@ -27,18 +27,14 @@
         android:layout_height="@dimen/_7sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:src="@drawable/home_indicator"
-        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="16:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/_12sdp"
-        android:background="@drawable/bottom_nav_bar_shape"
         app:itemTextAppearanceActive="@style/BottomNavBarTextStyle"
         app:itemTextAppearanceInactive="@style/BottomNavBarTextStyle"
         app:layout_constraintBottom_toBottomOf="parent"
