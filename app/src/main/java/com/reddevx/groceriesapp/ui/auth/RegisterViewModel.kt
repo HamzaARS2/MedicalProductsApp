@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.reddevx.groceriesapp.model.Customer
 import com.reddevx.groceriesapp.data.network.Resource
 import com.reddevx.groceriesapp.data.network.repository.ICRUDRepository
+import com.reddevx.groceriesapp.data.network.repository.IFetchRepository
 import com.reddevx.groceriesapp.data.network.repository.ProductRepository
 import com.reddevx.groceriesapp.data.network.repository.auth.IAuthRepository
 import com.reddevx.groceriesapp.model.Category
@@ -22,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val repository: IAuthRepository,
-    private val categoriesRepo: ICRUDRepository<Category,Int>
+    private val categoriesRepo: IFetchRepository<Category,Int>
 ) : ViewModel() {
 
     private val _customerState: MutableStateFlow<Resource<Customer?>?> = MutableStateFlow(null)
@@ -35,8 +36,8 @@ class RegisterViewModel @Inject constructor(
 
 
     fun getCategories() = viewModelScope.launch {
-        val response = categoriesRepo.retrieveAll()
-        categories.postValue(response)
+//        val response = categoriesRepo.retrieveAll()
+//        categories.postValue(response)
     }
 
 

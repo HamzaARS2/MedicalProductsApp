@@ -2,8 +2,10 @@ package com.reddevx.groceriesapp.di.module
 
 import com.reddevx.groceriesapp.data.network.repository.CategoryRepository
 import com.reddevx.groceriesapp.data.network.repository.ICRUDRepository
+import com.reddevx.groceriesapp.data.network.repository.IFetchRepository
 import com.reddevx.groceriesapp.data.network.repository.ProductRepository
 import com.reddevx.groceriesapp.data.network.repository.auth.IAuthRepository
+import com.reddevx.groceriesapp.data.network.repository.auth.IProductsProvider
 import com.reddevx.groceriesapp.data.network.repository.auth.customer.CustomerRepository
 import com.reddevx.groceriesapp.model.Category
 import com.reddevx.groceriesapp.model.Product
@@ -23,6 +25,10 @@ abstract class ImplModule {
 
     @Singleton
     @Binds
-    abstract fun bindCrudRepoImpl(repository: CategoryRepository): ICRUDRepository<Category,Int>
+    abstract fun bindCrudRepoImpl(repository: CategoryRepository): IFetchRepository<Category,Int>
+
+    @Singleton
+    @Binds
+    abstract fun bindProductRepoImpl(repository: ProductRepository): IProductsProvider
 
 }

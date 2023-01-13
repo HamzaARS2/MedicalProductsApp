@@ -1,5 +1,6 @@
 package com.reddevx.groceriesapp.api
 
+import com.reddevx.groceriesapp.data.network.Resource
 import com.reddevx.groceriesapp.model.Product
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -10,8 +11,6 @@ import retrofit2.http.Path
 
 interface ProductService {
 
-    @POST("/products/add")
-    suspend fun insertProduct(@Body product: Product): Product
 
     @GET("/products/{id}")
     suspend fun retrieveProduct(@Path("id") id: Int): Product
@@ -19,9 +18,7 @@ interface ProductService {
     @GET("/products")
     suspend fun retrieveAllProducts(): List<Product>
 
-    @PUT("/products/update/{id}")
-    suspend fun updateProduct(@Path("id") id: Int, @Body product: Product): Product
+    @GET("/products/exclusive")
+    suspend fun retrieveExclusiveProducts(): List<Product>
 
-    @DELETE("/products/delete/{id}")
-    suspend fun deleteProduct(@Path("id") id: Int): String
 }

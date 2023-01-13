@@ -1,11 +1,14 @@
 package com.reddevx.groceriesapp.ui.epoxy
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.widget.Toast
 import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.carousel
+import com.bumptech.glide.Glide
 import com.reddevx.groceriesapp.R
 import com.reddevx.groceriesapp.databinding.PopularCategoryItemBinding
 import com.reddevx.groceriesapp.databinding.ShopHeaderItemBinding
@@ -14,10 +17,11 @@ import com.reddevx.groceriesapp.databinding.ShopSectionTitleItemBinding
 import com.reddevx.groceriesapp.model.Category
 import com.reddevx.groceriesapp.model.Product
 import com.reddevx.groceriesapp.ui.MainActivity
+import com.reddevx.groceriesapp.ui.TAG
 import com.reddevx.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
 
 class ShopEpoxyController(
-    val context: Context
+    private val context: Context
 ): Typed2EpoxyController<List<Product>,List<Category>>() {
 
     override fun buildModels(products: List<Product>?, categories: List<Category>?) {
@@ -29,10 +33,23 @@ class ShopEpoxyController(
             .id("shop_section_1")
             .addTo(this)
 
-        if (products == null) {
+        if (products.isNullOrEmpty()) {
             return
         }
+
+        val exclusiveProducts = products.filter { product -> product.isExclusive }
+
+        val exclusiveModels = mutableListOf<ShopProduct>()
         val productsModels = mutableListOf<ShopProduct>()
+
+        exclusiveProducts.forEachIndexed { index, product ->
+            exclusiveModels.add(
+                ShopProduct(product,::onProductAddToCartClick).apply {
+                    id(index)
+                }
+            )
+        }
+
         products.forEachIndexed { index, product ->
             productsModels.add(
                 ShopProduct(product,::onProductAddToCartClick).apply {
@@ -40,6 +57,7 @@ class ShopEpoxyController(
                 }
             )
         }
+
         carousel {
             id("exclusive_offer_carousel")
             numViewsToShowOnScreen(2F)
@@ -114,12 +132,16 @@ data class ShopProduct(
     val product: Product,
     val onProductAddToCartClick: (name: String) -> Unit
 ): ViewBindingKotlinModel<ShopProductItemBinding>(R.layout.shop_product_item) {
+    @SuppressLint("SetTextI18n")
     override fun ShopProductItemBinding.bind() {
+        shopProductNameTv.text = product.name
+        shopProductKgPcsTv.text = product.priceUnit
+        shopProductPriceTv.text = "$${product.price}"
+        Glide.with(shopProductImageImv).load(product.image).into(shopProductImageImv)
         shopProductAddBtn.setOnClickListener {
-            onProductAddToCartClick("Added to cart")
+            onProductAddToCartClick("${product.name}\nAdded to cart")
         }
     }
-
 }
 
 data class ShopCategory(

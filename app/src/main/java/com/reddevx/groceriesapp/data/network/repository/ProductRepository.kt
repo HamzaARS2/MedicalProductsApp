@@ -1,30 +1,48 @@
 package com.reddevx.groceriesapp.data.network.repository
 
 import com.reddevx.groceriesapp.api.ProductService
+import com.reddevx.groceriesapp.data.network.Resource
+import com.reddevx.groceriesapp.data.network.repository.auth.IProductsProvider
+import com.reddevx.groceriesapp.model.Order
 import com.reddevx.groceriesapp.model.Product
 import javax.inject.Inject
 
 class ProductRepository @Inject constructor(
     private val service: ProductService
-): ICRUDRepository<Product,Int> {
-    override suspend fun insert(data: Product): Product {
-        return service.insertProduct(data)
+) : IProductsProvider {
+
+    override suspend fun retrieve(id: Int): Resource<Product?> {
+        return try {
+            val response = service.retrieveProduct(id)
+            Resource.Success(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
     }
 
-    override suspend fun retrieve(id: Int): Product? {
-        return service.retrieveProduct(id)
+    override suspend fun retrieveAll(): Resource<List<Product>?> {
+        return try {
+            val response = service.retrieveAllProducts()
+            Resource.Success(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
     }
 
-    override suspend fun retrieveAll(): List<Product> {
-        return service.retrieveAllProducts()
+    override suspend fun retrieveExclusive(): Resource<List<Product>?> {
+        return try {
+            val response = service.retrieveExclusiveProducts()
+            Resource.Success(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
     }
 
-    override suspend fun update(id: Int, data: Product): Product {
-        return service.updateProduct(id,data)
-    }
-
-    override suspend fun delete(id: Int): String {
-        return service.deleteProduct(id)
+    override suspend fun retrieveMostRated(): Resource<List<Product>?> {
+        TODO("Not yet implemented")
     }
 
 
