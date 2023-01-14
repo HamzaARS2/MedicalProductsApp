@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.reddevx.groceriesapp.ui.auth.LoginFragment"
+        android:name="com.ars.groceriesapp.ui.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.reddevx.groceriesapp.ui.auth.RegisterFragment"
+        android:name="com.ars.groceriesapp.ui.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/shopFragment"
-        android:name="com.reddevx.groceriesapp.ui.ShopFragment"
+        android:name="com.ars.groceriesapp.ui.ShopFragment"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" />
 </navigation>
