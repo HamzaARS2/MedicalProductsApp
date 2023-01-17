@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui
+package com.ars.groceriesapp.ui.home
 
 import android.os.Bundle
 import android.view.View
@@ -10,11 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.ActivityMainBinding
-import com.ars.groceriesapp.ui.auth.AuthViewModel
+import com.ars.groceriesapp.ui.startup.auth.AuthViewModel
 import com.ars.groceriesapp.utils.hideNavigationBars
-import com.ars.groceriesapp.utils.setBlackStatusBarIcons
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 
 const val TAG = "MainActivityLog"
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
                     binding.bottomNavigationView.setupWithNavController(navController)
                 } else
-                    navController.setGraph(R.navigation.auth_nav_graph)
+                    navController.setGraph(R.navigation.starting_nav_graph)
             }
         }
     }

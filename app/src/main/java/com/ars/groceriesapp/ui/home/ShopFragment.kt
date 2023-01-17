@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui
+package com.ars.groceriesapp.ui.home
 
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +12,7 @@ import com.ars.domain.model.Category
 import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentShopBinding
-import com.ars.groceriesapp.ui.auth.AuthViewModel
+import com.ars.groceriesapp.ui.startup.auth.AuthViewModel
 import com.ars.groceriesapp.ui.epoxy.ShopEpoxyController
 import dagger.hilt.android.AndroidEntryPoint
 

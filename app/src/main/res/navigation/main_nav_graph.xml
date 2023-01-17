@@ -6,28 +6,28 @@
     app:startDestination="@id/shopFragment">
     <fragment
         android:id="@+id/shopFragment"
-        android:name="com.ars.groceriesapp.ui.ShopFragment"
+        android:name="com.ars.groceriesapp.ui.home.ShopFragment"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" />
 
     <fragment
         android:id="@+id/exploreFragment"
-        android:name="com.ars.groceriesapp.ui.ExploreFragment"
+        android:name="com.ars.groceriesapp.ui.home.ExploreFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.ars.groceriesapp.ui.AccountFragment"
+        android:name="com.ars.groceriesapp.ui.home.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.ars.groceriesapp.ui.CartFragment"
+        android:name="com.ars.groceriesapp.ui.home.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.ars.groceriesapp.ui.FavoriteFragment"
+        android:name="com.ars.groceriesapp.ui.home.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
 </navigation>

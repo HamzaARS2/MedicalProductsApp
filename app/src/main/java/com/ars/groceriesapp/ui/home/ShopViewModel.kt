@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui
+package com.ars.groceriesapp.ui.home
 
 
 import androidx.lifecycle.MutableLiveData

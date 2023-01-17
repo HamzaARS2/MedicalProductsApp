@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui.auth
+package com.ars.groceriesapp.ui.startup.auth
 
 import android.os.Bundle
 import android.util.Log
@@ -9,13 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.ars.domain.utils.Resource
-import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentLoginBinding
-import com.ars.groceriesapp.ui.TAG
+import com.ars.groceriesapp.ui.home.TAG
 
 
 class LoginFragment : Fragment() {

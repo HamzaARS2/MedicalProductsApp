@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui.auth
+package com.ars.groceriesapp.ui.startup.auth
 
 
 import androidx.lifecycle.ViewModel

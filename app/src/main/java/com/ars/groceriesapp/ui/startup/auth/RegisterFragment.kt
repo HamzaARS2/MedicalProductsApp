@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui.auth
+package com.ars.groceriesapp.ui.startup.auth
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
-import com.ars.groceriesapp.ui.TAG
+import com.ars.groceriesapp.ui.home.TAG
 
 
 class RegisterFragment : Fragment() {
