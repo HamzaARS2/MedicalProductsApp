@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.di.module
+package com.ars.data.di
 
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
@@ -8,10 +8,8 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AuthModule {
+class FirebaseModule {
 
     @Provides
     fun getFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
-
-
 }

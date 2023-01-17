@@ -12,7 +12,7 @@ import com.ars.groceriesapp.databinding.PopularCategoryItemBinding
 import com.ars.groceriesapp.databinding.ShopHeaderItemBinding
 import com.ars.groceriesapp.databinding.ShopProductItemBinding
 import com.ars.groceriesapp.databinding.ShopSectionTitleItemBinding
-import com.ars.groceriesapp.model.Category
+import com.ars.domain.model.Category
 import com.ars.domain.model.Product
 import com.ars.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
 
@@ -163,7 +163,7 @@ data class ShopCategory(
     val onCategoryClick: (name: String) -> Unit
 ): ViewBindingKotlinModel<PopularCategoryItemBinding>(R.layout.popular_category_item) {
     override fun PopularCategoryItemBinding.bind() {
-        popularCategoryImv.setImageResource(category.image)
+       // popularCategoryImv.setImageResource(category.image!!)
         popularCategoryNameTv.text = category.name
         root.setCardBackgroundColor(Color.parseColor(category.color))
         root.setOnClickListener {

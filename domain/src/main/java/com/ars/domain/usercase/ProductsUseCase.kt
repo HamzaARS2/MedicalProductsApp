@@ -1,6 +1,6 @@
 package com.ars.domain.usercase
 
-import com.ars.domain.Resource
+import com.ars.domain.utils.Resource
 import com.ars.domain.model.Product
 import com.ars.domain.repository.IProductRepository
 import javax.inject.Inject

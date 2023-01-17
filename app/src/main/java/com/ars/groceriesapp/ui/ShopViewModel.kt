@@ -4,7 +4,7 @@ package com.ars.groceriesapp.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ars.domain.Resource
+import com.ars.domain.utils.Resource
 import com.ars.domain.model.Product
 import com.ars.domain.usercase.ProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

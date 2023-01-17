@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.ars.domain.Resource
+import com.ars.domain.model.Category
+import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentShopBinding
-import com.ars.groceriesapp.model.Category
-import com.ars.groceriesapp.model.Product
+import com.ars.groceriesapp.ui.auth.AuthViewModel
 import com.ars.groceriesapp.ui.epoxy.ShopEpoxyController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +21,7 @@ class ShopFragment : Fragment() {
 
     private val binding by lazy { FragmentShopBinding.inflate(layoutInflater) }
     private val viewModel: ShopViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     private lateinit var controller: ShopEpoxyController
 
@@ -40,6 +41,11 @@ class ShopFragment : Fragment() {
         viewModel.fetchProducts()
         collectExclusiveProducts()
         collectProducts()
+
+        binding.button.setOnClickListener {
+             authViewModel.logout()
+        }
+
 
 
 
@@ -89,18 +95,6 @@ class ShopFragment : Fragment() {
             Category(name = "Fruits & Vegetables"),
             Category(name = "Bakery & Snacks", image = R.drawable.baker_category_image,
                 color = "#40D3B0E0")
-        )
-
-    private fun getProducts(): List<Product> =
-        listOf(
-            Product(),
-            Product(),
-            Product(),
-            Product(),
-            Product(),
-            Product(),
-            Product(),
-            Product()
         )
 
 }

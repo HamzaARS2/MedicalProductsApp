@@ -1,4 +1,4 @@
-package com.ars.domain
+package com.ars.domain.utils
 
 sealed class Resource<out T> {
     data class Success<out T>(val result: T): Resource<T>()

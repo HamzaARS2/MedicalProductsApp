@@ -1,83 +1,72 @@
 package com.ars.groceriesapp.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.ActivityMainBinding
-import com.ars.groceriesapp.ui.auth.RegisterViewModel
+import com.ars.groceriesapp.ui.auth.AuthViewModel
+import com.ars.groceriesapp.utils.hideNavigationBars
 import com.ars.groceriesapp.utils.setBlackStatusBarIcons
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 
 const val TAG = "MainActivityLog"
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val viewModel: RegisterViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
+
+    private lateinit var navController: NavController
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setBlackStatusBarIcons(window)
-//        binding.signupBtn.setOnClickListener {
-//            val name = binding.nameEdt.text.toString()
-//            val email = binding.emailEdt.text.toString()
-//            val password = binding.passwordEdt.text.toString()
-//
-//            viewModel.register(name,email, password)
-//        }
-//
-//
-//        binding.loginBtn.setOnClickListener {
-//            val email = binding.emailEdt.text.toString()
-//            val password = binding.passwordEdt.text.toString()
-//
-//            viewModel.login(email, password)
-//        }
-//
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.customerState.collect { state ->
-//                when(state) {
-//                    is Resource.Success -> {
-//                        setState("Success")
-//                        Toast.makeText(this@MainActivity, state.result?.email, Toast.LENGTH_SHORT).show()
-//                        Log.d(TAG, "onCreate: Customer = ${state.result.toString()}")
-//                    }
-//                    is Resource.Failure -> {
-//                        setState("Failure")
-//                        Log.d(TAG, "onCreate Failure : ${state.e}")
-//                    }
-//                    else -> {
-//                        // Loading
-//                        setState("Loading")
-//                    }
-//                }
-//            }
-//        }
-//
-//        binding.textView.setOnClickListener {
-//            if (viewModel.loggedIn.value!!) {
-//                viewModel.logout()
-//            }
-//        }
-//
-//            viewModel.loggedIn.observe(this) {
-//                setIsLoggedIn(it)
-//            }
+        //setBlackStatusBarIcons(window)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
+        navController = navHostFragment.navController
 
+
+        checkLoginState()
+        setBottomNavigationBarVisibility(navController)
     }
 
-//    private fun setState(state: String) {
-//        binding.stateTv.text = state
-//    }
-//
-//    private fun setIsLoggedIn(isLoggedIn: Boolean) {
-//        binding.textView.text = if (isLoggedIn)
-//            "LoggedIn" else "LoggedOut"
-//
-//    }
+    private fun checkLoginState() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.loginState.collect { isLoggedIn ->
+                hideNavigationBars(window, binding.root, !isLoggedIn)
+                if (isLoggedIn) {
+                    navController.setGraph(R.navigation.main_nav_graph)
 
+                    binding.bottomNavigationView.setupWithNavController(navController)
+                } else
+                    navController.setGraph(R.navigation.auth_nav_graph)
+            }
+        }
+    }
+
+    private fun setBottomNavigationBarVisibility(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, dest, _ ->
+
+            if (dest.id == R.id.shopFragment || dest.id == R.id.exploreFragment ||
+                dest.id == R.id.cartFragment || dest.id == R.id.favoriteFragment ||
+                dest.id == R.id.accountFragment)
+                binding.bottomNavigationView.visibility = View.VISIBLE
+            else
+                binding.bottomNavigationView.visibility = View.GONE
+
+        }
+    }
 }
 
 

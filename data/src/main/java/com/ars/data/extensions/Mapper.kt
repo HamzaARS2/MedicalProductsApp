@@ -15,3 +15,4 @@ fun ProductResponse.toProduct(): Product =
         image = image,
         isExclusive = isExclusive
     )
+
