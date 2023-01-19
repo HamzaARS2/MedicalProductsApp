@@ -27,7 +27,7 @@ class GetStartedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView7.setOnClickListener {
+        binding.getstartedBtn.setOnClickListener {
             Navigation.findNavController(requireView())
                 .setGraph(R.navigation.auth_nav_graph)
         }

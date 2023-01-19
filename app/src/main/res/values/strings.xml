@@ -22,4 +22,7 @@
     <string name="cart">Cart</string>
     <string name="favorite">Favorite</string>
     <string name="account">Account</string>
+    <string name="get_started">Get Started</string>
+    <string name="getstarted_small_description">Get started on your grocery shopping journey with our easy-to-use app!</string>
+    <string name="welcome_nto_our_store">Welcome\nto our store</string>
 </resources>
