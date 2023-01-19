@@ -47,6 +47,8 @@ class CustomerRegistrationUseCase @Inject constructor(
         firebaseAuth.loginState(onLoginStateChanged)
     }
 
+    fun isLoggedIn(): Boolean = firebaseAuth.currentUser != null
+
     fun logoutCustomer() {
         firebaseAuth.logout()
     }

@@ -2,20 +2,25 @@ package com.ars.groceriesapp.ui.home
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import com.ars.domain.model.Category
 import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentShopBinding
-import com.ars.groceriesapp.ui.startup.auth.AuthViewModel
 import com.ars.groceriesapp.ui.epoxy.ShopEpoxyController
+import com.ars.groceriesapp.ui.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
+const val TAG = "ShopFragment"
 @AndroidEntryPoint
 class ShopFragment : Fragment() {
 
@@ -24,6 +29,8 @@ class ShopFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
 
     private lateinit var controller: ShopEpoxyController
+
+    private val customerDocId by lazy { requireArguments().getString("customerDocId") }
 
 
     override fun onCreateView(
@@ -41,9 +48,13 @@ class ShopFragment : Fragment() {
         viewModel.fetchProducts()
         collectExclusiveProducts()
         collectProducts()
+        Toast.makeText(requireContext(), "customerDocId = $customerDocId", Toast.LENGTH_SHORT).show()
 
         binding.button.setOnClickListener {
-             authViewModel.logout()
+            authViewModel.logout()
+            val navController = Navigation
+                .findNavController(requireView())
+            navController.setGraph(R.navigation.auth_nav_graph)
         }
 
 

@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui.startup
+package com.ars.groceriesapp.ui.phone_location
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.ars.groceriesapp.R
-import com.ars.groceriesapp.databinding.FragmentGetStartedBinding
+import com.ars.groceriesapp.databinding.FragmentPhoneVerificationBinding
+import com.ars.groceriesapp.ui.startup.StartupViewModel
 
 
-class GetStartedFragment : Fragment() {
+class PhoneVerificationFragment : Fragment() {
 
-    private val binding by lazy { FragmentGetStartedBinding.inflate(layoutInflater) }
-    private val viewModel: StartupViewModel by activityViewModels()
+    private val binding by lazy { FragmentPhoneVerificationBinding.inflate(layoutInflater) }
+    private val viewModel: PhoneLocationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,12 +26,11 @@ class GetStartedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.textView7.setOnClickListener {
-            Navigation.findNavController(requireView())
-                .setGraph(R.navigation.auth_nav_graph)
+            Navigation
+                .findNavController(requireView())
+                .navigate(PhoneVerificationFragmentDirections.toLocationFrag())
         }
-
     }
 
 

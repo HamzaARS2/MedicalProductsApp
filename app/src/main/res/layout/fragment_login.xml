@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.startup.auth.LoginFragment"
+    tools:context=".ui.auth.LoginFragment"
     android:fitsSystemWindows="true">
 
     <ImageView
@@ -183,16 +183,16 @@
                 android:fontFamily="@font/gilroy_semi_bold"
                 android:text="@string/don_t_have_an_account"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/button3"
-                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintBottom_toBottomOf="@+id/login_signup_btn"
+                app:layout_constraintEnd_toStartOf="@+id/login_signup_btn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="@+id/login_login_btn"
-                app:layout_constraintTop_toTopOf="@+id/button3"
+                app:layout_constraintTop_toTopOf="@+id/login_signup_btn"
                 app:layout_constraintVertical_bias="0.482" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/login_signup_btn"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.startup.auth.RegisterFragment"
+    tools:context=".ui.auth.RegisterFragment"
     android:fitsSystemWindows="true">
 
     <ImageView
@@ -214,16 +214,16 @@
                 android:fontFamily="@font/gilroy_semi_bold"
                 android:text="@string/already_have_an_account"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/button3"
-                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintBottom_toBottomOf="@+id/register_signin_btn"
+                app:layout_constraintEnd_toStartOf="@+id/register_signin_btn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="@+id/register_signup_btn"
-                app:layout_constraintTop_toTopOf="@+id/button3"
+                app:layout_constraintTop_toTopOf="@+id/register_signin_btn"
                 app:layout_constraintVertical_bias="0.482" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/register_signin_btn"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
