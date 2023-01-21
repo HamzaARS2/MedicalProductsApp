@@ -23,8 +23,8 @@ class CustomerRegistrationUseCase @Inject constructor(
         val authResource = firebaseAuth.register(email, password)
         return if (authResource is Resource.Success) {
             val user = authResource.result
-            val customer = user.toCustomer(name, phone, address)
-            val response = customerRepository.insert(customer)
+            val customer = user?.toCustomer(name, phone, address)
+            val response = customerRepository.insert(customer!!)
             Resource.Success(response)
         } else authResource as Resource.Failure
     }

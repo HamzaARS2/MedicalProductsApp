@@ -19,6 +19,8 @@
 
         <action
             android:id="@+id/toGetStartedFrag"
-            app:destination="@id/getStartedFragment" />
+            app:destination="@id/getStartedFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

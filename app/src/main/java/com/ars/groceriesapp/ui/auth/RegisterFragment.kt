@@ -16,6 +16,8 @@ import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
 import com.ars.groceriesapp.ui.home.TAG
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collectLatest
 
 
 class RegisterFragment : Fragment() {
@@ -58,7 +60,8 @@ class RegisterFragment : Fragment() {
             }
 
             lifecycleScope.launchWhenStarted {
-                viewModel.customerState.collect { state ->
+                viewModel.customerRegisterFlow.collectLatest { state ->
+                    Log.d("customerRegisterFlow", "onViewCreated: State = $state")
                     when (state) {
                         is Resource.Success -> {
                             Toast.makeText(
@@ -83,6 +86,7 @@ class RegisterFragment : Fragment() {
                         }
                         else -> {
                             Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            Log.d("RegisterLoading", "onViewCreated: Register Loading")
                             // TODO: Show loading view
                         }
                     }

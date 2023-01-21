@@ -15,6 +15,8 @@ import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentLoginBinding
 import com.ars.groceriesapp.ui.home.TAG
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 
 class LoginFragment : Fragment() {
@@ -56,25 +58,28 @@ class LoginFragment : Fragment() {
 
 
         lifecycleScope.launchWhenStarted {
-            viewModel.customerState.collect { state ->
-                when(state) {
+            viewModel.customerLoginFlow.collect { state ->
+                when (state) {
                     is Resource.Success -> {
-                        Toast.makeText(requireContext(), "Logged in Successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Logged in Successfully!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         val customer = state.result!!
-                        if (customer.phone == "unknown") {
-                            Toast.makeText(requireContext(), "Phone number and Location are required", Toast.LENGTH_SHORT).show()
-                            navController.setGraph(R.navigation.phone_location_nav_graph,
-                                bundleOf("customerDocId" to  customer.docId))
-                            return@collect
-                        }
-                        
                         navController
-                            .setGraph(R.navigation.home_nav_graph, bundleOf("customerDocId" to customer.docId))
-                        Log.d(TAG, "onViewCreated: Customer = $customer")
+                            .setGraph(
+                                R.navigation.home_nav_graph,
+                                bundleOf("customerDocId" to customer.docId)
+                            )
                     }
                     is Resource.Failure -> {
                         // TODO: Show an error to the user
-                        Toast.makeText(requireContext(), "Error : ${state.e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Error : ${state.e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         Log.d(TAG, "onCreate Failure : ${state.e}")
                     }
                     else -> {

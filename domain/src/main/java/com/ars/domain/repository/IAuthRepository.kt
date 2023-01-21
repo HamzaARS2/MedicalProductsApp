@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 
 interface IAuthRepository {
     val currentUser: FirebaseUser?
-    suspend fun register( email: String, password: String): Resource<FirebaseUser>
+    suspend fun register( email: String, password: String): Resource<FirebaseUser?>
     suspend fun login(email: String, password: String): Resource<FirebaseUser?>
     fun loginState(onLoginStateChanged: (loggedIn: Boolean) -> Unit)
     suspend fun delete(): Boolean

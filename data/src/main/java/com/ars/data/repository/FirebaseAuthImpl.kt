@@ -20,14 +20,14 @@ class FirebaseAuthImpl @Inject constructor(
     override suspend fun register(
         email: String,
         password: String
-    ): Resource<FirebaseUser> {
+    ): Resource<FirebaseUser?> {
         return try {
             val result = mAuth.createUserWithEmailAndPassword(email, password).await()
             val user = result.user!!
             Resource.Success(user)
         } catch (e: Exception) {
             e.printStackTrace()
-            return Resource.Failure(e)
+            Resource.Failure(e)
         }
     }
 
