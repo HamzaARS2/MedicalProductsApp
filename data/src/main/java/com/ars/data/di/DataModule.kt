@@ -1,7 +1,15 @@
 package com.ars.data.di
 
 import com.ars.data.repository.*
+import com.ars.data.repository.auth.FirebaseAuthImpl
+import com.ars.data.repository.customer.CustomerLoginStateImpl
+import com.ars.data.repository.customer.CustomerRepositoryImpl
+import com.ars.data.repository.product.ProductRepositoryImpl
 import com.ars.domain.repository.*
+import com.ars.domain.repository.auth.IAuthRepository
+import com.ars.domain.repository.customer.ICustomerLoginState
+import com.ars.domain.repository.customer.ICustomerRepository
+import com.ars.domain.repository.product.IProductRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,7 +32,8 @@ abstract class DataModule {
     @Binds
     abstract fun bindPreferencesHelper(preferencesHelper: PreferencesHelper): IPreferencesHelper
 
-    @Binds
-    abstract fun bindCustomerLoginState(customerLoginStateImpl: CustomerLoginStateImpl): ICustomerLoginState
+//    @Binds
+//    abstract fun bindCustomerLoginState(customerLoginStateImpl: CustomerLoginStateImpl): ICustomerLoginState
+
 
 }

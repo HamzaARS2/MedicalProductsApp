@@ -1,18 +1,18 @@
-package com.ars.data.repository
+package com.ars.data.repository.auth
 
-import android.util.Log
 import com.ars.domain.utils.Resource
-import com.ars.domain.repository.IAuthRepository
+import com.ars.domain.repository.auth.IAuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.flow.StateFlow
+import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 const val TAG = "FirebaseAuthImpl"
+
 class FirebaseAuthImpl @Inject constructor(
     private val mAuth: FirebaseAuth
-): IAuthRepository {
+) : IAuthRepository {
     override val currentUser: FirebaseUser?
         get() = mAuth.currentUser
 
@@ -42,19 +42,37 @@ class FirebaseAuthImpl @Inject constructor(
         }
     }
 
-    override fun loginState(onLoginStateChanged: (loggedIn: Boolean) -> Unit) {
-        mAuth.addAuthStateListener {
-            onLoginStateChanged(it.currentUser != null)
+    override suspend fun linkPhoneWithExistingAccount(
+        verificationId: String,
+        smsCode: String
+    ): Resource<FirebaseUser?> {
+        val user = mAuth.currentUser
+        val credentials = PhoneAuthProvider.getCredential(verificationId, smsCode)
+        return try {
+            val response = user?.linkWithCredential(credentials)?.await()
+            Resource.Success(response?.user)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Failure(e)
         }
     }
 
+
     override suspend fun delete(): Boolean {
-        currentUser?.delete()
-        return true
+        return if (mAuth.currentUser != null) {
+            return try {
+                mAuth.currentUser!!.delete().await()
+                true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+
+        } else false
     }
 
     override fun logout() {
         if (currentUser != null)
-        mAuth.signOut()
+            mAuth.signOut()
     }
 }

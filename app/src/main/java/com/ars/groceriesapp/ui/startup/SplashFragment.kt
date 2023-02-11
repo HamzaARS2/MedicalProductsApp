@@ -7,18 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavDirections
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentSplashBinding
+import kotlinx.coroutines.flow.collectLatest
 
 class SplashFragment : Fragment() {
 
 
     private val binding by lazy { FragmentSplashBinding.inflate(layoutInflater) }
-    private val viewModel: StartupViewModel by activityViewModels()
+    private val viewModel: StartingViewModel by activityViewModels()
 
     private val navController by lazy { Navigation.findNavController(requireView()) }
 
@@ -42,20 +45,47 @@ class SplashFragment : Fragment() {
             checkCustomerState()
         }, 2000)
 
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.customerFlow.collectLatest { response ->
+                when(response) {
+                    is Resource.Success -> {
+                        navController.navigate(
+                            SplashFragmentDirections.actionGlobalHomeGraph(
+                                response.result
+                            )
+                        )
+                        Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()
+
+                    }
+                    is Resource.Failure -> {
+                        Toast.makeText(requireContext(), response.e.message, Toast.LENGTH_SHORT).show()
+                        navController.navigate(SplashFragmentDirections.toGetStartedFrag())
+                    }
+                    is Resource.Loading -> Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                    else  -> {}
+                }
+            }
+        }
+
+
+
     }
+
+
 
     private fun checkCustomerState() {
         if (viewModel.isFirstTimeLaunch()) {
-            navController.navigate(SplashFragmentDirections.toGetStartedFrag())
-            viewModel.setIsFirstTimeLaunch(false)
+                navController.navigate(SplashFragmentDirections.toGetStartedFrag())
+                viewModel.setIsFirstTimeLaunch(false)
         } else {
-            navController.setGraph(
-                if (viewModel.isLoggedIn())
-                    R.navigation.home_nav_graph
-                else
-                    R.navigation.auth_nav_graph
-            , bundleOf("customerDocId" to viewModel.customerDocId)
-            )
+            val isLoggedIn = viewModel.isLoggedIn().first
+            val id = viewModel.isLoggedIn().second
+            if (isLoggedIn) {
+                viewModel.getCustomer(id!!)
+            } else {
+                    navController.navigate(SplashFragmentDirections.toAuthGraph())
+            }
 
         }
     }

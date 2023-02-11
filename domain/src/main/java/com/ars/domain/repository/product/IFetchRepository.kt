@@ -1,4 +1,4 @@
-package com.ars.domain.repository
+package com.ars.domain.repository.product
 
 import com.ars.domain.utils.Resource
 

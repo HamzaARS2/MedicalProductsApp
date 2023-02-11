@@ -9,7 +9,7 @@ class PreferencesHelper @Inject constructor(
 ): IPreferencesHelper {
 
    private object Constants {
-        const val IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch"
+        const val IS_FIRST_TIME_LAUNCH = "FirstTimeLaunch"
     }
     override fun isFirstTime(): Boolean {
         return sp.getBoolean(Constants.IS_FIRST_TIME_LAUNCH,true)

@@ -6,7 +6,7 @@
     app:startDestination="@id/phoneFragment">
     <fragment
         android:id="@+id/phoneFragment"
-        android:name="com.ars.groceriesapp.ui.phone_location.PhoneFragment"
+        android:name="com.ars.groceriesapp.ui.auth.phone_location.phone.PhoneFragment"
         android:label="fragment_phone"
         tools:layout="@layout/fragment_phone">
 
@@ -16,17 +16,20 @@
     </fragment>
     <fragment
         android:id="@+id/phoneVerificationFragment"
-        android:name="com.ars.groceriesapp.ui.phone_location.PhoneVerificationFragment"
+        android:name="com.ars.groceriesapp.ui.auth.phone_location.phone.PhoneVerificationFragment"
         android:label="fragment_phone_verification"
         tools:layout="@layout/fragment_phone_verification">
 
         <action
             android:id="@+id/toLocationFrag"
             app:destination="@id/locationFragment" />
+        <argument
+            android:name="verificationId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/locationFragment"
-        android:name="com.ars.groceriesapp.ui.phone_location.LocationFragment"
+        android:name="com.ars.groceriesapp.ui.auth.phone_location.location.LocationFragment"
         android:label="fragment_location"
         tools:layout="@layout/fragment_location">
     </fragment>

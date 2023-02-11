@@ -1,5 +1,7 @@
 package com.ars.groceriesapp.ui.home
 
+import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,33 +13,45 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.ars.domain.model.Category
+import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
+import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentShopBinding
 import com.ars.groceriesapp.ui.epoxy.ShopEpoxyController
 import com.ars.groceriesapp.ui.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.Serializable
 
 
-const val TAG = "ShopFragment"
 @AndroidEntryPoint
 class ShopFragment : Fragment() {
 
+    companion object {
+        const val TAG = "ShopFragment"
+    }
+
     private val binding by lazy { FragmentShopBinding.inflate(layoutInflater) }
+    private val args by navArgs<ShopFragmentArgs>()
     private val viewModel: ShopViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
 
+    private val navController by lazy { Navigation.findNavController(requireView()) }
+
     private lateinit var controller: ShopEpoxyController
 
-    private val customerDocId by lazy { requireArguments().getString("customerDocId") }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+
+        args.customer?.let {
+            viewModel.customer = it
+        }
         return binding.root
     }
 
@@ -48,13 +62,11 @@ class ShopFragment : Fragment() {
         viewModel.fetchProducts()
         collectExclusiveProducts()
         collectProducts()
-        Toast.makeText(requireContext(), "customerDocId = $customerDocId", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "customerDocId = ${viewModel.customer.docId}", Toast.LENGTH_SHORT).show()
 
         binding.button.setOnClickListener {
-            authViewModel.logout()
-            val navController = Navigation
-                .findNavController(requireView())
-            navController.setGraph(R.navigation.auth_nav_graph)
+            viewModel.logOut()
+            navController.navigate(HomeGraphDirections.actionGlobalAuthGraph())
         }
 
 
@@ -107,5 +119,6 @@ class ShopFragment : Fragment() {
             Category(name = "Bakery & Snacks", image = R.drawable.baker_category_image,
                 color = "#40D3B0E0")
         )
+
 
 }

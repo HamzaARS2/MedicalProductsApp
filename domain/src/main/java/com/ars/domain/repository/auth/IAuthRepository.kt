@@ -1,4 +1,4 @@
-package com.ars.domain.repository
+package com.ars.domain.repository.auth
 
 import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
@@ -8,7 +8,7 @@ interface IAuthRepository {
     val currentUser: FirebaseUser?
     suspend fun register( email: String, password: String): Resource<FirebaseUser?>
     suspend fun login(email: String, password: String): Resource<FirebaseUser?>
-    fun loginState(onLoginStateChanged: (loggedIn: Boolean) -> Unit)
+    suspend fun linkPhoneWithExistingAccount(verificationId: String, smsCode: String): Resource<FirebaseUser?>
     suspend fun delete(): Boolean
     fun logout()
 }

@@ -4,6 +4,8 @@ package com.ars.groceriesapp.ui.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ars.data.repository.auth.LoginRepository
+import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
 import com.ars.domain.model.Product
 import com.ars.domain.usercase.ProductsUseCase
@@ -16,8 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShopViewModel @Inject constructor(
-    private val productsUseCase: ProductsUseCase
+    private val productsUseCase: ProductsUseCase,
+    private val loginRepo: LoginRepository
 ): ViewModel() {
+
+    var customer = Customer()
 
     private val _productsFlow: MutableStateFlow<Resource<List<Product>?>?> = MutableStateFlow(null)
     val products: StateFlow<Resource<List<Product>?>?> get() = _productsFlow
@@ -35,6 +40,8 @@ class ShopViewModel @Inject constructor(
         _productsFlow.emit(allProductsResponse.await())
         _exclusiveProductsFlow.emit(exclusiveProductsResponse.await())
     }
+
+    fun logOut() = loginRepo.logout()
 
 
 

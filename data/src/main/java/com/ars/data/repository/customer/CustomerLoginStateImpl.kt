@@ -1,6 +1,6 @@
-package com.ars.data.repository
+package com.ars.data.repository.customer
 
-import com.ars.domain.repository.ICustomerLoginState
+import com.ars.domain.repository.customer.ICustomerLoginState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject

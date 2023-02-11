@@ -3,9 +3,6 @@ package com.ars.data.di
 import com.ars.data.remote.ProductDataSource
 import com.ars.data.remote.api.CustomerApi
 import com.ars.data.remote.api.ProductApi
-import com.ars.data.repository.ProductRepositoryImpl
-import com.ars.domain.repository.IProductRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

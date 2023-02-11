@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/starting_graph">
+
+    <navigation
+        android:id="@+id/auth_graph"
+        app:startDestination="@id/loginFragment">
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.ars.groceriesapp.ui.auth.login.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login">
+            <action
+                android:id="@+id/toRegister"
+                app:destination="@id/registerFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/registerFragment"
+            android:name="com.ars.groceriesapp.ui.auth.RegisterFragment"
+            android:label="fragment_register"
+            tools:layout="@layout/fragment_register" />
+
+        <action
+            android:id="@+id/toHomeGraph"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/toPhoneLocationGraph"
+            app:destination="@id/phone_location_graph"
+            app:launchSingleTop="false" />
+    </navigation>
+
+    <navigation
+        android:id="@+id/home_graph"
+        app:startDestination="@id/shopFragment">
+
+        <fragment
+            android:id="@+id/cartFragment"
+            android:name="com.ars.groceriesapp.ui.home.CartFragment"
+            android:label="fragment_cart"
+            tools:layout="@layout/fragment_cart" />
+        <fragment
+            android:id="@+id/favoriteFragment"
+            android:name="com.ars.groceriesapp.ui.home.FavoriteFragment"
+            android:label="fragment_favorite"
+            tools:layout="@layout/fragment_favorite" />
+        <fragment
+            android:id="@+id/accountFragment"
+            android:name="com.ars.groceriesapp.ui.home.AccountFragment"
+            android:label="fragment_account"
+            tools:layout="@layout/fragment_account" />
+        <fragment
+            android:id="@+id/shopFragment"
+            android:name="com.ars.groceriesapp.ui.home.ShopFragment"
+            android:label="fragment_shop"
+            tools:layout="@layout/fragment_shop" >
+            <argument
+                android:name="customer"
+                app:argType="com.ars.domain.model.Customer"
+                app:nullable="true"
+                android:defaultValue="@null" />
+        </fragment>
+        <fragment
+            android:id="@+id/exploreFragment"
+            android:name="com.ars.groceriesapp.ui.home.ExploreFragment"
+            android:label="fragment_account"
+            tools:layout="@layout/fragment_explore" />
+
+        <argument
+            android:name="customer"
+            app:argType="com.ars.domain.model.Customer" />
+        <action
+            android:id="@+id/action_global_auth_graph"
+            app:destination="@id/auth_graph"
+            app:popUpTo="@id/home_graph"
+            app:popUpToInclusive="true"/>
+    </navigation>
+
+    <navigation
+        android:id="@+id/phone_location_graph"
+        app:startDestination="@id/phoneFragment">
+
+        <argument
+            android:name="customer"
+            app:argType="com.ars.domain.model.Customer" />
+
+        <fragment
+            android:id="@+id/phoneFragment"
+            android:name="com.ars.groceriesapp.ui.auth.phone_location.phone.PhoneFragment"
+            android:label="fragment_phone"
+            tools:layout="@layout/fragment_phone">
+            <action
+                android:id="@+id/toPhoneVerificationFrag"
+                app:destination="@id/phoneVerificationFragment" />
+            <argument
+                android:name="customer"
+                app:argType="com.ars.domain.model.Customer" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/phoneVerificationFragment"
+            android:name="com.ars.groceriesapp.ui.auth.phone_location.phone.PhoneVerificationFragment"
+            android:label="fragment_phone_verification"
+            tools:layout="@layout/fragment_phone_verification">
+            <action
+                android:id="@+id/toLocationFrag"
+                app:destination="@id/locationFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/locationFragment"
+            android:name="com.ars.groceriesapp.ui.auth.phone_location.location.LocationFragment"
+            android:label="fragment_location"
+            tools:layout="@layout/fragment_location" />
+        <action
+            android:id="@+id/action_global_home_graph2"
+            app:destination="@id/home_graph" />
+
+    </navigation>
+
+
+    <navigation android:id="@+id/starting_graph"
+        app:startDestination="@id/splashFragment">
+        <fragment
+            android:id="@+id/splashFragment"
+            android:name="com.ars.groceriesapp.ui.startup.SplashFragment"
+            android:label="fragment_splash"
+            tools:layout="@layout/fragment_splash">
+
+            <action
+                android:id="@+id/toGetStartedFrag"
+                app:destination="@id/getStartedFragment"
+                app:popUpTo="@id/splashFragment"
+                app:popUpToInclusive="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/getStartedFragment"
+            android:name="com.ars.groceriesapp.ui.startup.GetStartedFragment"
+            android:label="fragment_get_started"
+            tools:layout="@layout/fragment_get_started" />
+        <action
+            android:id="@+id/toAuthGraph"
+            app:destination="@id/auth_graph"
+            app:popUpTo="@id/starting_graph"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_global_home_graph"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/starting_graph"
+            app:popUpToInclusive="true"/>
+    </navigation>
+
+</navigation>

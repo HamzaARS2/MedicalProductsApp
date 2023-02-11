@@ -1,10 +1,12 @@
 package com.ars.domain.model
 
+import java.io.Serializable
+
 data class Customer(
     val id: Int? = null,
     val docId: String = "",
     val name: String = "",
     val email: String = "",
-    val phone: String = "",
-    val address: String = ""
-)
+    var phone: String = "",
+    var address: String = ""
+): Serializable

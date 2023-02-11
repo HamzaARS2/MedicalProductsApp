@@ -15,7 +15,7 @@ interface CustomerApi {
     suspend fun retrieveAllCustomers(): List<Customer>
 
     @PUT("/customer/update")
-    suspend fun updateCustomer(customer: Customer): Customer
+    suspend fun updateCustomer(@Body customer: Customer): Customer
 
     @DELETE("/customer/delete/{docId}")
     suspend fun deleteCustomer(@Path("docId") docId: String): String

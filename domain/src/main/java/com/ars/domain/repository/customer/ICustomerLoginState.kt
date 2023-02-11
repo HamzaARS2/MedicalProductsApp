@@ -1,4 +1,4 @@
-package com.ars.domain.repository
+package com.ars.domain.repository.customer
 
 import com.google.firebase.auth.FirebaseUser
 

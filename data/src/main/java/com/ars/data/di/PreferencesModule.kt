@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class PreferencesModule {
 
     private object Constants {
-        const val APP_PREFERENCES = "GroceriesPreferences"
+        const val APP_PREFERENCES = "GroceriesAppPreferences"
     }
 
 

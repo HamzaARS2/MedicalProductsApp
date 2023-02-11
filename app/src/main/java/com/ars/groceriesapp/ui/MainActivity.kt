@@ -16,10 +16,10 @@ import com.ars.groceriesapp.databinding.ActivityMainBinding
 import com.ars.groceriesapp.ui.auth.AuthViewModel
 import com.ars.groceriesapp.utils.hideNavigationBars
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.migration.CustomInjection.inject
 import kotlinx.coroutines.flow.*
 
 
-const val TAG = "MainActivityLog"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,36 +39,13 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
         navController = navHostFragment.navController
+        //navController.setGraph(R.navigation.startup_nav_graph)
         setBottomNavigationBarVisibility(navController)
         binding.bottomNavigationView.setupWithNavController(navController)
 
 
     }
 
-
-
-
-
-//    private fun checkLoginState() {
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.loginState
-//                .collect { isLoggedIn ->
-//                    if (!firstEmission) {
-//                        Log.d(TAG, "checkLoginState: isLoggedIn = $isLoggedIn")
-//
-//                        if (isLoggedIn) {
-//                            navController.setGraph(R.navigation.main_nav_graph)
-//                            binding.bottomNavigationView.setupWithNavController(navController)
-//                        } else {
-//                            navController.setGraph(R.navigation.starting_nav_graph)
-//                        }
-//
-//                    } else firstEmission = false
-//
-//
-//                }
-//        }
-//    }
 
     private fun setBottomNavigationBarVisibility(navController: NavController) {
         navController.addOnDestinationChangedListener { _, dest, _ ->
@@ -79,10 +56,12 @@ class MainActivity : AppCompatActivity() {
             ) {
                 binding.bottomNavigationView.visibility = View.VISIBLE
                 hideNavigationBars(window, binding.root, false)
+                navController.graph.setStartDestination(R.id.home_graph)
             }
             else {
                 binding.bottomNavigationView.visibility = View.GONE
             hideNavigationBars(window, binding.root, true)
+                navController.graph.setStartDestination(R.id.starting_graph)
         }
 
         }

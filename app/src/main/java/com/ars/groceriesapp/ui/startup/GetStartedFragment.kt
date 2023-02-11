@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.ars.groceriesapp.R
+import com.ars.groceriesapp.StartingGraphDirections
 import com.ars.groceriesapp.databinding.FragmentGetStartedBinding
 
 
 class GetStartedFragment : Fragment() {
 
     private val binding by lazy { FragmentGetStartedBinding.inflate(layoutInflater) }
-    private val viewModel: StartupViewModel by activityViewModels()
+    private val viewModel: StartingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +30,7 @@ class GetStartedFragment : Fragment() {
 
         binding.getstartedBtn.setOnClickListener {
             Navigation.findNavController(requireView())
-                .setGraph(R.navigation.auth_nav_graph)
+                .navigate(StartingGraphDirections.toAuthGraph())
         }
 
     }

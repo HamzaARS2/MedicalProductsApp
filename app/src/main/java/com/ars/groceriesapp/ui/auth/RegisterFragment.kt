@@ -13,9 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.ars.domain.utils.Resource
+import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
-import com.ars.groceriesapp.ui.home.TAG
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collectLatest
 
@@ -24,7 +25,7 @@ class RegisterFragment : Fragment() {
 
 
     private val binding by lazy { FragmentRegisterBinding.inflate(layoutInflater) }
-    private val viewModel: AuthViewModel by activityViewModels()
+    private val viewModel: RegisterViewModel by activityViewModels()
 
     private val navController by lazy { Navigation.findNavController(requireView()) }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,10 +49,8 @@ class RegisterFragment : Fragment() {
                 val name = registerUsernameLayout.editText!!.text.toString()
                 val email = registerEmailLayout.editText!!.text.toString()
                 val password = registerPasswordLayout.editText!!.text.toString()
-                val phone = "unknown"
-                val address = "unknown"
 
-                viewModel.register(name, email, password, phone, address)
+                viewModel.register(name, email, password)
             }
 
             binding.registerSigninBtn.setOnClickListener {
@@ -64,25 +63,14 @@ class RegisterFragment : Fragment() {
                     Log.d("customerRegisterFlow", "onViewCreated: State = $state")
                     when (state) {
                         is Resource.Success -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Register Successfully!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            navController
-                                .setGraph(
-                                    R.navigation.phone_location_nav_graph,
-                                    bundleOf("customerDocId" to state.result?.docId)
-                                )
+                            Toast.makeText(requireContext(), "Register Successfully!", Toast.LENGTH_SHORT).show()
+                            val customer = state.result
+                            navController.navigate(AuthGraphDirections.toPhoneLocationGraph(customer))
                         }
                         is Resource.Failure -> {
                             // TODO: Show an error to the user
-                            Toast.makeText(
-                                requireContext(),
-                                "Error : ${state.e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            Log.d(TAG, "onCreate Failure : ${state.e}")
+                            Snackbar.make(requireView(),state.e.message ?: "Something went wrong!",Snackbar.LENGTH_SHORT).show()
+                            Log.d("RegisterFragment", "onCreate Failure : ${state.e}")
                         }
                         else -> {
                             Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
