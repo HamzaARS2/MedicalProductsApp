@@ -1,6 +1,5 @@
 package com.ars.groceriesapp.ui.auth.phone_location.phone
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.ars.groceriesapp.databinding.FragmentPhoneBinding
-import com.ars.groceriesapp.ui.auth.AuthViewModel
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*

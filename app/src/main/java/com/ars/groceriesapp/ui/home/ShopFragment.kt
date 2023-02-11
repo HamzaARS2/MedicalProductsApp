@@ -1,7 +1,5 @@
 package com.ars.groceriesapp.ui.home
 
-import android.app.Activity
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,19 +9,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.ars.domain.model.Category
-import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentShopBinding
 import com.ars.groceriesapp.ui.epoxy.ShopEpoxyController
-import com.ars.groceriesapp.ui.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.Serializable
 
 
 @AndroidEntryPoint
@@ -36,7 +30,6 @@ class ShopFragment : Fragment() {
     private val binding by lazy { FragmentShopBinding.inflate(layoutInflater) }
     private val args by navArgs<ShopFragmentArgs>()
     private val viewModel: ShopViewModel by activityViewModels()
-    private val authViewModel: AuthViewModel by activityViewModels()
 
     private val navController by lazy { Navigation.findNavController(requireView()) }
 

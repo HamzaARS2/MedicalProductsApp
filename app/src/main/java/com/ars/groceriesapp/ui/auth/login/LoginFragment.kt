@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
-import com.ars.groceriesapp.R
+import com.ars.domain.utils.Validation
+import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentLoginBinding
+import com.ars.domain.utils.ValidationResponse
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -39,7 +40,7 @@ class LoginFragment : Fragment() {
         binding.loginLoginBtn.setOnClickListener {
             val email = binding.loginEmailLayout.editText!!.text.toString()
             val password = binding.loginPasswordLayout.editText!!.text.toString()
-            viewModel.login(email, password)
+            viewModel.login(email, password,::onValidation)
 
         }
 
@@ -63,7 +64,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), "Logged in Successfully!", Toast.LENGTH_SHORT).show()
 
                 val customer = state.result
-                navController.navigate(LoginFragmentDirections.toHomeGraph(customer))
+                navController.navigate(AuthGraphDirections.toHomeGraph(customer))
             }
             is Resource.Failure -> {
                 Snackbar.make(requireView(),"Error: ${state.e}",Snackbar.LENGTH_SHORT).show()
@@ -72,6 +73,13 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                 // TODO: Show loading view
             }
+        }
+    }
+
+    private fun onValidation(response:  Validation.LoginResponse) {
+        binding.run {
+            loginEmailLayout.error = response.emailMessage
+            loginPasswordLayout.error = response.passwordMessage
         }
     }
 

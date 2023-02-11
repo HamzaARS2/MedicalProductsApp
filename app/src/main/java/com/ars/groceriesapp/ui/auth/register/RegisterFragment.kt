@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui.auth
+package com.ars.groceriesapp.ui.auth.register
 
 import android.os.Bundle
 import android.util.Log
@@ -7,17 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.AuthGraphDirections
-import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collectLatest
 
 

@@ -1,22 +1,16 @@
 package com.ars.groceriesapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.ActivityMainBinding
-import com.ars.groceriesapp.ui.auth.AuthViewModel
 import com.ars.groceriesapp.utils.hideNavigationBars
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.migration.CustomInjection.inject
 import kotlinx.coroutines.flow.*
 
 
@@ -25,7 +19,6 @@ import kotlinx.coroutines.flow.*
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val viewModel: AuthViewModel by viewModels()
 
     private lateinit var navController: NavController
 
