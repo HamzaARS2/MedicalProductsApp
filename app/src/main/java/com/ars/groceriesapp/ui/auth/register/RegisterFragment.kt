@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Validation
 import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
 import com.google.android.material.snackbar.Snackbar
@@ -46,7 +47,7 @@ class RegisterFragment : Fragment() {
                 val email = registerEmailLayout.editText!!.text.toString()
                 val password = registerPasswordLayout.editText!!.text.toString()
 
-                viewModel.register(name, email, password)
+                viewModel.register(name, email, password, ::onValidation)
             }
 
             binding.registerSigninBtn.setOnClickListener {
@@ -80,6 +81,14 @@ class RegisterFragment : Fragment() {
         }
 
 
+    }
+
+    private fun onValidation(response: Validation.RegisterResponse) {
+        binding.run {
+            registerUsernameLayout.error = response.usernameMessage
+            registerEmailLayout.error = response.emailMessage
+            registerPasswordLayout.error = response.passwordMessage
+        }
     }
 
 }
