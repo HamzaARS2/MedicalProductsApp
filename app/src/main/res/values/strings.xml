@@ -28,4 +28,7 @@
     <string name="phone_small_description">Enter your phone number for smooth delivery updates. We\'ll keep you in the loop every step of the way!</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="MAR_CODE">+212</string>
+    <string name="verification_code_small_description">Please enter the 6-digit verification code sent to your mobile number:</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="sms_code">SMS Code</string>
 </resources>

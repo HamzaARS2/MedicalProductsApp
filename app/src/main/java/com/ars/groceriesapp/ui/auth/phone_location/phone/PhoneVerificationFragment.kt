@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.ars.domain.utils.Validation
 import com.ars.groceriesapp.databinding.FragmentPhoneVerificationBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
 
@@ -31,11 +32,18 @@ class PhoneVerificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.textView7.setOnClickListener {
-            val smsCode = binding.smsEdt.text.toString()
+        binding.phoneVerifyNextBtn.setOnClickListener {
+            val smsCode = binding.phoneVerifySmsCodeEdt.text.toString()
             val verificationId = viewModel.verificationId
-
+            val result = Validation.validateSmsCode(smsCode)
+            if (result.isValid)
             viewModel.linkPhoneWithCustomerAccount(verificationId,smsCode,::onSuccess,::onFailure)
+            else
+                Toast.makeText(requireContext(), "${result.message}", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.phoneVerifyResendCodeBtn.setOnClickListener {
+            TODO("Resend the code to the user")
         }
     }
 

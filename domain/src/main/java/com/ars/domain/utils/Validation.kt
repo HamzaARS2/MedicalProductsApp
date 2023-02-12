@@ -62,6 +62,15 @@ object Validation {
         else ValidationResponse(true, null)
     }
 
+    fun validateSmsCode(smsCode: String): ValidationResponse {
+        return if (smsCode.isBlank())
+            ValidationResponse(false, "Please enter the SMS Code you received")
+        else if (smsCode.length < 6)
+            ValidationResponse(false, "Please enter all SMS Code digits")
+        else ValidationResponse(true, null)
+    }
+
+
     fun loginValidation(email: String, password: String): LoginResponse {
         val emailValidation = validateEmail(email)
         val passwordValidation = validatePassword(password)
