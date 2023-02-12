@@ -56,13 +56,13 @@ class RegisterFragment : Fragment() {
             }
 
             lifecycleScope.launchWhenStarted {
-                viewModel.customerRegisterFlow.collectLatest { state ->
+                viewModel.customerRegisterFlow.collect { state ->
                     Log.d("customerRegisterFlow", "onViewCreated: State = $state")
                     when (state) {
                         is Resource.Success -> {
                             Toast.makeText(requireContext(), "Register Successfully!", Toast.LENGTH_SHORT).show()
                             val customer = state.result
-                            navController.navigate(AuthGraphDirections.toPhoneLocationGraph(customer))
+                            navController.navigate(AuthGraphDirections.actionGlobalPhoneLocationGraph(customer))
                         }
                         is Resource.Failure -> {
                             // TODO: Show an error to the user

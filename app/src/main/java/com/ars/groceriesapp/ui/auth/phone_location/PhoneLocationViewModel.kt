@@ -7,6 +7,7 @@ import com.ars.domain.model.Customer
 import com.ars.domain.usercase.customer.LinkPhoneUseCase
 import com.ars.domain.usercase.customer.UpdateCustomerUseCase
 import com.ars.domain.utils.Resource
+import com.google.firebase.auth.PhoneAuthProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,6 +22,7 @@ class PhoneLocationViewModel @Inject constructor(
 
     var customer = Customer()
     var verificationId = ""
+    var resendToken: PhoneAuthProvider.ForceResendingToken? = null
 
     private val _updatedCustomer: MutableSharedFlow<Resource<Customer>> = MutableSharedFlow()
     val updatedCustomer: SharedFlow<Resource<Customer>> get() = _updatedCustomer
@@ -37,4 +39,5 @@ class PhoneLocationViewModel @Inject constructor(
         val updatedCustomer = updateCustomerUseCase(customer)
         _updatedCustomer.emit(updatedCustomer)
     }
+
 }

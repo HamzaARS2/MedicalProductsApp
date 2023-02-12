@@ -29,9 +29,8 @@
             app:popUpTo="@id/auth_graph"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/toPhoneLocationGraph"
-            app:destination="@id/phone_location_graph"
-            app:launchSingleTop="false" />
+            android:id="@+id/action_global_phone_location_graph"
+            app:destination="@id/phone_location_graph" />
     </navigation>
 
     <navigation

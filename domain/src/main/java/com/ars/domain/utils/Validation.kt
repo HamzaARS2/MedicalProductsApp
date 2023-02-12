@@ -22,7 +22,7 @@ object Validation {
 
     private fun validateUsername(username: String): ValidationResponse {
         return when {
-            username.isEmpty() -> ValidationResponse(false, "Please enter your username")
+            username.isBlank() -> ValidationResponse(false, "Please enter your username")
             username.contains(" ") -> ValidationResponse(
                 false,
                 "Username must not contains white space"
@@ -36,7 +36,7 @@ object Validation {
     }
 
     private fun validatePassword(password: String): ValidationResponse {
-        return if (password.isEmpty())
+        return if (password.isBlank())
             ValidationResponse(false, "Please enter your password")
         else if (!isValidPasswordForm(password))
             ValidationResponse(false, "Password must be at least 4 chars and 1 digit")
@@ -46,12 +46,20 @@ object Validation {
     }
 
     private fun validateEmail(email: String): ValidationResponse {
-        return if (email.isEmpty())
+        return if (email.isBlank())
             ValidationResponse(false, "Please enter your email")
         else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
             ValidationResponse(false, "Please enter valid email")
         else
             ValidationResponse(true, null)
+    }
+
+    fun validatePhoneNumber(phoneNumber: String): ValidationResponse {
+        return if (phoneNumber.isBlank())
+            ValidationResponse(false, "Please enter your phone number")
+        else if (phoneNumber.length < 9)
+            ValidationResponse(false, "Please enter a valid phone number")
+        else ValidationResponse(true, null)
     }
 
     fun loginValidation(email: String, password: String): LoginResponse {

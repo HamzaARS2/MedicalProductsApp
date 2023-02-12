@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.ars.domain.utils.Validation
+import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentPhoneBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,10 +42,16 @@ class PhoneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(requireContext(), "customerDocId = ${viewModel.customer.docId}", Toast.LENGTH_SHORT).show()
 
-        binding.textView7.setOnClickListener {
-           verifyPhoneNumber(binding.phonenumberEdt.text.toString())
+        binding.phoneNextBtn.setOnClickListener {
+            val phoneNumber = binding.phoneNumberEdt.text.toString()
+            val response = Validation.validatePhoneNumber(phoneNumber)
+            if (response.isValid) {
+                verifyPhoneNumber(getString(R.string.MAR_CODE) + phoneNumber)
+                navController.navigate(PhoneFragmentDirections.toPhoneVerificationFrag())
+            }
+            else
+                Toast.makeText(requireContext(), "${response.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -52,19 +61,15 @@ class PhoneFragment : Fragment() {
             .setActivity(requireActivity())
             .setTimeout(60L, TimeUnit.SECONDS)
             .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-                override fun onVerificationCompleted(credentials: PhoneAuthCredential) {
-                }
-
-                override fun onVerificationFailed(e: FirebaseException) {
-                }
+                override fun onVerificationCompleted(credentials: PhoneAuthCredential) {}
+                override fun onVerificationFailed(e: FirebaseException) {}
 
                 override fun onCodeSent(
                     verificationId: String,
                     resendToken: PhoneAuthProvider.ForceResendingToken
                 ) {
                     viewModel.verificationId = verificationId
-                    navController.navigate(PhoneFragmentDirections.toPhoneVerificationFrag())
+                    viewModel.resendToken = resendToken
                 }
             })
             .build()
