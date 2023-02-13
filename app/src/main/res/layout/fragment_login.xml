@@ -170,7 +170,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_55sdp"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:text="Login"
+                android:text="@string/login"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="@+id/login_password_layout"
                 app:layout_constraintStart_toStartOf="@+id/login_password_layout"

@@ -15,6 +15,7 @@ import com.ars.groceriesapp.databinding.FragmentLocationBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 class LocationFragment : Fragment() {
@@ -31,13 +32,13 @@ class LocationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.textView7.setOnClickListener {
-            viewModel.customer.address = "Updated location"
+        binding.locationRequestPermissionBtn.setOnClickListener {
+            viewModel.customer.address = "Morocco, Tetouan"
             viewModel.updateCustomer()
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.updatedCustomer.collectLatest {response ->
+            viewModel.updatedCustomer.distinctUntilChanged().collect { response ->
                 when(response) {
                     is Resource.Success -> {
                         Toast.makeText(requireContext(), "Registered Successfully", Toast.LENGTH_SHORT).show()
@@ -47,14 +48,11 @@ class LocationFragment : Fragment() {
                     }
                     is Resource.Failure -> {
                         Snackbar.make(requireView(),response.e.message ?: "Something went wrong!", Snackbar.LENGTH_SHORT).show()
-
                     }
                     is Resource.Loading -> {
                         Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
                     }
-
                 }
-
             }
         }
     }

@@ -16,6 +16,7 @@ import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentLoginBinding
 import com.ars.domain.utils.ValidationResponse
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 class LoginFragment : Fragment() {
@@ -52,7 +53,7 @@ class LoginFragment : Fragment() {
 
 
         lifecycleScope.launchWhenStarted {
-            viewModel.customerLoginFlow.collect { state ->
+            viewModel.customerLoginFlow.distinctUntilChanged().collect { state ->
                 updateUi(state)
             }
         }

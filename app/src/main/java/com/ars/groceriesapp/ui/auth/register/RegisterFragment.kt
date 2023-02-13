@@ -16,6 +16,7 @@ import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 class RegisterFragment : Fragment() {
@@ -56,7 +57,7 @@ class RegisterFragment : Fragment() {
             }
 
             lifecycleScope.launchWhenStarted {
-                viewModel.customerRegisterFlow.collect { state ->
+                viewModel.customerRegisterFlow.distinctUntilChanged().collect { state ->
                     Log.d("customerRegisterFlow", "onViewCreated: State = $state")
                     when (state) {
                         is Resource.Success -> {
