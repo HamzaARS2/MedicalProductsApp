@@ -2,9 +2,6 @@ package com.ars.data.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.ars.data.repository.PreferencesHelper
-import com.ars.domain.repository.IPreferencesHelper
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

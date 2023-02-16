@@ -2,7 +2,6 @@ package com.ars.groceriesapp.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -11,8 +10,6 @@ import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.ActivityMainBinding
 import com.ars.groceriesapp.utils.hideNavigationBars
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.*
-
 
 
 @AndroidEntryPoint

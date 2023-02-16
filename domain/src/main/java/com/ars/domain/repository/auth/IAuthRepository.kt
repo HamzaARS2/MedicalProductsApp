@@ -1,6 +1,5 @@
 package com.ars.domain.repository.auth
 
-import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 

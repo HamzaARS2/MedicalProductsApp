@@ -4,6 +4,8 @@ import com.ars.domain.model.Customer
 import com.ars.domain.repository.customer.ICustomerRepository
 import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Validation
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RegisterCustomerUseCase @Inject constructor(
@@ -15,11 +17,11 @@ class RegisterCustomerUseCase @Inject constructor(
         email: String,
         password: String,
         onValidation: (response: Validation.RegisterResponse) -> Unit
-    ): Resource<Customer> {
+    ): Resource<Customer>? {
         val response = Validation.registerValidation(username, email, password)
         onValidation(response)
         if (!response.isValidUsername || !response.isValidEmail || !response.isValidPassword)
-            return Resource.Loading
+            return null
         return customerRepository.register(username, email, password)
     }
 }

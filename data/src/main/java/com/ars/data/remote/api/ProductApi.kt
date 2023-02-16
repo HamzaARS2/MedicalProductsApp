@@ -1,8 +1,6 @@
 package com.ars.data.remote.api
 
-import com.ars.data.model.OnSaleProductResponse
 import com.ars.data.model.ProductResponse
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 

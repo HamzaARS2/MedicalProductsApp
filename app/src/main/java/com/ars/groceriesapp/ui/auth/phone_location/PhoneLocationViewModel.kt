@@ -2,7 +2,6 @@ package com.ars.groceriesapp.ui.auth.phone_location
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ars.data.repository.auth.RegistrationRepository
 import com.ars.domain.model.Customer
 import com.ars.domain.usercase.customer.LinkPhoneUseCase
 import com.ars.domain.usercase.customer.UpdateCustomerUseCase

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
 import com.ars.domain.utils.Validation
 import com.ars.groceriesapp.databinding.FragmentPhoneVerificationBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
@@ -43,7 +42,7 @@ class PhoneVerificationFragment : Fragment() {
         }
 
         binding.phoneVerifyResendCodeBtn.setOnClickListener {
-            TODO("Resend the code to the user")
+            //TODO("Resend the code to the user")
         }
     }
 

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.ars.groceriesapp.R
 import com.ars.groceriesapp.StartingGraphDirections
 import com.ars.groceriesapp.databinding.FragmentGetStartedBinding
 

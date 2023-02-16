@@ -1,6 +1,7 @@
 package com.ars.groceriesapp.ui.auth.phone_location.phone
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.ars.domain.utils.Validation
-import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentPhoneBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
+import com.ars.groceriesapp.R
+
 
 
 const val TAG = "PhoneFragmentTag"
@@ -44,11 +45,11 @@ class PhoneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.phoneNextBtn.setOnClickListener {
-            val phoneNumber = binding.phoneNumberEdt.text.toString()
+            val phoneNumber = getString(R.string.MAR_CODE) + binding.phoneNumberEdt.text.toString()
             val response = Validation.validatePhoneNumber(phoneNumber)
             if (response.isValid) {
-                verifyPhoneNumber(getString(R.string.MAR_CODE) + phoneNumber)
-                navController.navigate(PhoneFragmentDirections.toPhoneVerificationFrag())
+                verifyPhoneNumber(phoneNumber)
+                navController.navigate(PhoneFragmentDirections.actionPhoneFragmentToPhoneVerificationFragment2())
             }
             else
                 Toast.makeText(requireContext(), "${response.message}", Toast.LENGTH_SHORT).show()
@@ -59,17 +60,24 @@ class PhoneFragment : Fragment() {
         val options = PhoneAuthOptions.newBuilder()
             .setPhoneNumber(phoneNumber)
             .setActivity(requireActivity())
+
             .setTimeout(60L, TimeUnit.SECONDS)
             .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credentials: PhoneAuthCredential) {}
-                override fun onVerificationFailed(e: FirebaseException) {}
+                override fun onVerificationFailed(e: FirebaseException) {
+                    Log.d("verifyPhoneNumber", "onVerificationFailed: ${e.message}")
+                    Toast.makeText(requireContext(), "${e.message}", Toast.LENGTH_SHORT).show()
+                }
 
                 override fun onCodeSent(
                     verificationId: String,
                     resendToken: PhoneAuthProvider.ForceResendingToken
                 ) {
+
                     viewModel.verificationId = verificationId
                     viewModel.resendToken = resendToken
+                    Toast.makeText(requireContext(), "id = ${viewModel.verificationId} and resendCode = ${viewModel.resendToken}", Toast.LENGTH_SHORT).show()
+
                 }
             })
             .build()

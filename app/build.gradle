@@ -12,7 +12,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.reddevx.groceriesapp"
+        applicationId "com.ars.groceriesapp"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -75,6 +75,16 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+    // Play Integrity API
+    implementation 'com.google.android.play:integrity:1.1.0'
+    implementation 'com.google.firebase:firebase-appcheck:16.1.1'
+    implementation 'com.google.firebase:firebase-appcheck-debug:16.1.1'
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
+
+
 
 
 

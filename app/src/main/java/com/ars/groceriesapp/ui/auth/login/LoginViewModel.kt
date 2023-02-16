@@ -6,7 +6,6 @@ import com.ars.domain.model.Customer
 import com.ars.domain.usercase.customer.LoginCustomerUseCase
 import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Validation
-import com.ars.domain.utils.ValidationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

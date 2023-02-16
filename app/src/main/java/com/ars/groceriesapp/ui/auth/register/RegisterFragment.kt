@@ -8,15 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Validation
 import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class RegisterFragment : Fragment() {
@@ -44,44 +53,57 @@ class RegisterFragment : Fragment() {
 
         binding.registerSignupBtn.setOnClickListener {
             binding.apply {
-                val name = registerUsernameLayout.editText!!.text.toString()
+                val username = registerUsernameLayout.editText!!.text.toString()
                 val email = registerEmailLayout.editText!!.text.toString()
                 val password = registerPasswordLayout.editText!!.text.toString()
 
-                viewModel.register(name, email, password, ::onValidation)
+                viewModel.register(username, email, password, ::onValidation)
             }
+        }
 
             binding.registerSigninBtn.setOnClickListener {
                 navController
                     .popBackStack()
             }
 
-            lifecycleScope.launchWhenStarted {
-                viewModel.customerRegisterFlow.distinctUntilChanged().collect { state ->
-                    Log.d("customerRegisterFlow", "onViewCreated: State = $state")
-                    when (state) {
-                        is Resource.Success -> {
-                            Toast.makeText(requireContext(), "Register Successfully!", Toast.LENGTH_SHORT).show()
-                            val customer = state.result
-                            navController.navigate(AuthGraphDirections.actionGlobalPhoneLocationGraph(customer))
-                        }
-                        is Resource.Failure -> {
-                            // TODO: Show an error to the user
-                            Snackbar.make(requireView(),state.e.message ?: "Something went wrong!",Snackbar.LENGTH_SHORT).show()
-                            Log.d("RegisterFragment", "onCreate Failure : ${state.e}")
-                        }
-                        else -> {
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
-                            Log.d("RegisterLoading", "onViewCreated: Register Loading")
-                            // TODO: Show loading view
-                        }
-                    }
-                }
-            }
 
+           viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                   viewModel.customerRegisterFlow.collectLatest { state ->
+                       updateUi(state)
+                   }
+           }
         }
 
 
+    private fun updateUi(state: Resource<Customer>?) {
+        when (state) {
+            is Resource.Success -> {
+                Toast.makeText(requireContext(), "Register Successfully!", Toast.LENGTH_SHORT).show()
+                val customer = state.result
+                Log.d("customerRegisterFlow", "onViewCreated: State = $customer")
+
+                navController.navigate(AuthGraphDirections.actionGlobalPhoneLocationGraph(customer))
+
+
+            }
+            is Resource.Failure -> {
+                // TODO: Show an error to the user
+                val exception = state.e
+                Snackbar.make(
+                    requireView(),
+                    exception.message ?: "Something went wrong!",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                Log.d("RegisterFragment", "onCreate Failure : ${state.e}")
+
+            }
+            is Resource.Loading -> {
+                Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                Log.d("RegisterLoading", "onViewCreated: Register Loading")
+                // TODO: Show loading view
+            }
+            else ->{}
+        }
     }
 
     private fun onValidation(response: Validation.RegisterResponse) {
@@ -91,5 +113,6 @@ class RegisterFragment : Fragment() {
             registerPasswordLayout.error = response.passwordMessage
         }
     }
+
 
 }

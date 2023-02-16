@@ -1,8 +1,8 @@
 package com.ars.domain.repository.customer
 
 import com.ars.domain.model.Customer
-import com.ars.domain.repository.ICRUDRepository
 import com.ars.domain.utils.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface ICustomerRepository {
 

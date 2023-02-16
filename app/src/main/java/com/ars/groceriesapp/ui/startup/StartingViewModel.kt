@@ -6,11 +6,9 @@ import com.ars.data.repository.auth.LoginRepository
 import com.ars.domain.model.Customer
 import com.ars.domain.usercase.AppLaunchUseCase
 import com.ars.domain.usercase.customer.GetCustomerUseCase
-import com.ars.domain.usercase.customer.LoginCustomerUseCase
 import com.ars.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

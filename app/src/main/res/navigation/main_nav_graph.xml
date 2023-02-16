@@ -92,12 +92,15 @@
             android:name="com.ars.groceriesapp.ui.auth.phone_location.phone.PhoneFragment"
             android:label="fragment_phone"
             tools:layout="@layout/fragment_phone">
-            <action
-                android:id="@+id/toPhoneVerificationFrag"
-                app:destination="@id/phoneVerificationFragment" />
+
             <argument
                 android:name="customer"
                 app:argType="com.ars.domain.model.Customer" />
+            <action
+                android:id="@+id/action_phoneFragment_to_phoneVerificationFragment2"
+                app:destination="@id/phoneVerificationFragment" />
+
+
         </fragment>
 
         <fragment

@@ -1,6 +1,7 @@
 package com.ars.groceriesapp.ui.auth.login
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,8 @@ import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Validation
 import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentLoginBinding
-import com.ars.domain.utils.ValidationResponse
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 
@@ -53,13 +54,15 @@ class LoginFragment : Fragment() {
 
 
         lifecycleScope.launchWhenStarted {
-            viewModel.customerLoginFlow.distinctUntilChanged().collect { state ->
+            viewModel.customerLoginFlow.collectLatest { state ->
                 updateUi(state)
             }
         }
     }
 
     private fun updateUi(state: Resource<Customer>?) {
+        Log.d("customerLoginFlow", "onViewCreated: State = $state")
+
         when (state) {
             is Resource.Success -> {
                 Toast.makeText(requireContext(), "Logged in Successfully!", Toast.LENGTH_SHORT).show()

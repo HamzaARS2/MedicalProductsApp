@@ -1,18 +1,15 @@
 package com.ars.data.repository.customer
 
-import android.annotation.SuppressLint
 import com.ars.data.remote.CustomerDataSource
-import com.ars.data.remote.api.CustomerApi
 import com.ars.data.repository.auth.LoginRepository
 import com.ars.data.repository.auth.RegistrationRepository
 import com.ars.domain.model.Customer
 import com.ars.domain.repository.customer.ICustomerRepository
 import com.ars.domain.utils.Resource
 import com.ars.domain.utils.toCustomer
-import com.google.firebase.auth.PhoneAuthProvider
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-import kotlin.math.log
 
 class CustomerRepositoryImpl @Inject constructor(
     private val customerDataSource: CustomerDataSource,
