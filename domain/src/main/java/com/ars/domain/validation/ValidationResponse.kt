@@ -1,4 +1,4 @@
-package com.ars.domain.utils
+package com.ars.domain.validation
 
 data class ValidationResponse(
     val isValid: Boolean,

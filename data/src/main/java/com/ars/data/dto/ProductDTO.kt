@@ -1,8 +1,8 @@
-package com.ars.data.model
+package com.ars.data.dto
 
 import java.math.BigDecimal
 
-data class ProductResponse(
+data class ProductDTO(
     val id:Int,
     val categoryId:Int,
     val name: String,

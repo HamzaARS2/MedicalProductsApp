@@ -1,14 +1,11 @@
 package com.ars.groceriesapp.ui.auth.register
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ars.domain.model.Customer
 import com.ars.domain.usercase.customer.RegisterCustomerUseCase
 import com.ars.domain.utils.Resource
-import com.ars.domain.utils.Validation
+import com.ars.domain.validation.Validation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,9 +16,9 @@ class RegisterViewModel @Inject constructor(
     private val registerCustomerUseCase: RegisterCustomerUseCase
 ) : ViewModel() {
 
-    private val _customerRegisterFlow: MutableStateFlow<Resource<Customer>?> =
-        MutableStateFlow(null)
-    val customerRegisterFlow: StateFlow<Resource<Customer>?> get() = _customerRegisterFlow.asStateFlow()
+    private val _customerRegisterFlow: MutableSharedFlow<Resource<Customer>?> =
+        MutableSharedFlow()
+    val customerRegisterFlow: SharedFlow<Resource<Customer>?> get() = _customerRegisterFlow
 
 
     fun register(
@@ -29,7 +26,7 @@ class RegisterViewModel @Inject constructor(
         onValidation: (response: Validation.RegisterResponse) -> Unit
     ) = viewModelScope.launch {
 
-        _customerRegisterFlow.value = Resource.Loading
+        _customerRegisterFlow.emit(Resource.Loading)
         val response = registerCustomerUseCase(username, email, password, onValidation)
         _customerRegisterFlow.emit(response)
 

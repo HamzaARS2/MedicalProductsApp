@@ -1,10 +1,10 @@
 package com.ars.data.extensions
 
-import com.ars.data.model.ProductResponse
-import com.ars.domain.model.Product
+import com.ars.data.dto.ProductDTO
+import com.ars.domain.model.ProductDetails
 
-fun ProductResponse.toProduct(): Product =
-    Product(
+fun ProductDTO.toProduct(): ProductDetails =
+    ProductDetails(
         id = id,
         categoryId = categoryId,
         name = name,

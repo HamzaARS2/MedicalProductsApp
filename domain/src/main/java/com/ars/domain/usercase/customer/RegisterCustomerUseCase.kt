@@ -3,9 +3,7 @@ package com.ars.domain.usercase.customer
 import com.ars.domain.model.Customer
 import com.ars.domain.repository.customer.ICustomerRepository
 import com.ars.domain.utils.Resource
-import com.ars.domain.utils.Validation
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.ars.domain.validation.Validation
 import javax.inject.Inject
 
 class RegisterCustomerUseCase @Inject constructor(

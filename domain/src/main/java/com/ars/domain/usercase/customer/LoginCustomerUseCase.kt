@@ -3,7 +3,7 @@ package com.ars.domain.usercase.customer
 import com.ars.domain.model.Customer
 import com.ars.domain.repository.customer.ICustomerRepository
 import com.ars.domain.utils.Resource
-import com.ars.domain.utils.Validation
+import com.ars.domain.validation.Validation
 import javax.inject.Inject
 
 class LoginCustomerUseCase @Inject constructor(

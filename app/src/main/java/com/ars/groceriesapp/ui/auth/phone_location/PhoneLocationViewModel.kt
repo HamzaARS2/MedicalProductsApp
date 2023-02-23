@@ -22,6 +22,7 @@ class PhoneLocationViewModel @Inject constructor(
     var customer = Customer()
     var verificationId = ""
     var resendToken: PhoneAuthProvider.ForceResendingToken? = null
+    var phoneNumber = ""
 
     private val _updatedCustomer: MutableSharedFlow<Resource<Customer>> = MutableSharedFlow()
     val updatedCustomer: SharedFlow<Resource<Customer>> get() = _updatedCustomer

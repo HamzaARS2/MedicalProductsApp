@@ -10,15 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.ars.domain.utils.Validation
+import com.ars.domain.validation.Validation
 import com.ars.groceriesapp.databinding.FragmentPhoneBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
 import com.ars.groceriesapp.R
-
+import com.ars.groceriesapp.PhoneVerifier
 
 
 const val TAG = "PhoneFragmentTag"
@@ -31,6 +30,11 @@ class PhoneFragment : Fragment() {
     private val args by navArgs<PhoneFragmentArgs>()
 
     private val navController by lazy { Navigation.findNavController(requireView()) }
+
+    private lateinit var phoneVerifier: PhoneVerifier
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,10 +49,10 @@ class PhoneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.phoneNextBtn.setOnClickListener {
-            val phoneNumber = getString(R.string.MAR_CODE) + binding.phoneNumberEdt.text.toString()
-            val response = Validation.validatePhoneNumber(phoneNumber)
+            viewModel.phoneNumber = getString(R.string.MAR_CODE) + binding.phoneNumberEdt.text.toString()
+            val response = Validation.validatePhoneNumber(viewModel.phoneNumber)
             if (response.isValid) {
-                verifyPhoneNumber(phoneNumber)
+                verifyPhoneNumber(viewModel.phoneNumber)
                 navController.navigate(PhoneFragmentDirections.actionPhoneFragmentToPhoneVerificationFragment2())
             }
             else
@@ -56,33 +60,29 @@ class PhoneFragment : Fragment() {
         }
     }
 
+    private val mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        override fun onVerificationCompleted(credentials: PhoneAuthCredential) {}
+        override fun onVerificationFailed(e: FirebaseException) {
+            Log.d("verifyPhoneNumber", "onVerificationFailed: ${e.message}")
+            Toast.makeText(requireContext(), "${e.message}", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onCodeSent(
+            verificationId: String,
+            resendToken: PhoneAuthProvider.ForceResendingToken
+        ) {
+
+            viewModel.verificationId = verificationId
+            viewModel.resendToken = resendToken
+            Toast.makeText(requireContext(), "id = ${viewModel.verificationId} and resendCode = ${viewModel.resendToken}", Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+
     private fun verifyPhoneNumber(phoneNumber: String) {
-        val options = PhoneAuthOptions.newBuilder()
-            .setPhoneNumber(phoneNumber)
-            .setActivity(requireActivity())
-
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(credentials: PhoneAuthCredential) {}
-                override fun onVerificationFailed(e: FirebaseException) {
-                    Log.d("verifyPhoneNumber", "onVerificationFailed: ${e.message}")
-                    Toast.makeText(requireContext(), "${e.message}", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onCodeSent(
-                    verificationId: String,
-                    resendToken: PhoneAuthProvider.ForceResendingToken
-                ) {
-
-                    viewModel.verificationId = verificationId
-                    viewModel.resendToken = resendToken
-                    Toast.makeText(requireContext(), "id = ${viewModel.verificationId} and resendCode = ${viewModel.resendToken}", Toast.LENGTH_SHORT).show()
-
-                }
-            })
-            .build()
-
-        PhoneAuthProvider.verifyPhoneNumber(options)
+        phoneVerifier = PhoneVerifier(phoneNumber,requireActivity(),mCallback)
+        phoneVerifier.verify()
     }
 
 }

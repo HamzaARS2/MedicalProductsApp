@@ -12,12 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
-import com.ars.domain.utils.Validation
+import com.ars.domain.validation.Validation
 import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 class LoginFragment : Fragment() {

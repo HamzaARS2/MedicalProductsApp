@@ -8,24 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
-import com.ars.domain.utils.Validation
+import com.ars.domain.validation.Validation
 import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentRegisterBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class RegisterFragment : Fragment() {

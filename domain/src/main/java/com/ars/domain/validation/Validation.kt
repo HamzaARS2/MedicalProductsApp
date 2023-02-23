@@ -1,4 +1,4 @@
-package com.ars.domain.utils
+package com.ars.domain.validation
 
 import android.util.Patterns
 
@@ -31,8 +31,6 @@ object Validation {
             username.length > 16 -> ValidationResponse(false, "Username must be less than 16 chars")
             else -> ValidationResponse(true, null)
         }
-
-
     }
 
     private fun validatePassword(password: String): ValidationResponse {

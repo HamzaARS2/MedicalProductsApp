@@ -252,6 +252,7 @@ class LocationFragment : Fragment() {
             val cityName = address.locality ?: "Unknown"
             "$countryName, $cityName"
         } catch (e: IOException) {
+            e.printStackTrace()
             return ""
         }
         

@@ -1,7 +1,8 @@
 package com.ars.domain.usercase
 
-import com.ars.domain.utils.Resource
 import com.ars.domain.model.Product
+import com.ars.domain.utils.Resource
+import com.ars.domain.model.ProductDetails
 import com.ars.domain.repository.product.IProductRepository
 import javax.inject.Inject
 
@@ -9,7 +10,7 @@ class ProductsUseCase @Inject constructor(
     private val productRepository: IProductRepository
 ) {
 
-    suspend fun getAllProducts(): Resource<List<Product>?> {
+    suspend fun getAllProducts(): Resource<List<ProductDetails>?> {
         return productRepository.retrieveAll()
     }
 

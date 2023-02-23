@@ -1,6 +1,7 @@
 package com.ars.data.di
 
 import com.ars.data.remote.ProductDataSource
+import com.ars.data.remote.api.CategoryApi
 import com.ars.data.remote.api.CustomerApi
 import com.ars.data.remote.api.ProductApi
 import dagger.Module
@@ -36,6 +37,11 @@ object NetworkModule {
     @Provides
     fun provideCustomerApi(retrofit: Retrofit): CustomerApi =
         retrofit.create(CustomerApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideCategoryApi(retrofit: Retrofit): CategoryApi =
+        retrofit.create(CategoryApi::class.java)
 
     @Provides
     fun provideProductDataSource(productApi: ProductApi) =
