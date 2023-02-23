@@ -15,16 +15,19 @@ import com.ars.groceriesapp.databinding.ShopHeaderItemBinding
 import com.ars.groceriesapp.databinding.ShopProductItemBinding
 import com.ars.groceriesapp.databinding.ShopSectionTitleItemBinding
 import com.ars.domain.model.Category
+import com.ars.domain.model.Customer
 import com.ars.domain.model.OnSaleProduct
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
+import com.ars.groceriesapp.databinding.ShopOffersImagesVpBinding
 import com.ars.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class ShopEpoxyController(
-    private val context: Context
+    private val context: Context,
+    private val customer: Customer?
 ) : EpoxyController() {
 
     private var exclusiveProductsResource: Resource<List<Product>?>? = null
@@ -34,13 +37,15 @@ class ShopEpoxyController(
 
 
     override fun buildModels() {
-        ShopHeader()
+        ShopHeader(customer)
             .id("shop_header")
             .addTo(this)
 
-        ShopSection("Exclusive Offer")
-            .id("shop_section_1")
+        ShopOfferImages()
+            .id("shop_offers")
             .addTo(this)
+
+
 
         loadExclusives()
 
@@ -56,6 +61,10 @@ class ShopEpoxyController(
 
     private fun loadExclusives() {
         val exclusiveModels = mutableListOf<ShopProduct>()
+
+        ShopSection("Exclusive Offer")
+            .id("shop_section_1")
+            .addTo(this)
 
         when (exclusiveProductsResource) {
             is Resource.Success -> {
@@ -133,19 +142,19 @@ class ShopEpoxyController(
             }
             else -> {
                  // Loading
-//                repeat(2) {
-//                    categoriesModels.add(
-//                        ShopCategory(null, ::onProductAddToCartClick).apply {
-//                            id(it)
-//                        }
-//                    )
-//                }
-//
-//                carousel {
-//                    id("popular_categories_carousel")
-//                    numViewsToShowOnScreen(1.5F)
-//                    models(categoriesModels)
-//                }
+                repeat(2) {
+                    categoriesModels.add(
+                        ShopCategory(null, ::onProductAddToCartClick).apply {
+                            id(it)
+                        }
+                    )
+                }
+
+                carousel {
+                    id("popular_categories_carousel")
+                    numViewsToShowOnScreen(1.5F)
+                    models(categoriesModels)
+                }
             }
         }
 
@@ -284,8 +293,20 @@ class ShopEpoxyController(
 
 }
 
-class ShopHeader : ViewBindingKotlinModel<ShopHeaderItemBinding>(R.layout.shop_header_item) {
+data class ShopHeader(
+    private val customer: Customer?
+) : ViewBindingKotlinModel<ShopHeaderItemBinding>(R.layout.shop_header_item) {
     override fun ShopHeaderItemBinding.bind() {
+        if (customer != null) {
+            shopHeaderLocation.text = customer.address
+        }
+
+    }
+}
+
+class ShopOfferImages: ViewBindingKotlinModel<ShopOffersImagesVpBinding>(R.layout.shop_offers_images_vp) {
+    override fun ShopOffersImagesVpBinding.bind() {
+
     }
 }
 
@@ -329,6 +350,8 @@ data class ShopCategory(
 ) : ViewBindingKotlinModel<PopularCategoryItemBinding>(R.layout.popular_category_item) {
     override fun PopularCategoryItemBinding.bind() {
         if (category != null) {
+            popularCategoryProgress.visibility = View.INVISIBLE
+            popularCategoryGroup.visibility = View.VISIBLE
             popularCategoryNameTv.text = category.name
             val color = category.color.substring(0,1) + "1A" + category.color.substring(1)
             itemBg.setBackgroundColor(Color.parseColor(color))
@@ -337,6 +360,9 @@ data class ShopCategory(
             root.setOnClickListener {
                 onCategoryClick(category.name)
             }
+        } else {
+            popularCategoryProgress.visibility = View.VISIBLE
+            popularCategoryGroup.visibility = View.INVISIBLE
         }
     }
 }

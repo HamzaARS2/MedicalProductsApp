@@ -53,7 +53,7 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller = ShopEpoxyController(requireContext())
+        controller = ShopEpoxyController(requireContext(),viewModel.customer)
         binding.epoxyRv.setController(controller)
         collectExclusiveProducts()
         collectOnSaleProducts()
