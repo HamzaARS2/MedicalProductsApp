@@ -1,11 +1,10 @@
-package com.ars.groceriesapp.ui.epoxy
+package com.ars.groceriesapp.ui.epoxy.controller
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.bumptech.glide.Glide
@@ -21,9 +20,6 @@ import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
 import com.ars.groceriesapp.databinding.ShopOffersImagesVpBinding
 import com.ars.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
 class ShopEpoxyController(
     private val context: Context,
@@ -41,11 +37,17 @@ class ShopEpoxyController(
             .id("shop_header")
             .addTo(this)
 
-        ShopOfferImages()
-            .id("shop_offers")
-            .addTo(this)
 
 
+        carousel {
+            id("offers_carousel")
+            numViewsToShowOnScreen(1F)
+            models(listOf(
+                ShopOfferImages().id(1),
+                ShopOfferImages().id(2),
+                ShopOfferImages().id(3)
+            ))
+        }
 
         loadExclusives()
 
@@ -154,6 +156,7 @@ class ShopEpoxyController(
                     id("popular_categories_carousel")
                     numViewsToShowOnScreen(1.5F)
                     models(categoriesModels)
+
                 }
             }
         }
@@ -269,16 +272,19 @@ class ShopEpoxyController(
     fun setOnSaleProducts(resource: Resource<List<OnSaleProduct>?>?) {
         this.onSaleProductsResource = resource
         requestModelBuild()
+
     }
 
     fun setMostRatedProducts(resource: Resource<List<Product>?>?) {
         this.mostRatedProductsResource = resource
         requestModelBuild()
+
     }
 
     fun setCategories(resource: Resource<List<Category>?>?) {
         this.categoriesResource = resource
         requestModelBuild()
+
     }
 
 

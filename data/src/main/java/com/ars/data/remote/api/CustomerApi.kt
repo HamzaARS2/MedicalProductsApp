@@ -5,18 +5,18 @@ import retrofit2.http.*
 
 interface CustomerApi {
 
-    @POST("/customer/create")
+    @POST("customer/create")
     suspend fun insertCustomer(@Body customer: Customer): Customer
 
-    @GET("/customer/doc/{docId}")
+    @GET("customer/doc/{docId}")
     suspend fun retrieveCustomer(@Path("docId") docId: String): Customer?
 
-    @GET("/customer/all")
+    @GET("customer/all")
     suspend fun retrieveAllCustomers(): List<Customer>
 
-    @PUT("/customer/update")
+    @PUT("customer/update")
     suspend fun updateCustomer(@Body customer: Customer): Customer
 
-    @DELETE("/customer/delete/{docId}")
+    @DELETE("customer/delete/{docId}")
     suspend fun deleteCustomer(@Path("docId") docId: String): String
 }

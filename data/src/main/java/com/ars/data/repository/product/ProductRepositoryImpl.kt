@@ -62,4 +62,14 @@ class ProductRepositoryImpl @Inject constructor(
             Resource.Failure(e)
         }
     }
+
+    override suspend fun searchProducts(query: String): Resource<List<Product>> {
+        return try {
+            val response = productDataSource.fetchProductsContaining(query)
+            Resource.Success(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
 }

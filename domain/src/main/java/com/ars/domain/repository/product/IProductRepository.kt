@@ -9,4 +9,5 @@ interface IProductRepository: IFetchRepository<ProductDetails, Int> {
     suspend fun retrieveExclusive(): Resource<List<Product>?>
     suspend fun retrieveOnSaleProducts(): Resource<List<OnSaleProduct>?>
     suspend fun retrieveMostRated(): Resource<List<Product>?>
+    suspend fun searchProducts(query: String): Resource<List<Product>>
 }

@@ -65,7 +65,7 @@
         </fragment>
         <fragment
             android:id="@+id/exploreFragment"
-            android:name="com.ars.groceriesapp.ui.home.ExploreFragment"
+            android:name="com.ars.groceriesapp.ui.home.explore.ExploreFragment"
             android:label="fragment_account"
             tools:layout="@layout/fragment_explore" />
 

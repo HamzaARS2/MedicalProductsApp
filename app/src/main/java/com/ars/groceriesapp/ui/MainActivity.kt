@@ -1,6 +1,7 @@
 package com.ars.groceriesapp.ui
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -9,6 +10,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.ActivityMainBinding
 import com.ars.groceriesapp.utils.hideNavigationBars
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -32,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         //navController.setGraph(R.navigation.startup_nav_graph)
         setBottomNavigationBarVisibility(navController)
         binding.bottomNavigationView.setupWithNavController(navController)
-
 
     }
 

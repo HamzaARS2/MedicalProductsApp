@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/_6sdp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="@dimen/_8sdp">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_logo" />
 
     <TextView
-        android:id="@+id/shop_header_location"
+        android:id="@+id/explore_header_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tetouan, Morocco"
         android:layout_marginTop="@dimen/_4sdp"
-        android:fontFamily="@font/gilroy_semi_bold"
-        android:textSize="@dimen/_12ssp"
         android:drawablePadding="@dimen/_4sdp"
+        android:fontFamily="@font/gilroy_extrabold"
+        android:text="Find Products"
+        android:textSize="@dimen/_16ssp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:drawableStartCompat="@drawable/location_marker" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/shop_header_search_edt"
+        android:id="@+id/explore_header_search_edt"
         android:layout_width="0dp"
         android:layout_height="@dimen/_43sdp"
         android:layout_marginHorizontal="@dimen/_18sdp"
@@ -40,7 +29,7 @@
         android:hint="@string/search_store"
         android:fontFamily="@font/gilroy_medium"
         android:inputType="text"
-        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_13sdp"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="@dimen/_8sdp"
         android:paddingHorizontal="@dimen/_14sdp"
@@ -48,8 +37,7 @@
         android:textColorHint="@color/subtitle_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shop_header_location" />
-
+        app:layout_constraintTop_toBottomOf="@+id/explore_header_location" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

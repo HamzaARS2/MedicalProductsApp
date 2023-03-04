@@ -15,6 +15,7 @@ class ProductDataSource @Inject constructor(
 
     suspend fun fetchProductDetailsById(id: Int): ProductDetails =
         productApi.retrieveProductDetails(id)
+
     suspend fun fetchAllProducts(): List<ProductDetails> =
         productApi.retrieveAllProducts()
 
@@ -23,9 +24,12 @@ class ProductDataSource @Inject constructor(
 
     suspend fun fetchOnSaleProducts(): List<OnSaleProduct> =
         productApi.retrieveOnSaleProducts().map { it.toOnSaleProduct() }
+
     suspend fun fetchMostRatedProducts(): List<Product> =
         productApi.retrieveMostRatedProducts()
 
+    suspend fun fetchProductsContaining(query: String): List<Product> =
+        productApi.searchProducts(query)
 
 
 }

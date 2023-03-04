@@ -67,7 +67,9 @@ class ShopViewModel @Inject constructor(
 
         // Categories
         _categoriesFlow.value = Resource.Loading
-        val categoriesResponse = async { categoryRepo.fetchCategories() }
+        val categoriesResponse = async {
+            categoryRepo.retrieveAll()
+        }
 
 
         _exclusivesFlow.emit(exclusivesResponse.await())
