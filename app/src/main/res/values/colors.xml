@@ -71,4 +71,6 @@
     <color name="gray_5">#F2F3F2</color>
 
     <color name="getstarted_subtitle_color">#B3FCFCFC</color>
+    <color name="outline_color">#F0F0F0</color>
+    <color name="divider_color">#E2E2E2</color>
 </resources>

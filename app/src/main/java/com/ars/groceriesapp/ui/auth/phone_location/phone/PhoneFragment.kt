@@ -53,7 +53,7 @@ class PhoneFragment : Fragment() {
             val response = Validation.validatePhoneNumber(viewModel.phoneNumber)
             if (response.isValid) {
                 verifyPhoneNumber(viewModel.phoneNumber)
-                navController.navigate(PhoneFragmentDirections.actionPhoneFragmentToPhoneVerificationFragment2())
+                navController.navigate(PhoneFragmentDirections.phoneFragToPhoneVerifyFrag())
             }
             else
                 Toast.makeText(requireContext(), "${response.message}", Toast.LENGTH_SHORT).show()

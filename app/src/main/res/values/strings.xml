@@ -35,4 +35,5 @@
     <string name="location_access_description">We need your location to provide you with accurate delivery estimates and to ensure that we can deliver to your area.</string>
     <string name="no_thanks">No Thanks</string>
     <string name="search_store">Search Store</string>
+    <string name="go_to_checkout">Go To Checkout</string>
 </resources>

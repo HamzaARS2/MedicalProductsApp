@@ -23,7 +23,7 @@
         tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.ars.groceriesapp.ui.home.CartFragment"
+        android:name="com.ars.groceriesapp.ui.home.cart.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment

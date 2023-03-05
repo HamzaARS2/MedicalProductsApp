@@ -6,6 +6,11 @@
         <item name="backgroundTint">#53B175</item>
     </style>
 
+    <style name="OutlinedIconButtonStyle" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="cornerRadius">@dimen/_12sdp</item>
+        <item name="strokeColor">@color/outline_color</item>
+    </style>
+
     <style name="AddProductBtnStyle">
         <item name="cornerRadius">@dimen/_20sdp</item>
         <item name="backgroundTint">#53B175</item>

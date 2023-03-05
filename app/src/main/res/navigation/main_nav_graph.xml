@@ -39,7 +39,7 @@
 
         <fragment
             android:id="@+id/cartFragment"
-            android:name="com.ars.groceriesapp.ui.home.CartFragment"
+            android:name="com.ars.groceriesapp.ui.home.cart.CartFragment"
             android:label="fragment_cart"
             tools:layout="@layout/fragment_cart" />
         <fragment
@@ -97,7 +97,7 @@
                 android:name="customer"
                 app:argType="com.ars.domain.model.Customer" />
             <action
-                android:id="@+id/action_phoneFragment_to_phoneVerificationFragment2"
+                android:id="@+id/phoneFragToPhoneVerifyFrag"
                 app:destination="@id/phoneVerificationFragment" />
 
 
