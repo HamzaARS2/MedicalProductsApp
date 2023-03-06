@@ -60,8 +60,13 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             )
         }
 
-
-
+        cartAdapter.differ.addListListener { _, currentList ->
+            binding.apply {
+                cartCheckoutBtn.isVisible = currentList.isNotEmpty()
+                cartTotalPriceTv.isVisible = currentList.isNotEmpty()
+                cartIsEmptyTv.isVisible = currentList.isEmpty()
+            }
+        }
     }
 
     private fun observeCartManager() {
@@ -110,8 +115,17 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartManager.decreaseQuantity(position)
     }
 
-    private fun onRemoveItemClick(position: Int) {
-        // TODO
+    private fun onRemoveItemClick(cartItem: CartItem, onFinish:() -> Unit) {
+        cartItem.id ?: return
+        viewModel.removeItemFromCart(cartItem.id!!,{
+            // Cart item deleted successfully!
+            viewModel.getCustomerCartItems(homeViewModel.getCustomer().docId)
+            onFinish()
+        }) {
+            // Deleting cart item failed!
+            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
+            onFinish()
+        }
     }
 
 

@@ -35,5 +35,19 @@ class CartRepository @Inject constructor(
         }
     }
 
+    override suspend fun deleteItemFromCart(
+        id: Int,
+        onSuccessDelete: () -> Unit,
+        onDeleteFailed: (e: Exception) -> Unit
+    ) {
+        try {
+            cartApi.deleteCustomerCartItem(id)
+            onSuccessDelete()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            onDeleteFailed(e)
+        }
+    }
+
 
 }

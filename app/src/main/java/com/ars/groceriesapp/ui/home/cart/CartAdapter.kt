@@ -2,7 +2,9 @@ package com.ars.groceriesapp.ui.home.cart
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +15,7 @@ import com.bumptech.glide.Glide
 class CartAdapter(
     val onIncreaseQuantityClick: (position: Int) -> Unit,
     val onDecreaseQuantityClick: (position: Int) -> Unit,
-    val onRemoveItemClick: (position: Int) -> Unit
+    val onRemoveItemClick: (cartItem: CartItem, onFinish:() -> Unit) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.CartItemHolder>() {
 
 
@@ -59,6 +61,14 @@ class CartAdapter(
                     onDecreaseQuantityClick(
                         bindingAdapterPosition
                     )
+                }
+                cartItemRemoveImb.setOnClickListener {
+                    cartItemRemoveImb.visibility = View.INVISIBLE
+                    cartItemRemoveBtnProgress.isVisible = true
+                    onRemoveItemClick(differ.currentList[bindingAdapterPosition]) {
+                        cartItemRemoveImb.isVisible = true
+                        cartItemRemoveBtnProgress.isVisible = false
+                    }
                 }
             }
         }
