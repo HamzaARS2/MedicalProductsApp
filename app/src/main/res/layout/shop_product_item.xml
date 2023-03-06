@@ -110,6 +110,19 @@
             app:constraint_referenced_ids="shop_product_image_imv,shop_product_name_tv,shop_product_kg_pcs_tv,shop_product_add_btn,shop_product_price_tv"
             tools:layout_editor_absoluteX="14dp"
             tools:layout_editor_absoluteY="15dp" />
+
+        <ProgressBar
+            android:id="@+id/shop_product_add_btn_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:indeterminateTint="@color/main_btn_color"
+            android:visibility="gone"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/shop_product_add_btn"
+            app:layout_constraintTop_toTopOf="@+id/shop_product_add_btn"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

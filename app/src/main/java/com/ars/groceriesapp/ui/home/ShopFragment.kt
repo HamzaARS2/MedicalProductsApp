@@ -15,6 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.ars.domain.model.CartItem
+import com.ars.domain.model.Category
+import com.ars.domain.model.Product
 import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.databinding.FragmentShopBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ShopEpoxyController
@@ -32,6 +35,7 @@ class ShopFragment : Fragment() {
     private val binding by lazy { FragmentShopBinding.inflate(layoutInflater) }
     private val args by navArgs<ShopFragmentArgs>()
     private val viewModel: ShopViewModel by activityViewModels()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
 
     private val navController by lazy { Navigation.findNavController(requireView()) }
 
@@ -44,14 +48,19 @@ class ShopFragment : Fragment() {
     ): View {
 
         args.customer?.let {
-            viewModel.customer = it
+            homeViewModel.setCustomer(it)
         }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller = ShopEpoxyController(requireContext(), viewModel.customer)
+        controller = ShopEpoxyController(
+            requireContext(),
+            homeViewModel.getCustomer(),
+            ::onCategoryClicked,
+            ::onAddToCartClick
+        )
         binding.epoxyRv.setController(controller)
         collectExclusiveProducts()
         collectCategories()
@@ -64,6 +73,26 @@ class ShopFragment : Fragment() {
         }
 
 
+    }
+
+    private fun onCategoryClicked(category: Category) {
+        Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onAddToCartClick(product: Product, onFinish: () -> Unit) {
+        viewModel.saveCartItem(CartItem(
+            customerId = homeViewModel.getCustomer().docId,
+            productId = product.id,
+            quantity = 1
+        ), {
+            // Cart item saved successfully!
+            onFinish()
+            Toast.makeText(requireContext(), "Added Successfully", Toast.LENGTH_SHORT).show()
+        }) {
+            // Saving cart item failed!
+            onFinish()
+            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 

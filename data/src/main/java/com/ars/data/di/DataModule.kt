@@ -30,6 +30,10 @@ abstract class DataModule {
     @Binds
     abstract fun bindPreferencesHelper(preferencesHelper: PreferencesHelper): IPreferencesHelper
 
+    @Singleton
+    @Binds
+    abstract fun bindCustomerCartRepository(cartRepository: CartRepository): ICartRepository
+
 //    @Binds
 //    abstract fun bindCustomerLoginState(customerLoginStateImpl: CustomerLoginStateImpl): ICustomerLoginState
 

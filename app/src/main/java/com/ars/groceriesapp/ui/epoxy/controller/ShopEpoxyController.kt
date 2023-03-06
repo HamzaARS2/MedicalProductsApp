@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.bumptech.glide.Glide
@@ -23,7 +24,9 @@ import com.ars.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
 
 class ShopEpoxyController(
     private val context: Context,
-    private val customer: Customer?
+    private val customer: Customer?,
+    private val onCategoryClicked: (category: Category) -> Unit,
+    private val onAddToCartClick: (product: Product, onFinish: () -> Unit) -> Unit
 ) : EpoxyController() {
 
     private var exclusiveProductsResource: Resource<List<Product>?>? = null
@@ -59,7 +62,6 @@ class ShopEpoxyController(
 
 
     }
-
 
     private fun loadExclusives() {
         val exclusiveModels = mutableListOf<ShopProduct>()
@@ -146,7 +148,7 @@ class ShopEpoxyController(
                  // Loading
                 repeat(2) {
                     categoriesModels.add(
-                        ShopCategory(null, ::onProductAddToCartClick).apply {
+                        ShopCategory(null, ::onCategoryClick).apply {
                             id(it)
                         }
                     )
@@ -289,12 +291,12 @@ class ShopEpoxyController(
 
 
 
-    private fun onCategoryClick(name: String) {
-        Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
+    private fun onCategoryClick(category: Category) {
+        onCategoryClicked(category)
     }
 
-    private fun onProductAddToCartClick(name: String) {
-        Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
+    private fun onProductAddToCartClick(product: Product, onFinish: () -> Unit) {
+        onAddToCartClick(product, onFinish)
     }
 
 }
@@ -326,7 +328,7 @@ data class ShopSection(
 
 data class ShopProduct(
     val product: Product?,
-    val onProductAddToCartClick: (name: String) -> Unit
+    val onProductAddToCartClick: (product: Product, onFinish: () -> Unit) -> Unit
 ) : ViewBindingKotlinModel<ShopProductItemBinding>(R.layout.shop_product_item) {
     @SuppressLint("SetTextI18n")
     override fun ShopProductItemBinding.bind() {
@@ -339,7 +341,12 @@ data class ShopProduct(
             shopProductPriceTv.text = "$${product.price}"
             Glide.with(shopProductImageImv).load(product.image).into(shopProductImageImv)
             shopProductAddBtn.setOnClickListener {
-                onProductAddToCartClick("${product.name}\nAdded to cart")
+                shopProductAddBtn.visibility = View.INVISIBLE
+                shopProductAddBtnProgress.isVisible = true
+                onProductAddToCartClick(product) {
+                    shopProductAddBtn.isVisible = true
+                    shopProductAddBtnProgress.isVisible = false
+                }
             }
         } else {
             shopProductProgress.visibility = View.VISIBLE
@@ -352,7 +359,7 @@ data class ShopProduct(
 
 data class ShopCategory(
     val category: Category?,
-    val onCategoryClick: (name: String) -> Unit
+    val onCategoryClick: (category: Category) -> Unit
 ) : ViewBindingKotlinModel<PopularCategoryItemBinding>(R.layout.popular_category_item) {
     override fun PopularCategoryItemBinding.bind() {
         if (category != null) {
@@ -364,7 +371,7 @@ data class ShopCategory(
 
             Glide.with(popularCategoryImageImv).load(category.image).into(popularCategoryImageImv)
             root.setOnClickListener {
-                onCategoryClick(category.name)
+                onCategoryClick(category)
             }
         } else {
             popularCategoryProgress.visibility = View.VISIBLE

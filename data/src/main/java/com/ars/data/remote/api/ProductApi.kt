@@ -1,7 +1,6 @@
 package com.ars.data.remote.api
 
-import com.ars.data.dto.OnSaleProductDTO
-import com.ars.domain.model.OnSaleProduct
+import com.ars.data.dto.OnSaleProductDto
 import com.ars.domain.model.Product
 import com.ars.domain.model.ProductDetails
 import retrofit2.http.GET
@@ -22,7 +21,7 @@ interface ProductApi {
     suspend fun retrieveMostRatedProducts(): List<Product>
 
     @GET("onsaleproducts")
-    suspend fun retrieveOnSaleProducts(): List<OnSaleProductDTO>
+    suspend fun retrieveOnSaleProducts(): List<OnSaleProductDto>
 
     @GET("products/search")
     suspend fun searchProducts(@Query("query") query: String): List<Product>

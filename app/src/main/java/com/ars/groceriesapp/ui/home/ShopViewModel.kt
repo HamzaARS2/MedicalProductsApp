@@ -6,10 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ars.data.repository.CategoryRepository
 import com.ars.data.repository.auth.LoginRepository
-import com.ars.domain.model.Category
-import com.ars.domain.model.Customer
-import com.ars.domain.model.OnSaleProduct
-import com.ars.domain.model.Product
+import com.ars.domain.model.*
+import com.ars.domain.usercase.cart.SaveCartItemUseCase
 import com.ars.domain.utils.Resource
 import com.ars.domain.usercase.product.GetExclusiveProductsUseCase
 import com.ars.domain.usercase.product.GetMostRatedProductUseCase
@@ -25,11 +23,10 @@ class ShopViewModel @Inject constructor(
     private val getExclusiveProductsUseCase: GetExclusiveProductsUseCase,
     private val getMostRatedProductUseCase: GetMostRatedProductUseCase,
     private val getOnSaleProductsUseCae: GetOnSaleProductsUseCae,
+    private val saveCartItemUseCase: SaveCartItemUseCase,
     private val loginRepo: LoginRepository,
     private val categoryRepo: CategoryRepository
 ) : ViewModel() {
-
-    var customer = Customer()
 
 
     private val _exclusivesFlow: MutableStateFlow<Resource<List<Product>?>?> =
@@ -77,6 +74,10 @@ class ShopViewModel @Inject constructor(
         _onSaleProductsFlow.emit(onSaleResponse.await())
         _mostRatedFlow.emit(mostRatedResponse.await())
 
+    }
+
+    fun saveCartItem(cartItem: CartItem, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) = viewModelScope.launch {
+        saveCartItemUseCase(cartItem, onSuccess, onFailure)
     }
 
 

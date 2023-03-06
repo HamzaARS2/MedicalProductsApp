@@ -1,6 +1,7 @@
 package com.ars.data.di
 
 import com.ars.data.remote.ProductDataSource
+import com.ars.data.remote.api.CartApi
 import com.ars.data.remote.api.CategoryApi
 import com.ars.data.remote.api.CustomerApi
 import com.ars.data.remote.api.ProductApi
@@ -42,6 +43,11 @@ object NetworkModule {
     @Provides
     fun provideCategoryApi(retrofit: Retrofit): CategoryApi =
         retrofit.create(CategoryApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideCartApi(retrofit: Retrofit): CartApi =
+        retrofit.create(CartApi::class.java)
 
     @Provides
     fun provideProductDataSource(productApi: ProductApi) =

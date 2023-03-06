@@ -7,9 +7,13 @@ import com.ars.domain.model.CartItem
 class CartManager(
     private val items: List<CartItem>
 ) {
-
+    private fun calculateTotalPrice(): String {
+        return "$" + items.sumOf { item ->
+            (item.product!!.price).times(item.quantity.toBigDecimal())
+        }
+    }
     private val _totalPrice: MutableLiveData<String> =
-        MutableLiveData("$" + items.sumOf { item -> item.product.price })
+        MutableLiveData(calculateTotalPrice())
     val totalPrice: LiveData<String> get() = _totalPrice
 
     private val _cartItem: MutableLiveData<Pair<CartItem, Int>> = MutableLiveData()
@@ -32,11 +36,7 @@ class CartManager(
         _totalPrice.value = calculateTotalPrice()
     }
 
-    private fun calculateTotalPrice(): String {
-        return "$" + items.sumOf { item ->
-            (item.product.price).times(item.quantity.toBigDecimal())
-        }
-    }
+
 
 
 }

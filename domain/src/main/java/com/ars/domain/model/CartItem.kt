@@ -4,10 +4,11 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class CartItem(
-    val id: Int,
+    val id: Int? = null,
     val customerId: String,
-    val product: Product,
+    val productId: Int,
     var quantity: Int,
-    val createdAt: LocalDateTime? = null,
-    val updatedAt: LocalDateTime? = null
+    val createdAt: String? = null,
+    val updatedAt: String? = null,
+    val product: Product? = null,
 )

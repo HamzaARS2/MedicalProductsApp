@@ -1,8 +1,6 @@
 package com.ars.data.remote
 
-import com.ars.data.dto.OnSaleProductDTO
-import com.ars.data.dto.toOnSaleProduct
-import com.ars.data.extensions.toProduct
+import com.ars.data.extensions.toOnSaleProduct
 import com.ars.data.remote.api.ProductApi
 import com.ars.domain.model.OnSaleProduct
 import com.ars.domain.model.Product
