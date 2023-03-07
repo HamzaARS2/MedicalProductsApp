@@ -32,7 +32,10 @@ abstract class DataModule {
 
     @Singleton
     @Binds
-    abstract fun bindCustomerCartRepository(cartRepository: CartRepository): ICartRepository
+    abstract fun bindCustomerCartRepository(cartRepositoryImpl: CartRepositoryImpl): ICartRepository
+    @Singleton
+    @Binds
+    abstract fun bindCustomerFavoritesRepository(favoritesRepositoryImpl: FavoritesRepositoryImpl): IFavoritesRepository
 
 //    @Binds
 //    abstract fun bindCustomerLoginState(customerLoginStateImpl: CustomerLoginStateImpl): ICustomerLoginState

@@ -8,6 +8,7 @@ import com.ars.data.repository.CategoryRepository
 import com.ars.data.repository.auth.LoginRepository
 import com.ars.domain.model.*
 import com.ars.domain.usercase.cart.SaveCartItemUseCase
+import com.ars.domain.usercase.favorite_product.SaveFavoriteProductUseCase
 import com.ars.domain.utils.Resource
 import com.ars.domain.usercase.product.GetExclusiveProductsUseCase
 import com.ars.domain.usercase.product.GetMostRatedProductUseCase
@@ -24,6 +25,7 @@ class ShopViewModel @Inject constructor(
     private val getMostRatedProductUseCase: GetMostRatedProductUseCase,
     private val getOnSaleProductsUseCae: GetOnSaleProductsUseCae,
     private val saveCartItemUseCase: SaveCartItemUseCase,
+    private val saveFavoriteProductUseCase: SaveFavoriteProductUseCase,
     private val loginRepo: LoginRepository,
     private val categoryRepo: CategoryRepository
 ) : ViewModel() {
@@ -40,7 +42,8 @@ class ShopViewModel @Inject constructor(
     private val _mostRatedFlow: MutableStateFlow<Resource<List<Product>?>?> = MutableStateFlow(null)
     val mostRatedFlow: StateFlow<Resource<List<Product>?>?> get() = _mostRatedFlow
 
-    private val _categoriesFlow: MutableStateFlow<Resource<List<Category>?>?> = MutableStateFlow(null)
+    private val _categoriesFlow: MutableStateFlow<Resource<List<Category>?>?> =
+        MutableStateFlow(null)
     val categoriesFlow: StateFlow<Resource<List<Category>?>?> get() = _categoriesFlow
 
     init {
@@ -76,10 +79,18 @@ class ShopViewModel @Inject constructor(
 
     }
 
-    fun saveCartItem(cartItem: CartItem, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) = viewModelScope.launch {
-        saveCartItemUseCase(cartItem, onSuccess, onFailure)
-    }
+    fun saveCartItem(cartItem: CartItem, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) =
+        viewModelScope.launch {
+            saveCartItemUseCase(cartItem, onSuccess, onFailure)
+        }
 
+    fun saveFavoriteProduct(
+        favoriteProduct: FavoriteProduct,
+        onSuccessSave: () -> Unit,
+        onSaveFailed: (e: Exception) -> Unit
+    ) = viewModelScope.launch {
+        saveFavoriteProductUseCase(favoriteProduct, onSuccessSave, onSaveFailed)
+    }
 
 
     fun logOut() = loginRepo.logout()

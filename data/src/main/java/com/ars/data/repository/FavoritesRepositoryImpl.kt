@@ -1,19 +1,17 @@
 package com.ars.data.repository
 
-import com.ars.data.remote.api.CartApi
-import com.ars.domain.model.CartItem
-import com.ars.domain.repository.ICartRepository
+import com.ars.data.remote.api.FavoriteProductApi
+import com.ars.domain.model.FavoriteProduct
+import com.ars.domain.repository.IFavoritesRepository
 import com.ars.domain.utils.Resource
 import javax.inject.Inject
 
-class CartRepository @Inject constructor(
-    private val cartApi: CartApi
-) : ICartRepository {
-
-
-    override suspend fun retrieveCustomerCartItems(id: String): Resource<List<CartItem>> {
+class FavoritesRepositoryImpl @Inject constructor(
+    private val favoriteProductApi: FavoriteProductApi
+) : IFavoritesRepository {
+    override suspend fun retrieveCustomerFavoriteProducts(id: String): Resource<List<FavoriteProduct>> {
         return try {
-            val response = cartApi.getCustomerCartItems(id)
+            val response = favoriteProductApi.getCustomerFavoriteProducts(id)
             Resource.Success(response)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -21,13 +19,13 @@ class CartRepository @Inject constructor(
         }
     }
 
-    override suspend fun saveCustomerCartItem(
-        cartItem: CartItem,
+    override suspend fun saveCustomerFavoriteProduct(
+        favoriteProduct: FavoriteProduct,
         onSuccess: () -> Unit,
         onFailure: (e: Exception) -> Unit
     ) {
         try {
-            cartApi.addItemToCustomerCart(cartItem)
+            favoriteProductApi.addProductToCustomerFavorites(favoriteProduct)
             onSuccess()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -35,19 +33,17 @@ class CartRepository @Inject constructor(
         }
     }
 
-    override suspend fun deleteItemFromCart(
+    override suspend fun deleteProductFromFavorites(
         id: Int,
         onSuccessDelete: () -> Unit,
         onDeleteFailed: (e: Exception) -> Unit
     ) {
         try {
-            cartApi.deleteCustomerCartItem(id)
+            favoriteProductApi.deleteCustomerFavoriteProduct(id)
             onSuccessDelete()
         } catch (e: Exception) {
             e.printStackTrace()
             onDeleteFailed(e)
         }
     }
-
-
 }

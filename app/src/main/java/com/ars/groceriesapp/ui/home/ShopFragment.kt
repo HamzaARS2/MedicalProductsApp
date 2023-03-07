@@ -17,6 +17,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.ars.domain.model.CartItem
 import com.ars.domain.model.Category
+import com.ars.domain.model.FavoriteProduct
 import com.ars.domain.model.Product
 import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.databinding.FragmentShopBinding
@@ -59,6 +60,7 @@ class ShopFragment : Fragment() {
             requireContext(),
             homeViewModel.getCustomer(),
             ::onCategoryClicked,
+            ::onProductClicked,
             ::onAddToCartClick
         )
         binding.epoxyRv.setController(controller)
@@ -77,6 +79,17 @@ class ShopFragment : Fragment() {
 
     private fun onCategoryClicked(category: Category) {
         Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onProductClicked(product: Product) {
+        viewModel.saveFavoriteProduct(FavoriteProduct(
+            customerId = homeViewModel.getCustomer().docId,
+            productId = product.id
+        ), {
+            Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
+        }) {
+            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onAddToCartClick(product: Product, onFinish: () -> Unit) {
@@ -100,7 +113,6 @@ class ShopFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.exclusivesFlow.collect { response ->
-                    Toast.makeText(requireContext(), "Response", Toast.LENGTH_SHORT).show()
                     controller.setExclusiveProducts(response)
 
                 }

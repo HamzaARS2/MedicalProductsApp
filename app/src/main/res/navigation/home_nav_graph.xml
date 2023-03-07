@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.ars.groceriesapp.ui.home.FavoriteFragment"
+        android:name="com.ars.groceriesapp.ui.home.favorites.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
 

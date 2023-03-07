@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/favorite_item_image_imv"
+        android:layout_width="@dimen/_65sdp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bananas_image" />
+
+
+    <TextView
+        android:id="@+id/favorite_item_title_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:fontFamily="@font/gilroy_semi_bold"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="@string/organic_bananas"
+        android:textColor="@color/title_color"
+        android:textSize="@dimen/_13ssp"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toTopOf="@+id/favorite_item_product_kg_pcs_tv"
+        app:layout_constraintEnd_toStartOf="@+id/favorite_item_price_tv"
+        app:layout_constraintStart_toEndOf="@+id/favorite_item_image_imv"
+        app:layout_constraintTop_toTopOf="@+id/favorite_item_image_imv"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/favorite_item_product_kg_pcs_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gilroy_medium"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="1kg, price"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textColor="@color/subtitle_color"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/favorite_item_image_imv"
+        app:layout_constraintStart_toStartOf="@+id/favorite_item_title_tv"
+        app:layout_constraintTop_toBottomOf="@+id/favorite_item_title_tv" />
+
+    <TextView
+        android:id="@+id/favorite_item_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gilroy_semi_bold"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="$4.99"
+        android:textColor="@color/title_color"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintTop_toTopOf="@+id/imageButton2" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_small_forward_arrow_round" />
+
+    <ProgressBar
+        android:id="@+id/favorite_item_delete_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/favorite_item_image_imv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/favorite_item_image_imv" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

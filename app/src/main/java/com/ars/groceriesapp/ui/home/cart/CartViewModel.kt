@@ -2,12 +2,10 @@ package com.ars.groceriesapp.ui.home.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ars.data.repository.CartRepository
 import com.ars.domain.model.CartItem
 import com.ars.domain.usercase.cart.DeleteCartItemUseCase
 import com.ars.domain.usercase.cart.GetCartItemsUseCase
 import com.ars.domain.utils.Resource
-import com.ars.groceriesapp.ui.home.HomeViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

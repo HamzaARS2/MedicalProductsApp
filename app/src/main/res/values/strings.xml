@@ -36,4 +36,6 @@
     <string name="no_thanks">No Thanks</string>
     <string name="search_store">Search Store</string>
     <string name="go_to_checkout">Go To Checkout</string>
+    <string name="favorites">Favorites</string>
+    <string name="add_all_to_cart">Add all to cart</string>
 </resources>

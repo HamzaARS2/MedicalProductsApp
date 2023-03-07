@@ -1,10 +1,7 @@
 package com.ars.data.di
 
 import com.ars.data.remote.ProductDataSource
-import com.ars.data.remote.api.CartApi
-import com.ars.data.remote.api.CategoryApi
-import com.ars.data.remote.api.CustomerApi
-import com.ars.data.remote.api.ProductApi
+import com.ars.data.remote.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,6 +45,10 @@ object NetworkModule {
     @Provides
     fun provideCartApi(retrofit: Retrofit): CartApi =
         retrofit.create(CartApi::class.java)
+    @Singleton
+    @Provides
+    fun provideFavoriteProductApi(retrofit: Retrofit): FavoriteProductApi =
+        retrofit.create(FavoriteProductApi::class.java)
 
     @Provides
     fun provideProductDataSource(productApi: ProductApi) =

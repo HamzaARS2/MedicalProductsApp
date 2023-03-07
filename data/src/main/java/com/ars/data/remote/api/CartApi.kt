@@ -15,6 +15,8 @@ interface CartApi {
     @POST("cart_items/create")
     suspend fun addItemToCustomerCart(@Body cartItem: CartItem): CartItem
 
+    @POST("cart_items/multiple/create")
+    suspend fun addMultipleItemsToCustomerCart(@Body cartItems: List<CartItem>)
     @DELETE("cart_items/delete/{id}")
     suspend fun deleteCustomerCartItem(@Path("id") id: Int)
 }

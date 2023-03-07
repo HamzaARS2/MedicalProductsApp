@@ -26,6 +26,7 @@ class ShopEpoxyController(
     private val context: Context,
     private val customer: Customer?,
     private val onCategoryClicked: (category: Category) -> Unit,
+    private val onProductClicked: (product: Product) -> Unit,
     private val onAddToCartClick: (product: Product, onFinish: () -> Unit) -> Unit
 ) : EpoxyController() {
 
@@ -77,7 +78,7 @@ class ShopEpoxyController(
 
                 response?.forEachIndexed { index, product ->
                     exclusiveModels.add(
-                        ShopProduct(product, ::onProductAddToCartClick).apply {
+                        ShopProduct(product, ::onProductClick, ::onProductAddToCartClick).apply {
                             id(index)
                         }
                     )
@@ -99,7 +100,7 @@ class ShopEpoxyController(
                 //Toast.makeText(context, "Loading exclusives", Toast.LENGTH_SHORT).show()
                 repeat(2) {
                     exclusiveModels.add(
-                        ShopProduct(null, ::onProductAddToCartClick).apply {
+                        ShopProduct(null,::onProductClick, ::onProductAddToCartClick).apply {
                             id(it)
                         }
                     )
@@ -182,7 +183,7 @@ class ShopEpoxyController(
                     (onSaleProductsResource as Resource.Success<List<OnSaleProduct>?>).result
                 response?.forEachIndexed { index, onSaleProduct ->
                     onSaleProductsModels.add(
-                        ShopProduct(onSaleProduct.product, ::onProductAddToCartClick).apply {
+                        ShopProduct(onSaleProduct.product, ::onProductClick, ::onProductAddToCartClick).apply {
                             id(index)
                         }
                     )
@@ -202,7 +203,7 @@ class ShopEpoxyController(
                 // Loading
                 repeat(2) {
                     onSaleProductsModels.add(
-                        ShopProduct(null, ::onProductAddToCartClick).apply {
+                        ShopProduct(null, ::onProductClick, ::onProductAddToCartClick).apply {
                             id(it)
                         }
                     )
@@ -229,7 +230,7 @@ class ShopEpoxyController(
                     (mostRatedProductsResource as Resource.Success<List<Product>?>).result
                 mostRatedProducts?.forEachIndexed { index, product ->
                     productsModels.add(
-                        ShopProduct(product, ::onProductAddToCartClick).apply {
+                        ShopProduct(product, ::onProductClick, ::onProductAddToCartClick).apply {
                             id(index)
                         }
                     )
@@ -249,7 +250,7 @@ class ShopEpoxyController(
                 // Loading
                 repeat(2) {
                     productsModels.add(
-                        ShopProduct(null, ::onProductAddToCartClick).apply {
+                        ShopProduct(null, ::onProductClick, ::onProductAddToCartClick).apply {
                             id(it)
                         }
                     )
@@ -299,6 +300,10 @@ class ShopEpoxyController(
         onAddToCartClick(product, onFinish)
     }
 
+    private fun onProductClick(product: Product) {
+        onProductClicked(product)
+    }
+
 }
 
 data class ShopHeader(
@@ -328,6 +333,7 @@ data class ShopSection(
 
 data class ShopProduct(
     val product: Product?,
+    val onProductClick: (product: Product) -> Unit,
     val onProductAddToCartClick: (product: Product, onFinish: () -> Unit) -> Unit
 ) : ViewBindingKotlinModel<ShopProductItemBinding>(R.layout.shop_product_item) {
     @SuppressLint("SetTextI18n")
@@ -347,6 +353,9 @@ data class ShopProduct(
                     shopProductAddBtn.isVisible = true
                     shopProductAddBtnProgress.isVisible = false
                 }
+            }
+            rootCv.setOnClickListener {
+                onProductClick(product)
             }
         } else {
             shopProductProgress.visibility = View.VISIBLE
