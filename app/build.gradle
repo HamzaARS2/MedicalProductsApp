@@ -84,9 +84,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-appcheck-debug:16.1.1'
     implementation 'com.google.firebase:firebase-appcheck-playintegrity'
 
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 
     implementation project(path: ':domain')

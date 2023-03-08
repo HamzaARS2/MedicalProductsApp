@@ -5,6 +5,13 @@
         <item name="cornerRadius">@dimen/_12sdp</item>
         <item name="backgroundTint">#53B175</item>
     </style>
+    <style name="LogOutButtonStyle" parent="ThemeOverlay.Material3.Button" >
+        <item name="android:fontFamily">@font/gilroy_semi_bold</item>
+        <item name="cornerRadius">@dimen/_12sdp</item>
+        <item name="icon">@drawable/ic_log_out</item>
+        <item name="iconTint">@color/main_btn_color</item>
+        <item name="backgroundTint">#0D000000</item>
+    </style>
 
     <style name="OutlinedIconButtonStyle" parent="Widget.Material3.Button.IconButton.Outlined">
         <item name="cornerRadius">@dimen/_12sdp</item>

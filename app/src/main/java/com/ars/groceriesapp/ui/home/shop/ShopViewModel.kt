@@ -1,4 +1,4 @@
-package com.ars.groceriesapp.ui.home
+package com.ars.groceriesapp.ui.home.shop
 
 
 import android.util.Log

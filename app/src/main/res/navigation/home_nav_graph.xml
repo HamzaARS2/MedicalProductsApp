@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/shopFragment"
-        android:name="com.ars.groceriesapp.ui.home.ShopFragment"
+        android:name="com.ars.groceriesapp.ui.home.shop.ShopFragment"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" />
 
@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_explore" />
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.ars.groceriesapp.ui.home.AccountFragment"
+        android:name="com.ars.groceriesapp.ui.home.account.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
     <fragment

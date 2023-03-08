@@ -38,4 +38,13 @@
     <string name="go_to_checkout">Go To Checkout</string>
     <string name="favorites">Favorites</string>
     <string name="add_all_to_cart">Add all to cart</string>
+    <string name="orders">Orders</string>
+    <string name="my_details">My Details</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="promo_card">Promo Card</string>
+    <string name="notifications">Notifications</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="log_out">Log Out</string>
 </resources>

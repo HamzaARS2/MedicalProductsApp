@@ -1,8 +1,6 @@
-package com.ars.groceriesapp.ui.home
+package com.ars.groceriesapp.ui.home.shop
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +20,7 @@ import com.ars.domain.model.Product
 import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.databinding.FragmentShopBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ShopEpoxyController
+import com.ars.groceriesapp.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -69,10 +68,7 @@ class ShopFragment : Fragment() {
         collectOnSaleProducts()
         collectMostRatedProducts()
 
-        binding.button.setOnClickListener {
-            viewModel.logOut()
-            navController.navigate(HomeGraphDirections.actionGlobalAuthGraph())
-        }
+
 
 
     }
