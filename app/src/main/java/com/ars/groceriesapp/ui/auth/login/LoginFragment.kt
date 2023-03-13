@@ -8,15 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
 import com.ars.domain.validation.Validation
 import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentLoginBinding
+import com.ars.groceriesapp.ui.startup.SplashFragmentDirections
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class LoginFragment : Fragment() {
@@ -41,7 +48,8 @@ class LoginFragment : Fragment() {
         binding.loginLoginBtn.setOnClickListener {
             val email = binding.loginEmailLayout.editText!!.text.toString()
             val password = binding.loginPasswordLayout.editText!!.text.toString()
-            viewModel.login(email, password,::onValidation)
+            val customerLiveData = viewModel.login(email, password, ::onValidation)
+            observeCustomer(customerLiveData)
 
         }
 
@@ -50,36 +58,57 @@ class LoginFragment : Fragment() {
                 .navigate(LoginFragmentDirections.toRegister())
         }
 
+        GlobalScope.launch {
+            val goal = flowOf("ssss", "dddd", "aaa").toList()
+            val assist = flowOf("aaa", "www", "edd").toList()
+            val list = (goal + assist).distinctBy { it.first() }
+            flowOf(list)
+            Log.d("GlobalScope", "onViewCreated: $list")
 
+        }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.customerLoginFlow.collectLatest { state ->
-                updateUi(state)
+    }
+
+    private fun observeCustomer(customerLiveData: LiveData<Response<Customer>>) {
+        customerLiveData.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Response.Success -> {
+
+                    val customer = response.data
+                    if (customer != null) {
+                        navController.navigate(
+                            AuthGraphDirections.toHomeGraph(
+                                customer
+                            )
+                        )
+                        Toast.makeText(
+                            requireContext(),
+                            "Logged in Successfully!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else Toast.makeText(
+                        requireContext(),
+                        "Something went wrong!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+                is Response.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error: ${response.error?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+                is Response.Loading -> {
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    private fun updateUi(state: Resource<Customer>?) {
-        Log.d("customerLoginFlow", "onViewCreated: State = $state")
-
-        when (state) {
-            is Resource.Success -> {
-                Toast.makeText(requireContext(), "Logged in Successfully!", Toast.LENGTH_SHORT).show()
-
-                val customer = state.result
-                navController.navigate(AuthGraphDirections.toHomeGraph(customer))
-            }
-            is Resource.Failure -> {
-                Snackbar.make(requireView(),"Error: ${state.e}",Snackbar.LENGTH_SHORT).show()
-            }
-            else -> {
-                Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
-                // TODO: Show loading view
-            }
-        }
-    }
-
-    private fun onValidation(response:  Validation.LoginResponse) {
+    private fun onValidation(response: Validation.LoginResponse) {
         binding.run {
             loginEmailLayout.error = response.emailMessage
             loginPasswordLayout.error = response.passwordMessage

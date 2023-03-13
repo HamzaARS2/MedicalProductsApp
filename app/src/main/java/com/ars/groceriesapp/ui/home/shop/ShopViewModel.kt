@@ -9,8 +9,10 @@ import com.ars.data.repository.auth.LoginRepository
 import com.ars.data.repository.product.ProductRepositoryImpl
 import com.ars.domain.model.*
 import com.ars.domain.repository.product.IProductRepository
+import com.ars.domain.usercase.GetShopItemsUseCase
 import com.ars.domain.usercase.cart.SaveCartItemUseCase
 import com.ars.domain.usercase.favorite_product.SaveFavoriteProductUseCase
+import com.ars.domain.usercase.product.GetShopProductsUseCase
 import com.ars.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -23,11 +25,10 @@ class ShopViewModel @Inject constructor(
     private val saveCartItemUseCase: SaveCartItemUseCase,
     private val saveFavoriteProductUseCase: SaveFavoriteProductUseCase,
     private val loginRepo: LoginRepository,
-    private val categoryRepo: CategoryRepository,
-    private val productRepository: IProductRepository
+    private val getShopItemsUseCase: GetShopItemsUseCase
 ) : ViewModel() {
 
-    val products = productRepository.fetchShopProducts().asLiveData()
+    val productsAndCategories = getShopItemsUseCase().asLiveData()
 
 
 

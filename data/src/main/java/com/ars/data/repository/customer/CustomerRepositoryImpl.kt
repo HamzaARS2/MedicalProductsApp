@@ -1,6 +1,7 @@
 package com.ars.data.repository.customer
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.ars.data.network.CustomerDataSource
 import com.ars.data.repository.LocalCustomerRepository
 import com.ars.data.repository.auth.LoginRepository
@@ -11,8 +12,7 @@ import com.ars.domain.repository.customer.ICustomerRepository
 import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Response
 import com.ars.domain.utils.toCustomer
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class CustomerRepositoryImpl @Inject constructor(
@@ -22,7 +22,7 @@ class CustomerRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val localCustomerRepo: LocalCustomerRepository
 ) : ICustomerRepository {
-    override val isLoggedIn: Pair<Boolean,String?>
+    override val isLoggedIn: Pair<Boolean, String?>
         get() = loginRepo.isLoggedIn
 
 
@@ -39,12 +39,13 @@ class CustomerRepositoryImpl @Inject constructor(
         } else authResource as Resource.Failure
     }
 
-    override suspend fun login(email: String, password: String): Resource<Customer> {
-        val loginResource = loginRepo.signInCustomer(email, password)
-        return if (loginResource is Resource.Success) {
-            val user = loginResource.result
-            Resource.Success(customerDataSource.retrieve(user.uid)!!)
-        } else loginResource as Resource.Failure
+    override fun login(email: String, password: String): Flow<Response<Customer>> = flow {
+        val loginResponse = loginRepo.signInCustomer(email, password).first()
+        val result =  if (loginResponse is Response.Success) {
+            val user = loginResponse.data
+            getCustomer(user!!.uid)
+        } else flowOf(Response.Error(Throwable("Something went wrong!")))
+        emitAll(result)
     }
 
     override suspend fun update(customer: Customer): Resource<Customer> {
@@ -54,11 +55,13 @@ class CustomerRepositoryImpl @Inject constructor(
     override fun getCustomer(id: String): Flow<Response<Customer>> =
         networkBoundResource(
             query = {
-                flowOf(localCustomerRepo.getLocalCustomer() ?: Customer())
+                val customer = localCustomerRepo.getLocalCustomer() ?: Customer()
+                flowOf(customer)
             },
 
             fetch = {
-                customerDataSource.retrieve(id)
+                val customer = customerDataSource.retrieve(id)
+                customer
             },
 
             saveFetchResult = {
@@ -67,15 +70,14 @@ class CustomerRepositoryImpl @Inject constructor(
         )
 
 
-
-
     override suspend fun linkPhoneWithExistingAccount(
         verificationId: String,
         smsCode: String,
         onSuccess: (phone: String) -> Unit,
         onFailure: (e: Exception) -> Unit
     ) {
-        val registrationResource = registrationRepo.linkPhoneWithExistingAccount(verificationId, smsCode)
+        val registrationResource =
+            registrationRepo.linkPhoneWithExistingAccount(verificationId, smsCode)
         if (registrationResource is Resource.Success) {
             val user = registrationResource.result
             if (user != null) onSuccess(user.phoneNumber ?: "")

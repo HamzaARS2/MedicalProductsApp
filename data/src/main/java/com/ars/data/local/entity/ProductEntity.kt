@@ -19,5 +19,6 @@ data class ProductEntity(
     val priceUnit: String,
     val rating: Float,
     val exclusive: Boolean,
+    @ColumnInfo(name = "product_discount_id")
     val productDiscountId: Int? = null,
 )

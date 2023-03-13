@@ -1,5 +1,7 @@
 package com.ars.data.util
 
+import com.ars.domain.model.Category
+import com.ars.domain.model.Product
 import com.ars.domain.utils.Response
 import kotlinx.coroutines.flow.*
 
@@ -34,6 +36,18 @@ inline fun <ResultType, RequestType> networkBoundResource(
     emitAll(response)
 }
 
+
+fun getCategoriesUseCase(): Flow<Response<List<Category>>>? = null
+fun getProductsUseCase(): Flow<Response<List<Product>>>? = null
+
+fun food() {
+    val combinedFlow = getProductsUseCase()!!.combine(getCategoriesUseCase()!!) { products, categories ->
+        Pair(products,categories)
+    }
+
+
+
+}
 
 
 

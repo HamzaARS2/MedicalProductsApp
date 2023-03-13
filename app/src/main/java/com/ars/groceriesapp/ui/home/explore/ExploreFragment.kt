@@ -20,6 +20,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.ars.domain.model.Category
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentExploreBinding
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +57,6 @@ class ExploreFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        collectCategories()
         collectSearchedProducts()
 
         binding.clearSearchBtn.setOnClickListener {
@@ -77,6 +77,19 @@ class ExploreFragment : Fragment() {
             }
 
         }
+
+        viewModel.categoriesLiveData.observe(viewLifecycleOwner) { response ->
+            categoriesAdapter.differ.submitList(response.data)
+            when(response) {
+                is Response.Success -> {
+                }
+                is Response.Error -> {
+                }
+                is Response.Loading -> {
+
+                }
+            }
+       }
 
 
 
@@ -137,18 +150,6 @@ class ExploreFragment : Fragment() {
         }
     }
 
-
-    private fun collectCategories() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.categoriesFlow.collectLatest { response ->
-                    if (response is Resource.Success) {
-                        categoriesAdapter.differ.submitList(response.result!!)
-                    }
-                }
-            }
-        }
-    }
 
     private fun onCategoryClick(category: Category) {
         Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()

@@ -14,8 +14,9 @@ interface ProductDao {
     @Query("SELECT * FROM product")
     fun retrieveProducts(): Flow<List<ProductEntity>>
 
+
     @Transaction
-    @Query("SELECT * FROM product")
+    @Query("SELECT * FROM product LEFT JOIN discount ON product.product_discount_id = discount.discount_id")
     fun getProductsWithDiscount(): Flow<List<DiscountAndProduct>>
 
 

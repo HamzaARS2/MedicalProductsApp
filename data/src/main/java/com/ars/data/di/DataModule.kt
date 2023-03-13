@@ -36,6 +36,9 @@ abstract class DataModule {
     @Singleton
     @Binds
     abstract fun bindCustomerFavoritesRepository(favoritesRepositoryImpl: FavoritesRepositoryImpl): IFavoritesRepository
+    @Singleton
+    @Binds
+    abstract fun bindCategoryRepository(categoryRepository: CategoryRepository): ICategoryRepository
 
 //    @Binds
 //    abstract fun bindCustomerLoginState(customerLoginStateImpl: CustomerLoginStateImpl): ICustomerLoginState

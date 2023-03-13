@@ -69,13 +69,8 @@ class CategoriesAdapter(
 
         fun bindCategory(category: Category) {
             binding.run {
-                val mainColor = category.color
-                val bgColor =
-                    mainColor.substring(0, 1) + "1A" + mainColor.substring(1, mainColor.length)
-                val strokeColor =
-                    mainColor.substring(0, 1) + "4A" + mainColor.substring(1, mainColor.length)
-                root.setCardBackgroundColor(Color.parseColor(bgColor))
-                root.setStrokeColor(ColorStateList.valueOf(Color.parseColor(strokeColor)))
+                root.setCardBackgroundColor(Color.parseColor(category.color))
+                root.setStrokeColor(ColorStateList.valueOf(Color.parseColor(category.strokeColor)))
                 Glide.with(exploreCategoryImageImv).load(category.image)
                     .into(exploreCategoryImageImv)
                 exploreCategoryNameTv.text = category.name

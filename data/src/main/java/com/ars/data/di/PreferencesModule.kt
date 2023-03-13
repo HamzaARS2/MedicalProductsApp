@@ -18,8 +18,7 @@ class PreferencesModule {
         const val APP_PREFERENCES = "GroceriesAppPreferences"
     }
 
-
-    @Singleton
+    
     @Provides
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences(Constants.APP_PREFERENCES,Context.MODE_PRIVATE)

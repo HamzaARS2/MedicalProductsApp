@@ -2,10 +2,12 @@ package com.ars.data.extensions
 
 import com.ars.data.dto.OnSaleProductDto
 import com.ars.data.dto.ProductDto
+import com.ars.data.local.entity.CategoryEntity
 import com.ars.data.local.entity.DiscountEntity
 import com.ars.data.local.entity.ProductEntity
 import com.ars.data.local.relation.DiscountAndProduct
 import com.ars.data.model.NetworkDiscount
+import com.ars.data.network.network_model.NetworkCategory
 import com.ars.data.network.network_model.NetworkProduct
 import com.ars.data.network.network_model.NetworkReview
 import com.ars.domain.model.*
@@ -66,7 +68,7 @@ fun NetworkProduct.asProductEntity() =
 fun ProductEntity.asProduct() =
     Product(
         id = productId,
-        categoryId =  categoryId,
+        categoryId = categoryId,
         name = name,
         price = BigDecimal(price.toDouble()).setScale(2, RoundingMode.HALF_UP),
         priceUnit = priceUnit,
@@ -80,7 +82,7 @@ fun DiscountAndProduct.asProduct(): Product {
     val discountEntity = this.discountEntity
     return Product(
         id = productEntity.productId,
-        categoryId =  productEntity.categoryId,
+        categoryId = productEntity.categoryId,
         name = productEntity.name,
         price = BigDecimal(productEntity.price.toDouble()).setScale(2, RoundingMode.HALF_UP),
         priceUnit = productEntity.priceUnit,
@@ -96,7 +98,7 @@ fun DiscountEntity.asDiscount() =
         id = discountId,
         percentage = discountPercentage,
         startDate = startDate,
-        endDate =  endDate
+        endDate = endDate
     )
 
 
@@ -106,10 +108,29 @@ fun NetworkDiscount.asDiscountEntity() =
         discountPercentage = discountPercentage,
         salePrice = salePrice,
         startDate = convertDateToLong(startDate),
-        endDate =  convertDateToLong(endDate)
+        endDate = convertDateToLong(endDate)
     )
 
+fun CategoryEntity.asCategory() =
+    Category(
+        id = id,
+        name = name,
+        image = image,
+        color = color.substring(0, 1) + "1A" + color.substring(1, color.length),
+        strokeColor = color.substring(0, 1) + "4A" + color.substring(1, color.length)
+    )
+
+fun NetworkCategory.asCategoryEntity() =
+    CategoryEntity(
+        id = id,
+        name = name,
+        image = image,
+        color = color
+    )
+
+
 fun convertDateToLong(stringDate: String): Long {
-    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(stringDate)?.time ?: Date().time
+    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(stringDate)?.time
+        ?: Date().time
 }
 

@@ -9,7 +9,7 @@ interface ICustomerRepository {
 
     val isLoggedIn: Pair<Boolean,String?>
     suspend fun register(username: String, email: String, password: String): Resource<Customer>
-    suspend fun login(email: String, password: String): Resource<Customer>
+    fun login(email: String, password: String): Flow<Response<Customer>>
 
     suspend fun update(customer: Customer): Resource<Customer>
 

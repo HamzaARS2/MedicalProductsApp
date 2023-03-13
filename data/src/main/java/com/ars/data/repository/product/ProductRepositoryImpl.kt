@@ -1,6 +1,5 @@
 package com.ars.data.repository.product
 
-import android.util.Log
 import androidx.room.withTransaction
 import com.ars.data.extensions.asDiscountEntity
 import com.ars.data.extensions.asProduct
@@ -14,10 +13,8 @@ import com.ars.domain.utils.Resource
 import com.ars.domain.model.ProductDetails
 import com.ars.domain.repository.product.IProductRepository
 import com.ars.domain.utils.Response
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
@@ -38,22 +35,13 @@ class ProductRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun retrieveAll(): Resource<List<ProductDetails>?> {
-        TODO("Not yet implemented")
-    }
-
-
     override fun fetchShopProducts(): Flow<Response<List<Product>?>> = networkBoundResource(
         query = {
-            val exclusivesAndMostRated = productDao.retrieveProducts().map { productsEntity ->
-                productsEntity.map { it.asProduct() }
-            }
-
-            val discountProducts =
-                productDao.getProductsWithDiscount().map { discountsAndProducts ->
-                    discountsAndProducts.map { it.asProduct() }
+                productDao.getProductsWithDiscount().map { discountAndProduct ->
+                    discountAndProduct.map {
+                        it.asProduct()
+                    }
                 }
-            merge(exclusivesAndMostRated, discountProducts)
         },
         fetch = {
             productDataSource.fetchShopProducts()

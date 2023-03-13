@@ -10,8 +10,9 @@ data class DiscountAndProduct(
     val productEntity: ProductEntity,
 
     @Relation(
-        parentColumn = "productDiscountId",
-        entityColumn = "discountId"
+        parentColumn = "product_discount_id",
+        entityColumn = "discount_id",
+        entity = DiscountEntity::class
     )
     val discountEntity: DiscountEntity?
 )

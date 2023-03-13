@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 class ShopFragment : Fragment() {
 
     companion object {
-        const val TAG = "ShopFragment"
+        const val TAG = "ShopFragmentTag"
     }
 
     private val binding by lazy { FragmentShopBinding.inflate(layoutInflater) }
@@ -66,8 +66,10 @@ class ShopFragment : Fragment() {
         )
         binding.epoxyRv.setController(controller)
 
-        viewModel.products.observe(viewLifecycleOwner) { response ->
-            controller.setData(response)
+
+        viewModel.productsAndCategories.observe(viewLifecycleOwner) { response ->
+            val (productsResponse, categoriesResponse) = response
+            controller.setData(productsResponse.data, categoriesResponse.data)
         }
 
 
@@ -100,48 +102,6 @@ class ShopFragment : Fragment() {
         }
     }
 
-
-//    private fun collectExclusiveProducts() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.exclusivesFlow.collect { response ->
-//                    controller.setExclusiveProducts(response)
-//
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun collectOnSaleProducts() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.onSaleProductsFlow.collect { response ->
-//                    controller.setOnSaleProducts(response)
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun collectMostRatedProducts() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.mostRatedFlow.collect { response ->
-//                    controller.setMostRatedProducts(response)
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun collectCategories() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.categoriesFlow.collect { response ->
-//                    Log.d("collectCategories", "collectCategories: $response")
-//                    controller.setCategories(response)
-//                }
-//            }
-//        }
-//    }
 
 
 }

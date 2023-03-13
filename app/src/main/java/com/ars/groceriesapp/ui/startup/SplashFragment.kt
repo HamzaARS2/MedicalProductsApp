@@ -3,6 +3,7 @@ package com.ars.groceriesapp.ui.startup
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +44,7 @@ class SplashFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             checkCustomerState()
         }, 2000)
-        
+
     }
 
 
@@ -52,8 +53,7 @@ class SplashFragment : Fragment() {
             navController.navigate(SplashFragmentDirections.toGetStartedFrag())
             viewModel.setIsFirstTimeLaunch(false)
         } else {
-            val isLoggedIn = viewModel.isLoggedIn().first
-            val id = viewModel.isLoggedIn().second
+            val (isLoggedIn, id) = viewModel.isLoggedIn()
             if (isLoggedIn) {
                 observeCustomer(id!!)
             } else {
@@ -77,6 +77,7 @@ class SplashFragment : Fragment() {
                     else navController.navigate(SplashFragmentDirections.toAuthGraph())
                 }
                 is Response.Error -> {
+                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                     val customer = response.data
                     if (customer != null)
                         navController.navigate(
@@ -87,7 +88,6 @@ class SplashFragment : Fragment() {
                     else navController.navigate(SplashFragmentDirections.toAuthGraph())
                 }
                 is Response.Loading -> {
-                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                 }
             }
         }
