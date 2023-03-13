@@ -1,18 +1,13 @@
 package com.ars.groceriesapp.ui.home.explore
 
-import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ars.data.repository.CategoryRepository
 import com.ars.domain.model.Category
 import com.ars.domain.model.Product
-import com.ars.domain.usercase.product.GetExclusiveProductsUseCase
 import com.ars.domain.usercase.product.SearchProductsUseCase
 import com.ars.domain.utils.Resource
-import com.ars.groceriesapp.ui.home.HomeViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

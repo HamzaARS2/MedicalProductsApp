@@ -2,6 +2,7 @@ package com.ars.domain.repository.customer
 
 import com.ars.domain.model.Customer
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
 import kotlinx.coroutines.flow.Flow
 
 interface ICustomerRepository {
@@ -12,7 +13,7 @@ interface ICustomerRepository {
 
     suspend fun update(customer: Customer): Resource<Customer>
 
-    suspend fun getCustomer(id: String): Resource<Customer>
+    fun getCustomer(id: String): Flow<Response<Customer>>
 
     suspend fun linkPhoneWithExistingAccount(
         verificationId: String, smsCode: String, onSuccess: (phone: String) -> Unit,

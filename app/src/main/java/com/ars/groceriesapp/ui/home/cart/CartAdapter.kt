@@ -82,7 +82,7 @@ class CartAdapter(
                 cartItemTitleTv.text = product.name
                 cartItemProductKgPcsTv.text = product.priceUnit
                 cartItemQuantityTv.text = cartItem.quantity.toString()
-                cartItemPriceTv.text = "$" + (product.price).times(cartItem.quantity.toBigDecimal())
+                cartItemPriceTv.text = "$" + product.price
             }
         }
 

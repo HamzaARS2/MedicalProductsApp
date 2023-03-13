@@ -3,11 +3,14 @@ package com.ars.groceriesapp.ui.epoxy.controller
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.epoxy.carousel
+import com.ars.data.local.entity.ProductEntity
 import com.bumptech.glide.Glide
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.PopularCategoryItemBinding
@@ -19,8 +22,10 @@ import com.ars.domain.model.Customer
 import com.ars.domain.model.OnSaleProduct
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
 import com.ars.groceriesapp.databinding.ShopOffersImagesVpBinding
 import com.ars.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
+import java.util.Date
 
 class ShopEpoxyController(
     private val context: Context,
@@ -28,15 +33,11 @@ class ShopEpoxyController(
     private val onCategoryClicked: (category: Category) -> Unit,
     private val onProductClicked: (product: Product) -> Unit,
     private val onAddToCartClick: (product: Product, onFinish: () -> Unit) -> Unit
-) : EpoxyController() {
-
-    private var exclusiveProductsResource: Resource<List<Product>?>? = null
-    private var onSaleProductsResource: Resource<List<OnSaleProduct>?>? = null
-    private var mostRatedProductsResource: Resource<List<Product>?>? = null
-    private var categoriesResource: Resource<List<Category>?>? = null
+) : TypedEpoxyController<Response<List<Product>?>>() {
 
 
-    override fun buildModels() {
+    override fun buildModels(response: Response<List<Product>?>) {
+
         ShopHeader(customer)
             .id("shop_header")
             .addTo(this)
@@ -46,265 +47,178 @@ class ShopEpoxyController(
         carousel {
             id("offers_carousel")
             numViewsToShowOnScreen(1F)
-            models(listOf(
-                ShopOfferImages().id(1),
-                ShopOfferImages().id(2),
-                ShopOfferImages().id(3)
-            ))
+            models(
+                listOf(
+                    ShopOfferImages().id(1),
+                    ShopOfferImages().id(2),
+                    ShopOfferImages().id(3)
+                )
+            )
         }
-
-        loadExclusives()
-
-        loadCategories()
-
-        loadOnSaleProducts()
-
-        loadMostRatedProducts()
-
-
-    }
-
-    private fun loadExclusives() {
-        val exclusiveModels = mutableListOf<ShopProduct>()
-
-        ShopSection("Exclusive Offer")
-            .id("shop_section_1")
-            .addTo(this)
-
-        when (exclusiveProductsResource) {
-            is Resource.Success -> {
-                val response =
-                    (exclusiveProductsResource as Resource.Success<List<Product>?>).result
-
-                response?.forEachIndexed { index, product ->
-                    exclusiveModels.add(
-                        ShopProduct(product, ::onProductClick, ::onProductAddToCartClick).apply {
-                            id(index)
-                        }
-                    )
-                }
-
-                carousel {
-                    id("exclusive_offer_carousel")
-                    numViewsToShowOnScreen(2F)
-                    models(exclusiveModels)
-
-                }
-
-            }
-            is Resource.Failure -> {
-                Toast.makeText(context, "Error exclusives", Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                // Loading
-                //Toast.makeText(context, "Loading exclusives", Toast.LENGTH_SHORT).show()
-                repeat(2) {
-                    exclusiveModels.add(
-                        ShopProduct(null,::onProductClick, ::onProductAddToCartClick).apply {
-                            id(it)
-                        }
-                    )
-                }
-
-                carousel {
-                    id("exclusive_offer_carousel")
-                    numViewsToShowOnScreen(2F)
-                    models(exclusiveModels)
-
-                }
-            }
+        val result = response.data
+        val exclusives = result?.filter { it.exclusive }
+        val onSale = result?.filter { it.discount != null }?.filter { product ->
+            (product.discount?.endDate ?: Date().time) > Date().time
         }
-    }
+        val mostRated = result?.filter { it.rating > 4 }
 
-    private fun loadCategories() {
-
-        val categoriesModels = mutableListOf<ShopCategory>()
-
-        ShopSection("Popular Categories")
-            .id("shop_section_2")
-            .addTo(this)
-
-        when (categoriesResource) {
-            is Resource.Success -> {
-                val response = (categoriesResource as Resource.Success<List<Category>?>).result
-                response?.forEachIndexed { index, category ->
-                    categoriesModels.add(
-                        ShopCategory(category, ::onCategoryClick).apply {
-                            id(index)
-                        }
-                    )
-                }
-
-                carousel {
-                    id("popular_categories_carousel")
-                    numViewsToShowOnScreen(1.5F)
-                    models(categoriesModels)
-                }
+        when (response) {
+            is Response.Success -> {
+                displayProducts(exclusives, onSale, mostRated)
 
             }
-            is Resource.Failure -> {
-                Toast.makeText(context, "Error categories", Toast.LENGTH_SHORT).show()
+            is Response.Error -> {
+                displayProducts(exclusives, onSale, mostRated)
             }
-            else -> {
-                 // Loading
-                repeat(2) {
-                    categoriesModels.add(
-                        ShopCategory(null, ::onCategoryClick).apply {
-                            id(it)
-                        }
-                    )
-                }
-
-                carousel {
-                    id("popular_categories_carousel")
-                    numViewsToShowOnScreen(1.5F)
-                    models(categoriesModels)
-
-                }
+            is Response.Loading -> {
+                displayProducts(exclusives, onSale, mostRated)
             }
         }
 
 
-
-
     }
 
-    private fun loadOnSaleProducts() {
-        val onSaleProductsModels = mutableListOf<ShopProduct>()
-
-        ShopSection("On Sale")
-            .id("shop_section_3")
-            .addTo(this)
-
-
-        when (onSaleProductsResource) {
-            is Resource.Success -> {
-                val response =
-                    (onSaleProductsResource as Resource.Success<List<OnSaleProduct>?>).result
-                response?.forEachIndexed { index, onSaleProduct ->
-                    onSaleProductsModels.add(
-                        ShopProduct(onSaleProduct.product, ::onProductClick, ::onProductAddToCartClick).apply {
-                            id(index)
-                        }
-                    )
-                }
-
-                carousel {
-                    id("on_sale_carousel")
-                    numViewsToShowOnScreen(2F)
-                    models(onSaleProductsModels)
-                }
-
-            }
-            is Resource.Failure -> {
-                Toast.makeText(context, "Error OnSales", Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                // Loading
-                repeat(2) {
-                    onSaleProductsModels.add(
-                        ShopProduct(null, ::onProductClick, ::onProductAddToCartClick).apply {
-                            id(it)
-                        }
-                    )
-                }
-
-                carousel {
-                    id("on_sale_carousel")
-                    numViewsToShowOnScreen(2F)
-                    models(onSaleProductsModels)
-                }
-            }
-        }
+    private fun displayProducts(exclusives: List<Product>?, onSale: List<Product>?, mostRated: List<Product>?) {
+        exclusives?.let { loadProducts(it, "Exclusive Offer", "exclusive_section") }
+        onSale?.let { loadProducts(it, "On Sale", "onSale_section") }
+        mostRated?.let { loadProducts(it, "Most Rated", "mostRated_section") }
     }
-
-    private fun loadMostRatedProducts() {
+    private fun loadProducts(products: List<Product>, productsType: String, sectionId: String) {
         val productsModels = mutableListOf<ShopProduct>()
-        ShopSection("Most Rated")
-            .id("shop_section_4")
+
+        ShopSection(productsType)
+            .id(sectionId)
             .addTo(this)
-        when (mostRatedProductsResource) {
-            is Resource.Success -> {
 
-                val mostRatedProducts =
-                    (mostRatedProductsResource as Resource.Success<List<Product>?>).result
-                mostRatedProducts?.forEachIndexed { index, product ->
-                    productsModels.add(
-                        ShopProduct(product, ::onProductClick, ::onProductAddToCartClick).apply {
-                            id(index)
-                        }
-                    )
+        products.forEachIndexed { index, product ->
+            productsModels.add(
+                ShopProduct(product, ::onProductClick, ::onProductAddToCartClick).apply {
+                    id(index)
                 }
-
-                carousel {
-                    id("most_rated_carousel")
-                    numViewsToShowOnScreen(2F)
-                    models(productsModels)
-                }
-            }
-            is Resource.Failure -> {
-
-            }
-
-            else -> {
-                // Loading
-                repeat(2) {
-                    productsModels.add(
-                        ShopProduct(null, ::onProductClick, ::onProductAddToCartClick).apply {
-                            id(it)
-                        }
-                    )
-                }
-                carousel {
-                    id("most_rated_carousel")
-                    numViewsToShowOnScreen(2F)
-                    models(productsModels)
-                }
-            }
-
+            )
         }
 
-
-    }
-
-    fun setExclusiveProducts(resource: Resource<List<Product>?>?) {
-        this.exclusiveProductsResource = resource
-        requestModelBuild()
-    }
-
-    fun setOnSaleProducts(resource: Resource<List<OnSaleProduct>?>?) {
-        this.onSaleProductsResource = resource
-        requestModelBuild()
-
-    }
-
-    fun setMostRatedProducts(resource: Resource<List<Product>?>?) {
-        this.mostRatedProductsResource = resource
-        requestModelBuild()
-
-    }
-
-    fun setCategories(resource: Resource<List<Category>?>?) {
-        this.categoriesResource = resource
-        requestModelBuild()
-
+        carousel {
+            id(productsType + "carousel")
+            numViewsToShowOnScreen(2F)
+            models(productsModels)
+        }
     }
 
 
-
-    private fun onCategoryClick(category: Category) {
-        onCategoryClicked(category)
-    }
-
-    private fun onProductAddToCartClick(product: Product, onFinish: () -> Unit) {
-        onAddToCartClick(product, onFinish)
-    }
-
-    private fun onProductClick(product: Product) {
-        onProductClicked(product)
-    }
 
 }
+
+
+//    }
+
+//    repeat(2) {
+//        exclusiveModels.add(
+//            ShopProduct(null,::onProductClick, ::onProductAddToCartClick).apply {
+//                id(it)
+//            }
+//        )
+//    }
+//
+//    carousel {
+//        id("exclusive_offer_carousel")
+//        numViewsToShowOnScreen(2F)
+//        models(exclusiveModels)
+//
+//    }
+
+//    private fun loadCategories() {
+//
+//        val categoriesModels = mutableListOf<ShopCategory>()
+//
+//        ShopSection("Popular Categories")
+//            .id("shop_section_2")
+//            .addTo(this)
+//
+//        when (categoriesResource) {
+//            is Resource.Success -> {
+//                val response = (categoriesResource as Resource.Success<List<Category>?>).result
+//                response?.forEachIndexed { index, category ->
+//                    categoriesModels.add(
+//                        ShopCategory(category, ::onCategoryClick).apply {
+//                            id(index)
+//                        }
+//                    )
+//                }
+//
+//                carousel {
+//                    id("popular_categories_carousel")
+//                    numViewsToShowOnScreen(1.5F)
+//                    models(categoriesModels)
+//                }
+//
+//            }
+//            is Resource.Failure -> {
+//                Toast.makeText(context, "Error categories", Toast.LENGTH_SHORT).show()
+//            }
+//            else -> {
+//                 // Loading
+//                repeat(2) {
+//                    categoriesModels.add(
+//                        ShopCategory(null, ::onCategoryClick).apply {
+//                            id(it)
+//                        }
+//                    )
+//                }
+//
+//                carousel {
+//                    id("popular_categories_carousel")
+//                    numViewsToShowOnScreen(1.5F)
+//                    models(categoriesModels)
+//
+//                }
+//            }
+//        }
+//
+//
+//
+//
+//    }
+
+
+//    fun setExclusiveProducts(resource: Resource<List<Product>?>?) {
+//        this.exclusiveProductsResource = resource
+//        requestModelBuild()
+//    }
+//
+//    fun setOnSaleProducts(resource: Resource<List<OnSaleProduct>?>?) {
+//        this.onSaleProductsResource = resource
+//        requestModelBuild()
+//
+//    }
+//
+//    fun setMostRatedProducts(resource: Resource<List<Product>?>?) {
+//        this.mostRatedProductsResource = resource
+//        requestModelBuild()
+//
+//    }
+//
+//    fun setCategories(resource: Resource<List<Category>?>?) {
+//        this.categoriesResource = resource
+//        requestModelBuild()
+//
+//    }
+//
+//
+//
+private fun onCategoryClick(category: Category) {
+//        onCategoryClicked(category)
+}
+
+private fun onProductAddToCartClick(product: Product, onFinish: () -> Unit) {
+//        onAddToCartClick(product, onFinish)
+}
+
+private fun onProductClick(product: Product) {
+//        onProductClicked(product)
+}
+
+//}
 
 data class ShopHeader(
     private val customer: Customer?
@@ -317,7 +231,8 @@ data class ShopHeader(
     }
 }
 
-class ShopOfferImages: ViewBindingKotlinModel<ShopOffersImagesVpBinding>(R.layout.shop_offers_images_vp) {
+class ShopOfferImages :
+    ViewBindingKotlinModel<ShopOffersImagesVpBinding>(R.layout.shop_offers_images_vp) {
     override fun ShopOffersImagesVpBinding.bind() {
 
     }
@@ -375,7 +290,7 @@ data class ShopCategory(
             popularCategoryProgress.visibility = View.INVISIBLE
             popularCategoryGroup.visibility = View.VISIBLE
             popularCategoryNameTv.text = category.name
-            val color = category.color.substring(0,1) + "1A" + category.color.substring(1)
+            val color = category.color.substring(0, 1) + "1A" + category.color.substring(1)
             itemBg.setBackgroundColor(Color.parseColor(color))
 
             Glide.with(popularCategoryImageImv).load(category.image).into(popularCategoryImageImv)

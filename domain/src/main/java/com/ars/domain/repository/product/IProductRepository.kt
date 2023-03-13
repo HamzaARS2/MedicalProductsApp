@@ -4,10 +4,10 @@ import com.ars.domain.model.OnSaleProduct
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
 import com.ars.domain.model.ProductDetails
+import com.ars.domain.utils.Response
+import kotlinx.coroutines.flow.Flow
 
 interface IProductRepository: IFetchRepository<ProductDetails, Int> {
-    suspend fun retrieveExclusive(): Resource<List<Product>?>
-    suspend fun retrieveOnSaleProducts(): Resource<List<OnSaleProduct>?>
-    suspend fun retrieveMostRated(): Resource<List<Product>?>
+    fun fetchShopProducts(): Flow<Response<List<Product>?>>
     suspend fun searchProducts(query: String): Resource<List<Product>>
 }

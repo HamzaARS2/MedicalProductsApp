@@ -47,4 +47,11 @@
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="log_out">Log Out</string>
+    <string name="product_details">Product Details</string>
+    <string name="small_description">Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healthful and varied dietApples are nutritious.</string>
+    <string name="order_now">Order Now</string>
+    <string name="review_sample">First time when I got this product, I didnt expect that much from it, I am buying this product every week. I really recommend it</string>
+    <string name="reviews">Reviews</string>
+    <string name="similar_products">Similar Products</string>
+    <string name="description">Description</string>
 </resources>

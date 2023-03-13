@@ -1,6 +1,6 @@
 package com.ars.data.repository
 
-import com.ars.data.remote.api.CartApi
+import com.ars.data.network.api.CartApi
 import com.ars.domain.model.CartItem
 import com.ars.domain.repository.ICartRepository
 import com.ars.domain.utils.Resource

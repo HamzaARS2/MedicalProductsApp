@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_16sdp">
+
+    <TextView
+        android:id="@+id/product_details_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gilroy_extrabold"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="Naturel Red Apples"
+        android:textColor="@color/title_color"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintEnd_toStartOf="@+id/product_details_favorite_cb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/product_details_favorite_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/product_details_name_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:button="@drawable/heart_toggle_selector"
+        android:checked="false"
+        app:buttonTint="@color/subtitle_color"/>
+
+    <TextView
+        android:id="@+id/product_details_unit_price_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:fontFamily="@font/gilroy_medium"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="1kg, price"
+        android:textColor="@color/subtitle_color"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/product_details_name_tv" />
+
+    <Button
+        android:id="@+id/product_details_decrease_btn"
+        style="@style/OutlinedIconButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_remove_round"
+        app:iconTint="#B3B3B3"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:layout_constraintStart_toStartOf="@+id/product_details_unit_price_tv"
+        app:layout_constraintTop_toBottomOf="@+id/product_details_unit_price_tv"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/product_details_quantity_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gilroy_semi_bold"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:text="1"
+        android:textColor="@color/title_color"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/product_details_decrease_btn"
+        app:layout_constraintStart_toEndOf="@+id/product_details_decrease_btn"
+        app:layout_constraintTop_toTopOf="@+id/product_details_decrease_btn" />
+
+    <Button
+        android:id="@+id/product_details_increase_btn"
+        style="@style/OutlinedIconButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_add_round"
+        app:iconTint="@color/main_btn_color"
+        app:layout_constraintBottom_toBottomOf="@+id/product_details_decrease_btn"
+        app:layout_constraintStart_toEndOf="@+id/product_details_quantity_tv"
+        app:layout_constraintTop_toTopOf="@+id/product_details_decrease_btn"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <TextView
+        android:id="@+id/product_details_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gilroy_extrabold"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="$4.99"
+        android:textColor="@color/title_color"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/product_details_increase_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/product_details_increase_btn"
+        app:layout_constraintTop_toTopOf="@+id/product_details_increase_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

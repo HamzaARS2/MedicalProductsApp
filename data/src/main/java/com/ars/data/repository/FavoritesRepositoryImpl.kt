@@ -1,6 +1,6 @@
 package com.ars.data.repository
 
-import com.ars.data.remote.api.FavoriteProductApi
+import com.ars.data.network.api.FavoriteProductApi
 import com.ars.domain.model.FavoriteProduct
 import com.ars.domain.repository.IFavoritesRepository
 import com.ars.domain.utils.Resource
@@ -44,6 +44,21 @@ class FavoritesRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
             onDeleteFailed(e)
+        }
+    }
+
+    override suspend fun deleteProductFromFavorites(
+        customerId: String,
+        productId: Int,
+        onSuccess: () -> Unit,
+        onFailure: (e: Exception) -> Unit
+    ) {
+        try {
+            favoriteProductApi.deleteCustomerFavoriteProduct(customerId, productId)
+            onSuccess()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            onFailure(e)
         }
     }
 }

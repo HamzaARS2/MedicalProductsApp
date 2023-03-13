@@ -1,6 +1,6 @@
 package com.ars.data.repository
 
-import com.ars.data.remote.api.CategoryApi
+import com.ars.data.network.api.CategoryApi
 import com.ars.domain.model.Category
 import com.ars.domain.repository.product.IFetchRepository
 import com.ars.domain.utils.Resource

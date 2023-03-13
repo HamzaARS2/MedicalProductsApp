@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@drawable/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_16sdp"
+        android:paddingVertical="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/product_details_reviews_info_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_semi_bold"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@string/reviews"
+            android:textColor="@color/title_color"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/product_details_reviews_forward_down_cb"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/product_details_reviews_forward_down_cb" />
+
+        <RatingBar
+            android:id="@+id/review_item_rating_rb"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:progressTint="#FF9100"
+            android:rating="4.5"
+            android:stepSize="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/product_details_reviews_info_title_tv"
+            app:layout_constraintEnd_toStartOf="@+id/product_details_reviews_forward_down_cb"
+            app:layout_constraintHorizontal_bias="0.97"
+            app:layout_constraintStart_toEndOf="@+id/product_details_reviews_info_title_tv"
+            app:layout_constraintTop_toTopOf="@+id/product_details_reviews_info_title_tv" />
+
+        <CheckBox
+            android:id="@+id/product_details_reviews_forward_down_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/arrow_toggle_selector"
+            android:checked="false"
+            app:buttonTint="@color/title_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_details_reviews_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_details_reviews_info_title_tv"
+            tools:itemCount="3"
+            tools:listitem="@layout/review_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

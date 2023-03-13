@@ -11,12 +11,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.ars.domain.model.CartItem
 import com.ars.domain.model.Category
 import com.ars.domain.model.FavoriteProduct
 import com.ars.domain.model.Product
+import com.ars.domain.utils.Response
 import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.databinding.FragmentShopBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ShopEpoxyController
@@ -37,9 +39,8 @@ class ShopFragment : Fragment() {
     private val viewModel: ShopViewModel by activityViewModels()
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
-    private val navController by lazy { Navigation.findNavController(requireView()) }
-
     private lateinit var controller: ShopEpoxyController
+    private lateinit var navController: NavController
 
 
     override fun onCreateView(
@@ -55,6 +56,7 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
         controller = ShopEpoxyController(
             requireContext(),
             homeViewModel.getCustomer(),
@@ -63,12 +65,10 @@ class ShopFragment : Fragment() {
             ::onAddToCartClick
         )
         binding.epoxyRv.setController(controller)
-        collectExclusiveProducts()
-        collectCategories()
-        collectOnSaleProducts()
-        collectMostRatedProducts()
 
-
+        viewModel.products.observe(viewLifecycleOwner) { response ->
+            controller.setData(response)
+        }
 
 
     }
@@ -78,14 +78,10 @@ class ShopFragment : Fragment() {
     }
 
     private fun onProductClicked(product: Product) {
-        viewModel.saveFavoriteProduct(FavoriteProduct(
-            customerId = homeViewModel.getCustomer().docId,
-            productId = product.id
-        ), {
-            Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
-        }) {
-            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
-        }
+        navController.navigate(
+            ShopFragmentDirections
+                .shopFragToProductDetailsFrag(product)
+        )
     }
 
     private fun onAddToCartClick(product: Product, onFinish: () -> Unit) {
@@ -105,47 +101,47 @@ class ShopFragment : Fragment() {
     }
 
 
-    private fun collectExclusiveProducts() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.exclusivesFlow.collect { response ->
-                    controller.setExclusiveProducts(response)
-
-                }
-            }
-        }
-    }
-
-    private fun collectOnSaleProducts() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.onSaleProductsFlow.collect { response ->
-                    controller.setOnSaleProducts(response)
-                }
-            }
-        }
-    }
-
-    private fun collectMostRatedProducts() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.mostRatedFlow.collect { response ->
-                    controller.setMostRatedProducts(response)
-                }
-            }
-        }
-    }
-
-    private fun collectCategories() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.categoriesFlow.collect { response ->
-                    Log.d("collectCategories", "collectCategories: $response")
-                    controller.setCategories(response)
-                }
-            }
-        }
-    }
+//    private fun collectExclusiveProducts() {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.exclusivesFlow.collect { response ->
+//                    controller.setExclusiveProducts(response)
+//
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun collectOnSaleProducts() {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.onSaleProductsFlow.collect { response ->
+//                    controller.setOnSaleProducts(response)
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun collectMostRatedProducts() {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.mostRatedFlow.collect { response ->
+//                    controller.setMostRatedProducts(response)
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun collectCategories() {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.categoriesFlow.collect { response ->
+//                    Log.d("collectCategories", "collectCategories: $response")
+//                    controller.setCategories(response)
+//                }
+//            }
+//        }
+//    }
 
 
 }

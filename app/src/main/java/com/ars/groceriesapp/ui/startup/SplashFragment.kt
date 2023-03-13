@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
 import com.ars.groceriesapp.databinding.FragmentSplashBinding
 import kotlinx.coroutines.flow.collectLatest
 
@@ -42,49 +43,53 @@ class SplashFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             checkCustomerState()
         }, 2000)
-
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.customerFlow.collectLatest { response ->
-                when(response) {
-                    is Resource.Success -> {
-                        navController.navigate(
-                            SplashFragmentDirections.actionGlobalHomeGraph(
-                                response.result
-                            )
-                        )
-                        Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()
-
-                    }
-                    is Resource.Failure -> {
-                        Toast.makeText(requireContext(), response.e.message, Toast.LENGTH_SHORT).show()
-                        navController.navigate(SplashFragmentDirections.toGetStartedFrag())
-                    }
-                    is Resource.Loading -> Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
-                    else  -> {}
-                }
-            }
-        }
-
-
-
+        
     }
-
 
 
     private fun checkCustomerState() {
         if (viewModel.isFirstTimeLaunch()) {
-                navController.navigate(SplashFragmentDirections.toGetStartedFrag())
-                viewModel.setIsFirstTimeLaunch(false)
+            navController.navigate(SplashFragmentDirections.toGetStartedFrag())
+            viewModel.setIsFirstTimeLaunch(false)
         } else {
             val isLoggedIn = viewModel.isLoggedIn().first
             val id = viewModel.isLoggedIn().second
             if (isLoggedIn) {
-                viewModel.getCustomer(id!!)
+                observeCustomer(id!!)
             } else {
-                    navController.navigate(SplashFragmentDirections.toAuthGraph())
+                navController.navigate(SplashFragmentDirections.toAuthGraph())
             }
 
+        }
+    }
+
+    private fun observeCustomer(id: String) {
+        viewModel.getCustomer(id).observe(viewLifecycleOwner) { response ->
+            when(response) {
+                is Response.Success -> {
+                    val customer = response.data
+                    if (customer != null)
+                    navController.navigate(
+                        SplashFragmentDirections.actionGlobalHomeGraph(
+                            customer
+                        )
+                    )
+                    else navController.navigate(SplashFragmentDirections.toAuthGraph())
+                }
+                is Response.Error -> {
+                    val customer = response.data
+                    if (customer != null)
+                        navController.navigate(
+                            SplashFragmentDirections.actionGlobalHomeGraph(
+                                customer
+                            )
+                        )
+                    else navController.navigate(SplashFragmentDirections.toAuthGraph())
+                }
+                is Response.Loading -> {
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

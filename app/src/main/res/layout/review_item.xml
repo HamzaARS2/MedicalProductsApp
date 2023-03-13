@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:strokeWidth="0dp"
+    app:contentPadding="@dimen/_10sdp"
+    app:cardBackgroundColor="@color/gray_5"
+    app:cardCornerRadius="@dimen/_20sdp"
+    android:animateLayoutChanges="true"
+    android:layout_marginVertical="@dimen/_5sdp"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/review_item_image_imv"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_42sdp"
+            android:src="@drawable/avatar_1"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/review_item_customer_name_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:fontFamily="@font/gilroy_extrabold"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Hamza El Arras"
+            android:textColor="@color/title_color"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintBottom_toTopOf="@+id/review_item_rating_rb"
+            app:layout_constraintEnd_toStartOf="@+id/review_item_forward_down_cb"
+            app:layout_constraintStart_toEndOf="@+id/review_item_image_imv"
+            app:layout_constraintTop_toTopOf="@+id/review_item_image_imv"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <RatingBar
+            android:id="@+id/review_item_rating_rb"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:progressTint="#FF9100"
+            android:rating="4.5"
+            android:stepSize="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/review_item_image_imv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/review_item_customer_name_tv"
+            app:layout_constraintTop_toBottomOf="@+id/review_item_customer_name_tv" />
+
+        <CheckBox
+            android:id="@+id/review_item_forward_down_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/arrow_toggle_selector"
+            android:checked="false"
+            app:buttonTint="@color/title_color"
+            app:layout_constraintBottom_toBottomOf="@+id/review_item_image_imv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/review_item_description_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:fontFamily="@font/gilroy_medium"
+            android:lineSpacingExtra="@dimen/_3sdp"
+            android:paddingHorizontal="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:text="@string/review_sample"
+            android:textColor="@color/subtitle_color"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review_item_image_imv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

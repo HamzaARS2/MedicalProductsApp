@@ -1,20 +1,26 @@
 package com.ars.data.repository.customer
 
-import com.ars.data.remote.CustomerDataSource
+import android.content.SharedPreferences
+import com.ars.data.network.CustomerDataSource
+import com.ars.data.repository.LocalCustomerRepository
 import com.ars.data.repository.auth.LoginRepository
 import com.ars.data.repository.auth.RegistrationRepository
+import com.ars.data.util.networkBoundResource
 import com.ars.domain.model.Customer
 import com.ars.domain.repository.customer.ICustomerRepository
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
 import com.ars.domain.utils.toCustomer
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class CustomerRepositoryImpl @Inject constructor(
     private val customerDataSource: CustomerDataSource,
     private val loginRepo: LoginRepository,
-    private val registrationRepo: RegistrationRepository
+    private val registrationRepo: RegistrationRepository,
+    private val sharedPreferences: SharedPreferences,
+    private val localCustomerRepo: LocalCustomerRepository
 ) : ICustomerRepository {
     override val isLoggedIn: Pair<Boolean,String?>
         get() = loginRepo.isLoggedIn
@@ -37,7 +43,7 @@ class CustomerRepositoryImpl @Inject constructor(
         val loginResource = loginRepo.signInCustomer(email, password)
         return if (loginResource is Resource.Success) {
             val user = loginResource.result
-            customerDataSource.retrieve(user.uid)
+            Resource.Success(customerDataSource.retrieve(user.uid)!!)
         } else loginResource as Resource.Failure
     }
 
@@ -45,9 +51,22 @@ class CustomerRepositoryImpl @Inject constructor(
         return customerDataSource.update(customer)
     }
 
-    override suspend fun getCustomer(id: String): Resource<Customer> {
-        return customerDataSource.retrieve(id)
-    }
+    override fun getCustomer(id: String): Flow<Response<Customer>> =
+        networkBoundResource(
+            query = {
+                flowOf(localCustomerRepo.getLocalCustomer() ?: Customer())
+            },
+
+            fetch = {
+                customerDataSource.retrieve(id)
+            },
+
+            saveFetchResult = {
+                localCustomerRepo.saveLocalCustomer(it)
+            },
+        )
+
+
 
 
     override suspend fun linkPhoneWithExistingAccount(

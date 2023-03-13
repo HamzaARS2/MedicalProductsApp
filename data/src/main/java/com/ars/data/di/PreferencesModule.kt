@@ -2,6 +2,7 @@ package com.ars.data.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.ars.data.repository.LocalCustomerRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,10 @@ class PreferencesModule {
     @Provides
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences(Constants.APP_PREFERENCES,Context.MODE_PRIVATE)
+
+    @Provides
+    fun provideLocalCustomerRepo(sp: SharedPreferences): LocalCustomerRepository =
+        LocalCustomerRepository(sp)
 
 
 }

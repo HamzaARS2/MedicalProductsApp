@@ -1,7 +1,7 @@
 package com.ars.data.di
 
-import com.ars.data.remote.ProductDataSource
-import com.ars.data.remote.api.*
+import com.ars.data.network.ProductDataSource
+import com.ars.data.network.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "http://192.168.1.80:8080/api/"
+    private const val BASE_URL = "https://groceries-app-spring-boot-production.up.railway.app/api/"
 
 
     @Singleton
@@ -49,6 +49,10 @@ object NetworkModule {
     @Provides
     fun provideFavoriteProductApi(retrofit: Retrofit): FavoriteProductApi =
         retrofit.create(FavoriteProductApi::class.java)
+    @Singleton
+    @Provides
+    fun provideReviewApi(retrofit: Retrofit): ReviewApi =
+        retrofit.create(ReviewApi::class.java)
 
     @Provides
     fun provideProductDataSource(productApi: ProductApi) =

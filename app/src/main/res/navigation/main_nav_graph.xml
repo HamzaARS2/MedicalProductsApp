@@ -46,7 +46,11 @@
             android:id="@+id/favoriteFragment"
             android:name="com.ars.groceriesapp.ui.home.favorites.FavoriteFragment"
             android:label="fragment_favorite"
-            tools:layout="@layout/fragment_favorite" />
+            tools:layout="@layout/fragment_favorite" >
+            <action
+                android:id="@+id/favoriteToProductDetails"
+                app:destination="@id/productDetailsFragment" />
+        </fragment>
         <fragment
             android:id="@+id/accountFragment"
             android:name="com.ars.groceriesapp.ui.home.account.AccountFragment"
@@ -62,12 +66,25 @@
                 app:argType="com.ars.domain.model.Customer"
                 app:nullable="true"
                 android:defaultValue="@null" />
+            <action
+                android:id="@+id/shopFragToProductDetailsFrag"
+                app:destination="@id/productDetailsFragment" />
         </fragment>
         <fragment
             android:id="@+id/exploreFragment"
             android:name="com.ars.groceriesapp.ui.home.explore.ExploreFragment"
             android:label="fragment_account"
             tools:layout="@layout/fragment_explore" />
+
+        <fragment
+            android:id="@+id/productDetailsFragment"
+            android:name="com.ars.groceriesapp.ui.home.product_details.ProductDetailsFragment"
+            android:label="fragment_product_details"
+            tools:layout="@layout/fragment_product_details" >
+            <argument
+                android:name="product"
+                app:argType="com.ars.domain.model.Product" />
+        </fragment>
 
         <argument
             android:name="customer"
@@ -155,5 +172,6 @@
             app:popUpTo="@id/starting_graph"
             app:popUpToInclusive="true"/>
     </navigation>
+
 
 </navigation>
