@@ -8,6 +8,6 @@ class SaveCartItemUseCase @Inject constructor(
     private val cartRepository: ICartRepository
 ) {
 
-    suspend operator fun invoke(cartItem: CartItem, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) =
-        cartRepository.saveCustomerCartItem(cartItem, onSuccess, onFailure)
+    operator fun invoke(customerId: String, productId: Int) =
+        cartRepository.saveCustomerCartItem(customerId, productId)
 }

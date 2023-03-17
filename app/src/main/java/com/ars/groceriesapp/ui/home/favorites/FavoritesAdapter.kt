@@ -1,8 +1,11 @@
 package com.ars.groceriesapp.ui.home.favorites
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -57,20 +60,25 @@ class FavoritesAdapter(
                 onFavoriteProductClick(differ.currentList[bindingAdapterPosition])
             }
 
-            deleteOnSwipe.addOnSwipedListener {
-                binding.favoriteItemDeleteProgress.isVisible = true
-                onDeleteFavoriteProduct(differ.currentList[it]) {
-                    // Delete complete
-                    binding.favoriteItemDeleteProgress.isVisible = false
+            binding.favoriteItemRemoveImb.setOnClickListener {
+                binding.apply {
+                    favoriteItemDeleteProgress.visibility = View.VISIBLE
+                    favoriteItemRemoveImb.visibility = View.INVISIBLE
+                }
+                onDeleteFavoriteProduct(differ.currentList[bindingAdapterPosition]) {
+                    binding.apply {
+                        favoriteItemDeleteProgress.visibility = View.GONE
+                        favoriteItemRemoveImb.visibility = View.VISIBLE
+                    }
                 }
             }
+
         }
 
         @SuppressLint("SetTextI18n")
         fun bindFavoriteProduct(favoriteProduct: FavoriteProduct) {
             binding.apply {
                 val product = favoriteProduct.product
-                product ?: return
                 Glide.with(favoriteItemImageImv).load(product.image).into(favoriteItemImageImv)
                 favoriteItemTitleTv.text = product.name
                 favoriteItemProductKgPcsTv.text = product.priceUnit

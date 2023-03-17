@@ -1,6 +1,6 @@
 package com.ars.data.network.api
 
-import com.ars.data.network.network_model.NetworkCategory
+import com.ars.data.network.model.NetworkCategory
 import com.ars.domain.model.Category
 import retrofit2.http.GET
 import retrofit2.http.Path

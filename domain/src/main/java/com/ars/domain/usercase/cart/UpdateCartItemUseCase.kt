@@ -3,10 +3,10 @@ package com.ars.domain.usercase.cart
 import com.ars.domain.repository.ICartRepository
 import javax.inject.Inject
 
-class GetCartItemsUseCase @Inject constructor(
+class UpdateCartItemUseCase @Inject constructor(
     private val cartRepository: ICartRepository
 ) {
 
-    operator fun invoke(id: String) =
-        cartRepository.retrieveCustomerCartItems(id)
+    suspend operator fun invoke(id: Int, quantity: Int) =
+        cartRepository.updateCartItemQuantity(id, quantity)
 }

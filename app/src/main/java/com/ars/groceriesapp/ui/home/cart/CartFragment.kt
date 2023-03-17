@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ars.domain.model.CartItem
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentCartBinding
 import com.ars.groceriesapp.ui.home.HomeViewModel
@@ -47,9 +48,21 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        cartAdapter =
+            CartAdapter(::onIncreaseQuantityClick, ::onDecreaseQuantityClick, ::onRemoveItemClick)
+
         viewModel.getCustomerCartItems(homeViewModel.getCustomer().docId)
-        collectCartItems()
-        cartAdapter = CartAdapter(::onIncreaseQuantityClick, ::onDecreaseQuantityClick, ::onRemoveItemClick)
+            .observe(viewLifecycleOwner) { response ->
+                cartManager = CartManager(response.data ?: emptyList())
+                observeCartManager()
+                binding.cartProgress.isVisible = response is Response.Loading
+                binding.cartCheckoutBtn.isVisible = response !is Response.Loading
+
+                cartAdapter.differ.submitList(response.data)
+
+            }
+        addCartItemsListener()
 
         binding.cartRv.apply {
             adapter = cartAdapter
@@ -60,6 +73,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             )
         }
 
+
+    }
+
+    private fun addCartItemsListener() {
         cartAdapter.differ.addListListener { _, currentList ->
             binding.apply {
                 cartCheckoutBtn.isVisible = currentList.isNotEmpty()
@@ -72,7 +89,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private fun observeCartManager() {
         cartManager.apply {
             cartItem.observe(viewLifecycleOwner) { (cartItem, position) ->
-                cartAdapter.updateCartItem(cartItem, position)
+                cartAdapter.notifyItemChanged(position)
             }
 
             totalPrice.observe(viewLifecycleOwner) { totalPrice ->
@@ -81,54 +98,35 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         }
     }
 
-    private fun collectCartItems() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-               viewModel.cartItems.collectLatest { response ->
-                   when(response) {
-                       is Resource.Success -> {
-                           cartManager = CartManager(response.result)
-                           cartAdapter.differ.submitList(response.result)
-                           observeCartManager()
-                           binding.cartProgress.isVisible = false
 
-                       }
-                       is Resource.Failure -> {
-                           binding.cartProgress.isVisible = false
-                           Toast.makeText(requireContext(), response.e.message, Toast.LENGTH_SHORT).show()
-                       }
-                       else -> {
-                           // Loading
-                           binding.cartProgress.isVisible = true
-                       }
-                   }
-               }
+    private fun onIncreaseQuantityClick(position: Int, id: Int) {
+        val updatedQuantity = cartManager.increaseQuantity(position)
+        viewModel.updateCartItemQuantity(id, updatedQuantity)
+    }
+
+    private fun onDecreaseQuantityClick(position: Int, id: Int) {
+        val updatedQuantity = cartManager.decreaseQuantity(position)
+        viewModel.updateCartItemQuantity(id, updatedQuantity)
+    }
+
+    private fun onRemoveItemClick(cartItem: CartItem, onFinish: () -> Unit) {
+        cartItem.id ?: return
+        viewModel.removeItemFromCart(cartItem.id!!).observe(viewLifecycleOwner) { response ->
+            binding.cartProgress.isVisible = response is Response.Loading
+            when (response) {
+                is Response.Success -> {
+                    onFinish()
+                }
+                is Response.Error -> {
+                    onFinish()
+                    Toast.makeText(requireContext(), response.data, Toast.LENGTH_SHORT)
+                        .show()
+                }
+                is Response.Loading -> {
+                }
             }
         }
     }
-
-    private fun onIncreaseQuantityClick(position: Int) {
-        cartManager.increaseQuantity(position)
-    }
-
-    private fun onDecreaseQuantityClick(position: Int) {
-        cartManager.decreaseQuantity(position)
-    }
-
-    private fun onRemoveItemClick(cartItem: CartItem, onFinish:() -> Unit) {
-        cartItem.id ?: return
-        viewModel.removeItemFromCart(cartItem.id!!,{
-            // Cart item deleted successfully!
-            viewModel.getCustomerCartItems(homeViewModel.getCustomer().docId)
-            onFinish()
-        }) {
-            // Deleting cart item failed!
-            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
-            onFinish()
-        }
-    }
-
-
 
 
 }

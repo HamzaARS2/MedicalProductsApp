@@ -76,18 +76,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.84000003"
         app:srcCompat="@drawable/ic_small_forward_arrow_round" />
+
+    <ImageButton
+        android:id="@+id/favorite_item_remove_imb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/favorite_item_image_imv"
+        app:srcCompat="@drawable/ic_close_round" />
 
     <ProgressBar
         android:id="@+id/favorite_item_delete_progress"
-        style="?android:attr/progressBarStyle"
+        style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/favorite_item_image_imv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/favorite_item_image_imv" />
+        app:layout_constraintBottom_toBottomOf="@+id/favorite_item_remove_imb"
+        app:layout_constraintEnd_toEndOf="@+id/favorite_item_remove_imb"
+        app:layout_constraintHorizontal_bias="0.43"
+        app:layout_constraintStart_toStartOf="@+id/favorite_item_remove_imb"
+        app:layout_constraintTop_toTopOf="@+id/favorite_item_remove_imb" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

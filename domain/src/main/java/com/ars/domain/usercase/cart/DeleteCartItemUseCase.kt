@@ -7,6 +7,6 @@ class DeleteCartItemUseCase @Inject constructor(
     private val cartRepository: ICartRepository
 ) {
 
-    suspend operator fun invoke(id: Int, onSuccessDelete:() -> Unit, onDeleteFailed: (e: Exception) -> Unit) =
-        cartRepository.deleteItemFromCart(id, onSuccessDelete, onDeleteFailed)
+    operator fun invoke(id: Int) =
+        cartRepository.deleteItemFromCart(id)
 }

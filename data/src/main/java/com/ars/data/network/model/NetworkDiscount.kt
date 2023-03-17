@@ -1,6 +1,4 @@
-package com.ars.data.model
-
-import java.util.Date
+package com.ars.data.network.model
 
 data class NetworkDiscount(
     val id: Int,

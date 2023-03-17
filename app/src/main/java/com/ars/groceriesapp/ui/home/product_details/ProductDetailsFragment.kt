@@ -8,21 +8,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.ars.domain.model.ProductDetails
-import com.ars.domain.utils.Resource
+import com.ars.domain.model.Product
+import com.ars.domain.utils.Response
 import com.ars.groceriesapp.databinding.FragmentProductDetailsBinding
-import com.ars.groceriesapp.mapper.toCartItem
-import com.ars.groceriesapp.mapper.toFavoriteProduct
 import com.ars.groceriesapp.ui.epoxy.controller.ProductDetailsEpoxyController
 import com.ars.groceriesapp.ui.home.HomeViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+
 
 class ProductDetailsFragment : Fragment() {
 
@@ -35,75 +29,85 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var controller: ProductDetailsEpoxyController
     private lateinit var navController: NavController
 
-    private var productDetails: ProductDetails? = null
-
+    private var productId: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProductDetailsBinding.inflate(layoutInflater)
+        productId = args.product.id
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        viewModel.getProductDetails(args.product.id)
-        viewModel.getProductReviews(args.product.id)
         controller = ProductDetailsEpoxyController(
             requireContext(),
             ::onBackClick,
             ::onAddToCartClick,
             ::onFavoriteStateChanged,
+            ::onAddProductToCartClick,
+            ::onProductClick
         )
         binding.productDetailsEpoxyRv.setController(controller)
-
-        collectReviews()
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.productDetailsFlow.collectLatest { response ->
-                    when (response) {
-                        is Resource.Success -> {
-                            controller.setData(response.result)
-                            productDetails = response.result
-                            binding.productDetailsProgress.isVisible = false
-                        }
-                        is Resource.Failure -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Error " + response.e.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.productDetailsProgress.isVisible = false
-                        }
-                        else -> binding.productDetailsProgress.isVisible = true
-                    }
-                }
-            }
-        }
+        viewModel.getProductDetails(homeViewModel.getCustomer().docId, productId)
+        observeProductDetails()
 
     }
 
-    private fun collectReviews() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.reviewsFlow.collectLatest { response ->
-                    when(response) {
-                        is Resource.Success -> {
+    private fun observeProductDetails() {
+        viewModel.productDetails
+            .observe(viewLifecycleOwner) { response ->
 
-                        }
-                        is Resource.Failure -> {
+                controller.setData(response.data)
+                binding.run {
+                    productDetailsProgress.isVisible = response is Response.Loading
+                    productDetailsOrderNowBtn.isVisible = response is Response.Success
 
-                        }
-                        else -> {
+                }
 
-                        }
+                when(response) {
+                    is Response.Success -> {
+                    }
+                    is Response.Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Error " + response.error?.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is Response.Loading -> {
+                    }
+
+                }
+            }
+    }
+
+    private fun onAddProductToCartClick(productId: Int, onFinish: () -> Unit) {
+        viewModel.saveCartItem(homeViewModel.getCustomer().docId, productId)
+            .observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is Response.Success -> {
+                        Toast.makeText(requireContext(), response.data, Toast.LENGTH_SHORT).show()
+                        onFinish()
+                    }
+                    is Response.Error -> {
+                        Toast.makeText(requireContext(), response.data, Toast.LENGTH_SHORT).show()
+                        onFinish()
+                    }
+                    is Response.Loading -> {
+
                     }
                 }
             }
-        }
+    }
+
+    private fun onProductClick(product: Product) {
+        this.productId = product.id
+        viewModel.getProductDetails(homeViewModel.getCustomer().docId,product.id)
+        binding.productDetailsEpoxyRv.smoothScrollToPosition(0)
     }
 
     private fun onBackClick() {
@@ -111,13 +115,19 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onAddToCartClick() {
-        viewModel.saveCartItem(args.product.toCartItem(homeViewModel.getCustomer().docId), {
-            // Added to cart successfully!
-            Toast.makeText(requireContext(), "Added successfully!", Toast.LENGTH_SHORT).show()
-        }) {
-            // Failed
-            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
-        }
+        viewModel.saveCartItem(homeViewModel.getCustomer().docId, args.product.id)
+            .observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is Response.Success -> {
+                        Toast.makeText(requireContext(), response.data, Toast.LENGTH_SHORT).show()
+                    }
+                    is Response.Error -> {
+                        Toast.makeText(requireContext(), response.data, Toast.LENGTH_SHORT).show()
+                    }
+                    is Response.Loading -> {
+                    }
+                }
+            }
     }
 
     private fun onFavoriteStateChanged(isChecked: Boolean, onFinish: () -> Unit) {
@@ -131,27 +141,21 @@ class ProductDetailsFragment : Fragment() {
 
 
     private fun saveProductToFavorites(onFinish: () -> Unit) {
-        viewModel.saveFavoriteProduct(
-            args.product.toFavoriteProduct(homeViewModel.getCustomer().docId),
-            {
-                Toast.makeText(requireContext(), "Added successfully!", Toast.LENGTH_SHORT).show()
+        viewModel.saveFavoriteProduct(productId, homeViewModel.getCustomer().docId)
+            .observe(viewLifecycleOwner) {
+                if (it is Response.Error)
+                Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
                 onFinish()
-            }) {
-            // Failed
-            onFinish()
-            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
-        }
+            }
     }
 
     private fun removeProductFromFavorites(onFinish: () -> Unit) {
-        viewModel.removeProductFromFavorites(homeViewModel.getCustomer().docId, args.product.id, {
-            onFinish()
-            Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
-        }) {
-            // Failed
-            onFinish()
-            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
-        }
+        viewModel.removeProductFromFavorites(homeViewModel.getCustomer().docId, productId)
+            .observe(viewLifecycleOwner) {
+                if (it is Response.Error)
+                Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                onFinish()
+            }
     }
 
 

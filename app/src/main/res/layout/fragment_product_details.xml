@@ -28,6 +28,7 @@
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:text="@string/order_now"
         android:textSize="@dimen/_14ssp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

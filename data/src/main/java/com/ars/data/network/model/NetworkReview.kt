@@ -1,4 +1,4 @@
-package com.ars.data.network.network_model
+package com.ars.data.network.model
 
 import com.ars.domain.model.Customer
 

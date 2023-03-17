@@ -1,6 +1,6 @@
 package com.ars.data.network.api
 
-import com.ars.data.network.network_model.NetworkReview
+import com.ars.data.network.model.NetworkReview
 import retrofit2.http.GET
 import retrofit2.http.Path
 

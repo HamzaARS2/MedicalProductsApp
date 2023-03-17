@@ -86,22 +86,24 @@ class ShopFragment : Fragment() {
         )
     }
 
-    private fun onAddToCartClick(product: Product, onFinish: () -> Unit) {
-        viewModel.saveCartItem(CartItem(
-            customerId = homeViewModel.getCustomer().docId,
-            productId = product.id,
-            quantity = 1
-        ), {
-            // Cart item saved successfully!
-            onFinish()
-            Toast.makeText(requireContext(), "Added Successfully", Toast.LENGTH_SHORT).show()
-        }) {
-            // Saving cart item failed!
-            onFinish()
-            Toast.makeText(requireContext(), "Error " + it.message, Toast.LENGTH_SHORT).show()
-        }
-    }
+    private fun onAddToCartClick(productId: Int, onFinish: () -> Unit) {
+        viewModel.saveCartItem(homeViewModel.getCustomer().docId, productId)
+            .observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is Response.Success -> {
+                        onFinish()
+                        Toast.makeText(requireContext(), response.data, Toast.LENGTH_SHORT).show()
+                    }
+                    is Response.Error -> {
+                        onFinish()
+                        Toast.makeText(requireContext(), response.data, Toast.LENGTH_SHORT).show()
+                    }
+                    is Response.Loading -> {
 
+                    }
+                }
+            }
+    }
 
 
 }

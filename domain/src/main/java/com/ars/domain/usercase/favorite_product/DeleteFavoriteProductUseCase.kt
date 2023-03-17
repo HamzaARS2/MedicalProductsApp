@@ -7,10 +7,9 @@ class DeleteFavoriteProductUseCase @Inject constructor(
     private val favoriteRepository: IFavoritesRepository
 ) {
 
-    suspend operator fun invoke(
-        id: Int,
-        onSuccessDelete: () -> Unit,
-        onDeleteFailed: (e: Exception) -> Unit
+    operator fun invoke(
+        customerId: String,
+        productId: Int
     ) =
-        favoriteRepository.deleteProductFromFavorites(id, onSuccessDelete, onDeleteFailed)
+        favoriteRepository.deleteProductFromFavorites(customerId, productId)
 }

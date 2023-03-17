@@ -18,6 +18,11 @@
         <item name="strokeColor">@color/outline_color</item>
     </style>
 
+    <style name="FavoriteCheckBoxStyle" >
+        <item name="colorAccent">@android:color/darker_gray</item>
+        <item name="android:textColorSecondary">@android:color/holo_red_dark</item>
+    </style>
+
     <style name="AddProductBtnStyle">
         <item name="cornerRadius">@dimen/_20sdp</item>
         <item name="backgroundTint">#53B175</item>

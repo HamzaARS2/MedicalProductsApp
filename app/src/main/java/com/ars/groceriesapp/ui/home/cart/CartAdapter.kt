@@ -1,6 +1,7 @@
 package com.ars.groceriesapp.ui.home.cart
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,19 +14,18 @@ import com.ars.groceriesapp.databinding.CartProductItemBinding
 import com.bumptech.glide.Glide
 
 class CartAdapter(
-    val onIncreaseQuantityClick: (position: Int) -> Unit,
-    val onDecreaseQuantityClick: (position: Int) -> Unit,
+    val onIncreaseQuantityClick: (position: Int, id: Int) -> Unit,
+    val onDecreaseQuantityClick: (position: Int, id: Int) -> Unit,
     val onRemoveItemClick: (cartItem: CartItem, onFinish:() -> Unit) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.CartItemHolder>() {
 
 
     private val differCallBack = object : DiffUtil.ItemCallback<CartItem>() {
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
-            oldItem.id == newItem.id
+            oldItem.customerId == newItem.customerId
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
             oldItem == newItem
-
     }
 
     val differ = AsyncListDiffer(this, differCallBack)
@@ -42,11 +42,6 @@ class CartAdapter(
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    fun updateCartItem(cartItem: CartItem, position: Int) {
-        differ.currentList[position].quantity = cartItem.quantity
-        notifyItemChanged(position)
-    }
-
     inner class CartItemHolder(private val binding: CartProductItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -54,12 +49,14 @@ class CartAdapter(
             binding.apply {
                 cartItemIncreaseBtn.setOnClickListener {
                     onIncreaseQuantityClick(
-                        bindingAdapterPosition
+                        bindingAdapterPosition,
+                        differ.currentList[bindingAdapterPosition].id!!
                     )
                 }
                 cartItemDecreaseBtn.setOnClickListener {
                     onDecreaseQuantityClick(
-                        bindingAdapterPosition
+                        bindingAdapterPosition,
+                        differ.currentList[bindingAdapterPosition].id!!
                     )
                 }
                 cartItemRemoveImb.setOnClickListener {
@@ -76,13 +73,14 @@ class CartAdapter(
         @SuppressLint("SetTextI18n")
         fun bindCartItem(cartItem: CartItem) {
             val product = cartItem.product
-            if (product != null)
-            binding.apply {
-                Glide.with(cartItemImageImv).load(product.image).into(cartItemImageImv)
-                cartItemTitleTv.text = product.name
-                cartItemProductKgPcsTv.text = product.priceUnit
-                cartItemQuantityTv.text = cartItem.quantity.toString()
-                cartItemPriceTv.text = "$" + product.price
+            if (product != null) {
+                binding.apply {
+                    Glide.with(cartItemImageImv).load(product.image).into(cartItemImageImv)
+                    cartItemTitleTv.text = product.name
+                    cartItemProductKgPcsTv.text = product.priceUnit
+                    cartItemQuantityTv.text = cartItem.quantity.toString()
+                    cartItemPriceTv.text = "$" + product.price.times(cartItem.quantity.toBigDecimal())
+                }
             }
         }
 

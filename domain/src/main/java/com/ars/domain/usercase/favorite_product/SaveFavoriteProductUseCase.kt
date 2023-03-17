@@ -8,10 +8,9 @@ class SaveFavoriteProductUseCase @Inject constructor(
     private val favoritesRepository: IFavoritesRepository
 ) {
 
-    suspend operator fun invoke(
-        favoriteProduct: FavoriteProduct,
-        onSuccess: () -> Unit,
-        onFailure: (e: Exception) -> Unit
+    operator fun invoke(
+        productId: Int,
+        customerId: String
     ) =
-        favoritesRepository.saveCustomerFavoriteProduct(favoriteProduct, onSuccess, onFailure)
+        favoritesRepository.saveCustomerFavoriteProduct(productId, customerId)
 }

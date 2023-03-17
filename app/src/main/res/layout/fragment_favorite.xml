@@ -56,5 +56,17 @@
         app:layout_constraintTop_toBottomOf="@+id/view2"
         app:layout_constraintVertical_bias="0.989" />
 
+    <ProgressBar
+        android:id="@+id/favorite_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/main_btn_color"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/favorite_add_to_cart_btn"
+        app:layout_constraintEnd_toEndOf="@+id/favorite_add_to_cart_btn"
+        app:layout_constraintStart_toStartOf="@+id/favorite_add_to_cart_btn"
+        app:layout_constraintTop_toTopOf="@+id/favorite_add_to_cart_btn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

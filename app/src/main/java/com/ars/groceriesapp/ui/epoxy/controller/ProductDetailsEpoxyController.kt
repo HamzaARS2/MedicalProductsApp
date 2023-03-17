@@ -12,10 +12,12 @@ class ProductDetailsEpoxyController(
     private val context: Context,
     private val onBackClick: () -> Unit,
     private val onAddToCartClick: () -> Unit,
-    private val onFavoriteStateChanged: (isChecked: Boolean, onFinish: () -> Unit) -> Unit
+    private val onFavoriteStateChanged: (isChecked: Boolean, onFinish: () -> Unit) -> Unit,
+    private val onAddProductToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit,
+    private val onProductClick: (product: Product) -> Unit,
 ) : TypedEpoxyController<ProductDetails>() {
-
     private val reviewsAdapter: ReviewsAdapter = ReviewsAdapter()
+
 
     override fun buildModels(productDetails: ProductDetails?) {
         if (productDetails == null) {
@@ -25,12 +27,12 @@ class ProductDetailsEpoxyController(
             .id("product_details_header")
             .addTo(this)
 
-
         PriceModel(
             context,
             productDetails.name,
             productDetails.priceUnit,
-            productDetails.price.toFloat().toString(),
+            productDetails.price,
+            productDetails.isFavorite,
             onFavoriteStateChanged
         )
             .id("product_details_price")
@@ -40,42 +42,40 @@ class ProductDetailsEpoxyController(
             .id("product_details_description")
             .addTo(this)
 
-        ReviewsModel(context, reviewsAdapter)
+        ReviewsModel(context, reviewsAdapter, productDetails.reviews, productDetails.rating)
             .id("reviews")
             .addTo(this)
+
         TitleModel(context)
             .id("title")
             .addTo(this)
 
-        val productsModels = mutableListOf<SimilarProductModel>()
-
-        repeat(5) {
-            productsModels.add(
-                SimilarProductModel(context).apply {
-                    id(it)
-                }
-            )
-        }
-        carousel {
-            id("similar_products")
-            numViewsToShowOnScreen(2F)
-            models(productsModels)
-        }
-
+        displaySimilarProducts(productDetails.similarProducts)
 
         OrderModel(context)
             .id("product_details_order")
             .addTo(this)
     }
 
+    private fun displaySimilarProducts(products: List<Product?>?) {
+        val productsModels = mutableListOf<SimilarProductModel>()
 
-    private fun onProductAddToCartClick(product: Product, onFinish: () -> Unit) {
+        products?.forEachIndexed { index, product ->
+            productsModels.add(
+                SimilarProductModel(context, product,onAddProductToCartClick, onProductClick).apply {
+                    id(index)
+                }
+            )
+        }
 
+
+        carousel {
+            id("similar_products")
+            numViewsToShowOnScreen(2F)
+            models(productsModels)
+        }
     }
 
-    private fun onProductClick(product: Product) {
-
-    }
 
 
 }

@@ -3,6 +3,7 @@ package com.ars.data.repository.product
 import androidx.room.withTransaction
 import com.ars.data.extensions.asDiscountEntity
 import com.ars.data.extensions.asProduct
+import com.ars.data.extensions.asProductDetails
 import com.ars.data.extensions.asProductEntity
 import com.ars.data.local.GroceriesDatabase
 import com.ars.data.local.entity.DiscountEntity
@@ -10,7 +11,6 @@ import com.ars.data.network.ProductDataSource
 import com.ars.data.util.networkBoundResource
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
-import com.ars.domain.model.ProductDetails
 import com.ars.domain.repository.product.IProductRepository
 import com.ars.domain.utils.Response
 
@@ -24,24 +24,29 @@ class ProductRepositoryImpl @Inject constructor(
 
     private val productDao = database.getProductDao()
     private val discountDao = database.getDiscountDao()
+    private val favoriteProductDao = database.getFavoriteProductDao()
 
-    override suspend fun retrieve(id: Int): Resource<ProductDetails> {
-        return try {
-            val response = productDataSource.fetchProductDetailsById(id)
-            Resource.Success(response)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Resource.Failure(e)
+    override fun fetchProductDetails(customerId: String, productId: Int) = flow {
+        emit(Response.Loading())
+        val response = try {
+            val count = favoriteProductDao.retrieveFavoriteProductCount(customerId, productId)
+            val result = productDataSource.fetchProductDetailsById(productId)
+                .asProductDetails(count > 0)
+            Response.Success(result)
+        } catch (throwable: Throwable) {
+            Response.Error(throwable)
         }
+        emit(response)
     }
+
 
     override fun fetchShopProducts(): Flow<Response<List<Product>?>> = networkBoundResource(
         query = {
-                productDao.getProductsWithDiscount().map { discountAndProduct ->
-                    discountAndProduct.map {
-                        it.asProduct()
-                    }
+            productDao.getProductsWithDiscount().map { discountAndProduct ->
+                discountAndProduct.map {
+                    it.asProduct()
                 }
+            }
         },
         fetch = {
             productDataSource.fetchShopProducts()

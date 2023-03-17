@@ -35,7 +35,7 @@
     <string name="location_access_description">We need your location to provide you with accurate delivery estimates and to ensure that we can deliver to your area.</string>
     <string name="no_thanks">No Thanks</string>
     <string name="search_store">Search Store</string>
-    <string name="go_to_checkout">Go To Checkout</string>
+    <string name="checkout">Checkout</string>
     <string name="favorites">Favorites</string>
     <string name="add_all_to_cart">Add all to cart</string>
     <string name="orders">Orders</string>
@@ -54,4 +54,5 @@
     <string name="reviews">Reviews</string>
     <string name="similar_products">Similar Products</string>
     <string name="description">Description</string>
+    <string name="my_cart">My Cart</string>
 </resources>

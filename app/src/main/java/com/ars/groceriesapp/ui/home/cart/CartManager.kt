@@ -19,21 +19,23 @@ class CartManager(
     private val _cartItem: MutableLiveData<Pair<CartItem, Int>> = MutableLiveData()
     val cartItem: LiveData<Pair<CartItem, Int>> get() = _cartItem
 
-    fun increaseQuantity(position: Int) {
+    fun increaseQuantity(position: Int): Int {
         val updatedItem = items[position].apply {
             quantity += 1
         }
         _cartItem.value = updatedItem to position
         _totalPrice.value = calculateTotalPrice()
+        return updatedItem.quantity
     }
 
-    fun decreaseQuantity(position: Int) {
+    fun decreaseQuantity(position: Int): Int {
         val updatedItem = items[position].apply {
             if (quantity <= 1) quantity = 1
             else quantity -= 1
         }
         _cartItem.value = updatedItem to position
         _totalPrice.value = calculateTotalPrice()
+        return updatedItem.quantity
     }
 
 

@@ -79,6 +79,9 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
+    implementation 'com.airbnb.android:lottie:3.7.1'
+
+
     // Play Integrity API
     implementation 'com.google.android.play:integrity:1.1.0'
     implementation 'com.google.firebase:firebase-appcheck:16.1.1'

@@ -26,7 +26,7 @@ class ShopEpoxyController(
     private val customer: Customer?,
     private val onCategoryClicked: (category: Category) -> Unit,
     private val onProductClicked: (product: Product) -> Unit,
-    private val onAddToCartClick: (product: Product, onFinish: () -> Unit) -> Unit
+    private val onAddToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit
 ) : Typed2EpoxyController<List<Product>?, List<Category>?>() {
 
 
@@ -143,7 +143,7 @@ data class ShopSection(
 data class ShopProduct(
     val product: Product?,
     val onProductClick: (product: Product) -> Unit,
-    val onProductAddToCartClick: (product: Product, onFinish: () -> Unit) -> Unit
+    val onProductAddToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit
 ) : ViewBindingKotlinModel<ShopProductItemBinding>(R.layout.shop_product_item) {
     @SuppressLint("SetTextI18n")
     override fun ShopProductItemBinding.bind() {
@@ -158,7 +158,7 @@ data class ShopProduct(
             shopProductAddBtn.setOnClickListener {
                 shopProductAddBtn.visibility = View.INVISIBLE
                 shopProductAddBtnProgress.isVisible = true
-                onProductAddToCartClick(product) {
+                onProductAddToCartClick(product.id) {
                     shopProductAddBtn.isVisible = true
                     shopProductAddBtnProgress.isVisible = false
                 }

@@ -7,6 +7,6 @@ class GetFavoritesUseCase @Inject constructor(
     private val favoritesRepository: IFavoritesRepository
 ) {
 
-    suspend operator fun invoke(id: String) =
-        favoritesRepository.retrieveCustomerFavoriteProducts(id)
+    operator fun invoke(id: String) =
+        favoritesRepository.fetchCustomerFavoriteProducts(id)
 }

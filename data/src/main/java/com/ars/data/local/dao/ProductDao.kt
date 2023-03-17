@@ -2,7 +2,7 @@ package com.ars.data.local.dao
 
 import androidx.room.*
 import com.ars.data.local.entity.ProductEntity
-import com.ars.data.local.relation.DiscountAndProduct
+import com.ars.data.local.relations.DiscountAndProduct
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,6 +13,7 @@ interface ProductDao {
 
     @Query("SELECT * FROM product")
     fun retrieveProducts(): Flow<List<ProductEntity>>
+
 
 
     @Transaction

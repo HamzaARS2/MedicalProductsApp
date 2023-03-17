@@ -26,6 +26,7 @@ inline fun <ResultType, RequestType> networkBoundResource(
             query().map { Response.Success(it) }
         } catch (throwable: Throwable) {
             // Read data from local db when we can't make a network call
+            throwable.printStackTrace()
             query().map { Response.Error(throwable, it) }
         }
     } else {

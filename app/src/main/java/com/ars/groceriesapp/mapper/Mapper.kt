@@ -8,8 +8,9 @@ import com.ars.domain.model.ProductDetails
 fun FavoriteProduct.toCartItem() =
     CartItem(
         customerId = this.customerId,
-        productId = this.productId,
+        productId = this.product.id,
         quantity = 1,
+
     )
 
 fun Product.toCartItem(customerId: String) =
@@ -17,10 +18,4 @@ fun Product.toCartItem(customerId: String) =
         customerId = customerId,
         productId = this.id,
         quantity = 1,
-    )
-
-fun Product.toFavoriteProduct(customerId: String) =
-    FavoriteProduct(
-        customerId = customerId,
-        productId = this.id
     )

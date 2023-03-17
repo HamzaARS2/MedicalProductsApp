@@ -1,44 +1,17 @@
 package com.ars.data.extensions
 
-import com.ars.data.dto.OnSaleProductDto
-import com.ars.data.dto.ProductDto
-import com.ars.data.local.entity.CategoryEntity
-import com.ars.data.local.entity.DiscountEntity
-import com.ars.data.local.entity.ProductEntity
-import com.ars.data.local.relation.DiscountAndProduct
-import com.ars.data.model.NetworkDiscount
-import com.ars.data.network.network_model.NetworkCategory
-import com.ars.data.network.network_model.NetworkProduct
-import com.ars.data.network.network_model.NetworkReview
+import com.ars.data.local.entity.*
+import com.ars.data.local.relations.CartAndProduct
+import com.ars.data.local.relations.DiscountAndProduct
+import com.ars.data.local.relations.FavoriteAndProduct
+import com.ars.data.network.model.*
 import com.ars.domain.model.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun ProductDto.toProduct(): ProductDetails =
-    ProductDetails(
-        id = id,
-        categoryId = categoryId,
-        name = name,
-        description = description,
-        price = price,
-        priceUnit = priceUnit,
-        nutrition = nutrition,
-        image = image,
-        isExclusive = isExclusive
-    )
 
-fun OnSaleProductDto.toOnSaleProduct() =
-    OnSaleProduct(
-        id = this.id,
-        productId = this.productId,
-        discountPercentage = this.discount.toDouble(),
-        startDate = this.startDate.toString(),
-        endDate = this.endDate.toString(),
-        salePrice = this.salePrice.toDouble(),
-        product = this.product
-    )
 
 fun NetworkReview.asReview() =
     Review(
@@ -63,6 +36,19 @@ fun NetworkProduct.asProductEntity() =
         rating = rating,
         exclusive = exclusive,
         productDiscountId = discountId
+    )
+
+fun NetworkProduct.asProduct() =
+    Product(
+        id = id,
+        categoryId = categoryId,
+        name = name,
+        image = image,
+        price = BigDecimal(price.toDouble()).setScale(2, RoundingMode.HALF_UP),
+        priceUnit = priceUnit,
+        rating = rating,
+        exclusive = exclusive,
+        discount = networkDiscount?.asDiscount()
     )
 
 fun ProductEntity.asProduct() =
@@ -111,6 +97,14 @@ fun NetworkDiscount.asDiscountEntity() =
         endDate = convertDateToLong(endDate)
     )
 
+fun NetworkDiscount.asDiscount() =
+    Discount(
+        id = id,
+        percentage = discountPercentage,
+        startDate = convertDateToLong(startDate),
+        endDate = convertDateToLong(endDate)
+    )
+
 fun CategoryEntity.asCategory() =
     Category(
         id = id,
@@ -128,9 +122,75 @@ fun NetworkCategory.asCategoryEntity() =
         color = color
     )
 
+fun NetworkProductDetails.asProductDetails(isFavorite: Boolean = false) =
+    ProductDetails(
+        id = id,
+        categoryId = categoryId,
+        name = name,
+        description = description,
+        image = image,
+        price = BigDecimal(price.toDouble()).setScale(2, RoundingMode.HALF_UP),
+        priceUnit = priceUnit,
+        rating = rating,
+        isExclusive = exclusive,
+        isFavorite = isFavorite,
+        discount = networkDiscount?.asDiscount(),
+        reviews = reviews?.map { it.asReview() },
+        similarProducts = similarProducts?.map { it.asProduct() }
+    )
 
-fun convertDateToLong(stringDate: String): Long {
-    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(stringDate)?.time
+
+fun NetworkCartItem.asCartItemEntity() =
+    CartItemEntity(
+        id = id,
+        customerId = customerId,
+        productId = productId,
+        createdAt = convertDateToLong(createdAt),
+        updatedAt = convertDateToLong(updatedAt)
+    )
+
+fun CartItem.asCartItemEntity() =
+    CartItemEntity(
+        id = id!!,
+        customerId = customerId,
+        productId = productId,
+        quantity = quantity,
+    )
+
+fun CartAndProduct.asCartItem(): CartItem {
+    val cartItemEntity = this.cartItemEntity
+    val productEntity = this.productEntity
+    return CartItem(
+        id = cartItemEntity.id,
+        customerId = cartItemEntity.customerId,
+        productId = cartItemEntity.productId,
+        quantity = cartItemEntity.quantity,
+        product = productEntity.asProduct(),
+        createdAt = cartItemEntity.createdAt,
+        updatedAt = cartItemEntity.updatedAt
+    )
+}
+
+fun NetworkFavoriteProduct.asFavoriteProductEntity() =
+    FavoriteProductEntity(
+        id = id,
+        customerId = customerId,
+        productId = productId,
+        createdAt = convertDateToLong(createdAt),
+    )
+
+fun FavoriteAndProduct.asFavoriteProduct(): FavoriteProduct {
+    val favoriteProductEntity = this.favoriteProductEntity
+    val productEntity = this.productEntity
+    return FavoriteProduct(
+        id = favoriteProductEntity.id,
+        customerId = favoriteProductEntity.customerId,
+        createdAt = favoriteProductEntity.createdAt,
+        product = productEntity.asProduct()
+    )
+}
+fun convertDateToLong(stringDate: String?): Long {
+    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(stringDate.toString())?.time
         ?: Date().time
 }
 

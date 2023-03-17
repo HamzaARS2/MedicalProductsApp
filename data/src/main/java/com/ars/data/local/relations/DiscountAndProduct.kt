@@ -1,4 +1,4 @@
-package com.ars.data.local.relation
+package com.ars.data.local.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation

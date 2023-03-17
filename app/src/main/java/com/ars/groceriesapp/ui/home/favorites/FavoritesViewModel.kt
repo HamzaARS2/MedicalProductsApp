@@ -1,14 +1,15 @@
 package com.ars.groceriesapp.ui.home.favorites
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.ars.domain.model.CartItem
 import com.ars.domain.model.Customer
 import com.ars.domain.model.FavoriteProduct
-import com.ars.domain.usercase.cart.SaveMultipleCartItemsUseCase
+import com.ars.domain.model.Product
+import com.ars.domain.usercase.cart.SaveMultipleCartItemUseCase
 import com.ars.domain.usercase.favorite_product.DeleteFavoriteProductUseCase
 import com.ars.domain.usercase.favorite_product.GetFavoritesUseCase
-import com.ars.domain.usercase.favorite_product.SaveFavoriteProductUseCase
 import com.ars.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val getFavoritesUseCase: GetFavoritesUseCase,
     private val deleteFavoriteProductUseCase: DeleteFavoriteProductUseCase,
-    private val saveMultipleCartItemsUseCase: SaveMultipleCartItemsUseCase
+    private val saveMultipleCartItemUseCase: SaveMultipleCartItemUseCase
 ) : ViewModel() {
 
 
@@ -30,24 +31,18 @@ class FavoritesViewModel @Inject constructor(
     val favoriteProductsFlow: StateFlow<Resource<List<FavoriteProduct>>?> get() = _favoriteProductsFlow
 
 
-    fun fetchFavoriteProducts(id: String) = viewModelScope.launch {
-        _favoriteProductsFlow.value = Resource.Loading
-        _favoriteProductsFlow.emit(getFavoritesUseCase(id))
-    }
+    fun fetchFavoriteProducts(id: String) =
+        getFavoritesUseCase(id).asLiveData()
+
+    fun saveMultipleCartItems(customerId: String, products: List<FavoriteProduct>) =
+        saveMultipleCartItemUseCase(customerId, products).asLiveData()
+
 
     fun removeProductFromFavorites(
-        id: Int,
-        onSuccessDelete: () -> Unit,
-        onDeleteFailed: (e: Exception) -> Unit
-    ) = viewModelScope.launch {
-        deleteFavoriteProductUseCase(id, onSuccessDelete, onDeleteFailed)
-    }
+        customerId: String,
+        productId: Int
+    ) = deleteFavoriteProductUseCase(customerId, productId).asLiveData()
 
-    fun addMultipleCartItems(
-        cartItems: List<CartItem>, onSuccess: () -> Unit,
-        onFailure: (e: Exception) -> Unit
-    ) = viewModelScope.launch {
-        saveMultipleCartItemsUseCase(cartItems, onSuccess, onFailure)
-    }
+
 
 }

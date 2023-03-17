@@ -1,6 +1,5 @@
-package com.ars.data.network.network_model
+package com.ars.data.network.model
 
-import com.ars.data.model.NetworkDiscount
 import com.google.gson.annotations.SerializedName
 
 

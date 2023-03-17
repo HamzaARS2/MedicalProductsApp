@@ -2,12 +2,13 @@ package com.ars.domain.repository
 
 import com.ars.domain.model.FavoriteProduct
 import com.ars.domain.utils.Resource
+import com.ars.domain.utils.Response
+import kotlinx.coroutines.flow.Flow
 
 interface IFavoritesRepository {
 
-    suspend fun retrieveCustomerFavoriteProducts(id: String): Resource<List<FavoriteProduct>>
-    suspend fun saveCustomerFavoriteProduct(favoriteProduct: FavoriteProduct, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit)
-    suspend fun deleteProductFromFavorites(id: Int, onSuccessDelete:() -> Unit, onDeleteFailed: (e: Exception) -> Unit)
-    suspend fun deleteProductFromFavorites(customerId: String, productId: Int, onSuccess:() -> Unit, onFailure: (e: Exception) -> Unit)
+    fun fetchCustomerFavoriteProducts(id: String): Flow<Response<List<FavoriteProduct>>>
+    fun saveCustomerFavoriteProduct(productId: Int, customerId: String): Flow<Response<String>>
+    fun deleteProductFromFavorites(customerId: String, productId: Int): Flow<Response<String>>
 
 }
