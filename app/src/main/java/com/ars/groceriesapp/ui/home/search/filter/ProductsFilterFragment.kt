@@ -1,6 +1,8 @@
 package com.ars.groceriesapp.ui.home.search.filter
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.ars.groceriesapp.R
@@ -17,8 +19,8 @@ class ProductsFilterFragment : BottomSheetDialogFragment(R.layout.fragment_produ
 
     private val viewModel by activityViewModels<SearchViewModel>()
 
-    private lateinit var categoryFilterAdapter: FilterListAdapter<FilterCategory>
-    private lateinit var sortingAdapter: FilterListAdapter<Sort>
+    private lateinit var categoryFilterAdapter: FilterListAdapter
+    private lateinit var sortingAdapter: FilterListAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,13 +32,16 @@ class ProductsFilterFragment : BottomSheetDialogFragment(R.layout.fragment_produ
 
         binding.categoryFilterRv.apply {
             adapter = categoryFilterAdapter
+            itemAnimator = null
         }
         binding.sortingRv.apply {
             adapter = sortingAdapter
+            itemAnimator = null
         }
 
 
         viewModel.filterCategory.observe(viewLifecycleOwner) {
+            Log.d("filterCategory", "onViewCreated: dataList = $it")
             categoryFilterAdapter.setData(it ?: emptyList())
         }
 
@@ -46,16 +51,22 @@ class ProductsFilterFragment : BottomSheetDialogFragment(R.layout.fragment_produ
 
 
 
-        binding.filterApplyBtn.setOnClickListener {
-            dismiss()
-        }
+//        binding.filterApplyBtn.setOnClickListener {
+//            dismiss()
+//        }
 
         binding.filterResetBtn.setOnClickListener {
-            viewModel.resetFilter()
+            categoryFilterAdapter.resetList()
+            sortingAdapter.resetList()
             dismiss()
         }
 
 
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        //viewModel.updateFilterLists(categoryFilterAdapter.items, sortingAdapter.items)
     }
 
 

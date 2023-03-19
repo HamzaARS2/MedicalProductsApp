@@ -2,26 +2,27 @@ package com.ars.groceriesapp.ui.home.search.filter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.ars.domain.model.Category
+import com.ars.domain.model.FilterItem
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FilterItemBinding
 
-class FilterListAdapter<T>(
+class FilterListAdapter(
     private val context: Context,
-    private var items: List<T> = emptyList()
+    var items: MutableList<FilterItem> = mutableListOf()
 ) :
-    RecyclerView.Adapter<FilterListAdapter<T>.FilterListHolder>() {
+    RecyclerView.Adapter<FilterListAdapter.FilterListHolder>() {
 
     private var selectedPos = NO_POSITION
     private var lastSelectedPos = NO_POSITION
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterListHolder =
         FilterListHolder(
@@ -29,8 +30,10 @@ class FilterListAdapter<T>(
         )
 
     override fun onBindViewHolder(holder: FilterListHolder, position: Int) {
-        holder.bindItem(items[position])
-        if (position == selectedPos) {
+        val item = items[position]
+        holder.bindItem(item)
+
+        if (item.selected) {
             holder.binding.apply {
                 filterItemName.setTextColor(getColor())
                 root.strokeColor = getColor()
@@ -41,6 +44,7 @@ class FilterListAdapter<T>(
                 root.strokeColor = Color.parseColor("#A6A5A5")
             }
         }
+
     }
 
     private fun getColor() =
@@ -53,14 +57,18 @@ class FilterListAdapter<T>(
 
     override fun getItemCount(): Int = items.size
 
-    fun getSelectedItem(): T? = if (selectedPos == NO_POSITION) null
-    else items[selectedPos]
+    fun resetList() {
+        items.onEach { it.selected = false }
+    }
 
-    fun getSelectedPos() = selectedPos
+
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<T>) {
-        items = data
+    fun setData(data: List<FilterItem>) {
+        data.forEachIndexed { index, filterItem ->
+            if (filterItem.selected) lastSelectedPos = index }
+
+        items.addAll(data)
         notifyDataSetChanged()
     }
 
@@ -69,31 +77,23 @@ class FilterListAdapter<T>(
 
         init {
             binding.filterItemName.setOnClickListener {
-                items[bindingAdapterPosition]
-                lastSelectedPos = selectedPos
-                selectedPos = bindingAdapterPosition
-                notifyItemChanged(selectedPos)
-                if (lastSelectedPos != NO_POSITION)
+                if (lastSelectedPos != NO_POSITION) {
+                    items[lastSelectedPos].selected = false
                     notifyItemChanged(lastSelectedPos)
+                }
+                if(bindingAdapterPosition != lastSelectedPos) {
+                    items[bindingAdapterPosition].selected = true
+                    notifyItemChanged(bindingAdapterPosition)
+                }
+                lastSelectedPos = bindingAdapterPosition
             }
         }
 
 
-        fun bindItem(item: T) {
-            when (item) {
-                is String -> {
-                    binding.filterItemName.text = item
-                }
-                is Category -> {
-                    binding.filterItemName.text = item.name
-                }
-            }
+        fun bindItem(item: FilterItem) {
+           binding.filterItemName.text = item.name
         }
 
-        fun setSelectedItem(position: Int) {
-            selectedPos = position
-            notifyItemChanged(position)
-        }
 
     }
 

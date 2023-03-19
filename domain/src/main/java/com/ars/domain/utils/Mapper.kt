@@ -2,7 +2,7 @@ package com.ars.domain.utils
 
 import com.ars.domain.model.Category
 import com.ars.domain.model.Customer
-import com.ars.groceriesapp.ui.home.search.filter.FilterCategory
+import com.ars.domain.model.FilterItem
 import com.google.firebase.auth.FirebaseUser
 
 fun FirebaseUser.toCustomer(name: String): Customer =
@@ -14,8 +14,9 @@ fun FirebaseUser.toCustomer(name: String): Customer =
         address = ""
     )
 
-fun Category.toFilterCategory() =
-    com.ars.groceriesapp.ui.home.search.filter.FilterCategory(
+fun Category.asFilterItem(type: String) =
+    FilterItem(
         id = id,
-        name = name
+        name = name,
+        type = type
     )

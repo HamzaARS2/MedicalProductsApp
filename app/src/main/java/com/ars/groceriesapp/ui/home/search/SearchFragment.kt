@@ -121,8 +121,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun observeAppliedFilter() {
-        viewModel.appliedFilter.observe(viewLifecycleOwner) { (sort, category) ->
-            Log.d("appliedFilter", "observeAppliedFilter: Sort = $sort && Category = $category")
+        viewModel.filterCategory.observe(viewLifecycleOwner) { filterItem ->
+            Log.d("appliedFilter", "observeAppliedFilter: filterCategory = " + filterItem?.filter { it.selected })
+        }
+
+        viewModel.sortValues.observe(viewLifecycleOwner) { filterItem ->
+            Log.d("appliedFilter", "observeAppliedFilter: sortValues = " + filterItem?.filter { it.selected })
         }
     }
 

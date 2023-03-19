@@ -96,17 +96,17 @@
         app:spanCount="2"
         tools:listitem="@layout/filter_item" />
 
-    <Button
-        android:id="@+id/filter_apply_btn"
-        style="@style/MainButtonStyle"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_55sdp"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:text="Apply Filter"
-        android:textSize="@dimen/_13ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category_filter_rv" />
+<!--    <Button-->
+<!--        android:id="@+id/filter_apply_btn"-->
+<!--        style="@style/MainButtonStyle"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="@dimen/_55sdp"-->
+<!--        android:layout_marginTop="@dimen/_16sdp"-->
+<!--        android:text="Apply Filter"-->
+<!--        android:textSize="@dimen/_13ssp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/category_filter_rv" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
