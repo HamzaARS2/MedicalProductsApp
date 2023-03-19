@@ -55,4 +55,7 @@
     <string name="similar_products">Similar Products</string>
     <string name="description">Description</string>
     <string name="my_cart">My Cart</string>
+    <string name="cancel">Cancel</string>
+    <string name="filter">Filter</string>
+    <string name="reset">Reset</string>
 </resources>

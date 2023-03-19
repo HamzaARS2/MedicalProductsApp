@@ -1,19 +1,22 @@
-package com.ars.groceriesapp.ui.home.explore
+package com.ars.groceriesapp.ui.home.search
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ars.domain.model.Product
 import com.ars.groceriesapp.databinding.ShopProductItemBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
-class ProductsAdapter(
-    val onProductClick: (product: Product) -> Unit,
-    val onProductAddToCartClick: (product: Product) -> Unit
-) : RecyclerView.Adapter<ProductsAdapter.ProductsHolder>() {
+class SearchProductsAdapter(
+    val onProductClick: (productId: Int) -> Unit,
+    val onProductAddToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit
+) : RecyclerView.Adapter<SearchProductsAdapter.ProductsHolder>() {
 
     private val differCallBack = object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
@@ -47,20 +50,34 @@ class ProductsAdapter(
 
         init {
             binding.rootCv.setOnClickListener {
-                onProductClick(differ.currentList[bindingAdapterPosition])
+                onProductClick(differ.currentList[bindingAdapterPosition].id)
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bindProduct(product: Product) {
             binding.run {
+
                 shopProductProgress.visibility = View.INVISIBLE
                 shopProductItemViewsGroup.visibility = View.VISIBLE
                 shopProductNameTv.text = product.name
                 shopProductKgPcsTv.text = product.priceUnit
                 shopProductPriceTv.text = "$${product.price}"
-                Glide.with(shopProductImageImv).load(product.image).into(shopProductImageImv)
+
+                Glide.with(shopProductImageImv)
+                    .load(product.image)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(shopProductImageImv)
+
                 shopProductAddBtn.setOnClickListener {
-                    onProductAddToCartClick(differ.currentList[bindingAdapterPosition])
+                    shopProductAddBtnProgress.visibility = View.VISIBLE
+                    shopProductAddBtn.visibility = View.INVISIBLE
+                    onProductAddToCartClick(differ.currentList[bindingAdapterPosition].id) {
+                        // On adding product to cart finished
+                        shopProductAddBtnProgress.visibility = View.INVISIBLE
+                        shopProductAddBtn.visibility = View.VISIBLE
+
+                    }
                 }
 
             }

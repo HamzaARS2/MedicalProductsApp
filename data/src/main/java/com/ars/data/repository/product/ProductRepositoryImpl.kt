@@ -1,5 +1,6 @@
 package com.ars.data.repository.product
 
+
 import androidx.room.withTransaction
 import com.ars.data.extensions.asDiscountEntity
 import com.ars.data.extensions.asProduct
@@ -74,13 +75,16 @@ class ProductRepositoryImpl @Inject constructor(
         )
 
 
-    override suspend fun searchProducts(query: String): Resource<List<Product>> {
-        return try {
-            val response = productDataSource.fetchProductsContaining(query)
-            Resource.Success(response)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Resource.Failure(e)
+
+    override fun searchProducts(query: String, categoryId: Int) = flow {
+        emit(Response.Loading())
+        val result = try {
+            val response = productDataSource.fetchProductsContaining(query, categoryId)
+            Response.Success(response)
+        } catch (throwable: Throwable) {
+            throwable.printStackTrace()
+            Response.Error(throwable)
         }
+        emit(result)
     }
 }

@@ -35,7 +35,8 @@ fun NetworkProduct.asProductEntity() =
         priceUnit = priceUnit,
         rating = rating,
         exclusive = exclusive,
-        productDiscountId = discountId
+        productDiscountId = discountId,
+        createdAt = convertDateToLong(createdAt)
     )
 
 fun NetworkProduct.asProduct() =
@@ -48,7 +49,8 @@ fun NetworkProduct.asProduct() =
         priceUnit = priceUnit,
         rating = rating,
         exclusive = exclusive,
-        discount = networkDiscount?.asDiscount()
+        discount = networkDiscount?.asDiscount(),
+        createdAt = convertDateToLong(createdAt)
     )
 
 fun ProductEntity.asProduct() =
@@ -60,7 +62,8 @@ fun ProductEntity.asProduct() =
         priceUnit = priceUnit,
         image = image,
         rating = rating,
-        exclusive = exclusive
+        exclusive = exclusive,
+        createdAt = createdAt
     )
 
 fun DiscountAndProduct.asProduct(): Product {
@@ -75,7 +78,8 @@ fun DiscountAndProduct.asProduct(): Product {
         image = productEntity.image,
         rating = productEntity.rating,
         exclusive = productEntity.exclusive,
-        discount = discountEntity?.asDiscount()
+        discount = discountEntity?.asDiscount(),
+        createdAt = productEntity.createdAt
     )
 }
 

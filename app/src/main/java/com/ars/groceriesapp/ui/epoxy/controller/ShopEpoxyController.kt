@@ -3,6 +3,7 @@ package com.ars.groceriesapp.ui.epoxy.controller
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import com.airbnb.epoxy.Typed2EpoxyController
@@ -26,7 +27,8 @@ class ShopEpoxyController(
     private val customer: Customer?,
     private val onCategoryClicked: (category: Category) -> Unit,
     private val onProductClicked: (product: Product) -> Unit,
-    private val onAddToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit
+    private val onAddToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit,
+    private val onSearchClick: () -> Unit
 ) : Typed2EpoxyController<List<Product>?, List<Category>?>() {
 
 
@@ -35,7 +37,7 @@ class ShopEpoxyController(
         categories: List<Category>?
     ) {
 
-        ShopHeader(customer)
+        ShopHeader(customer, onSearchClick)
             .id("shop_header")
             .addTo(this)
 
@@ -52,11 +54,11 @@ class ShopEpoxyController(
                 )
             )
         }
-        val exclusives = products?.filter { it.exclusive }
+        val exclusives = products?.filter { it.exclusive }?.sortedByDescending { it.createdAt }
         val onSale = products?.filter { it.discount != null }?.filter { product ->
             (product.discount?.endDate ?: Date().time) > Date().time
-        }
-        val mostRated = products?.filter { it.rating > 4 }
+        }?.sortedByDescending { it.discount?.percentage }
+        val mostRated = products?.sortedByDescending { it.rating }?.take(7)
 
         loadProducts(exclusives, "Exclusive Offer","exclusives" )
         loadCategories(categories)
@@ -65,22 +67,32 @@ class ShopEpoxyController(
     }
 
 
-        private fun loadProducts(products: List<Product>?, productsType: String, sectionId: String) {
-            products ?: return
+        private fun loadProducts(products: List<Product?>?, productsType: String, sectionId: String) {
+            val productsModels = mutableListOf<ShopProduct>()
+
             ShopSection(productsType)
                 .id(sectionId)
                 .addTo(this)
 
-            val productsModels = mutableListOf<ShopProduct>()
-
-
-            products.forEachIndexed { index, product ->
-                productsModels.add(
-                    ShopProduct(product, onProductClicked, onAddToCartClick).apply {
-                        id(index)
-                    }
-                )
+            if (products.isNullOrEmpty()) {
+                repeat(2) {
+                    productsModels.add(
+                        ShopProduct(null, onProductClicked, onAddToCartClick).apply {
+                            id(it)
+                        }
+                    )
+                }
+            } else {
+                products.forEachIndexed { index, product ->
+                    productsModels.add(
+                        ShopProduct(product, onProductClicked, onAddToCartClick).apply {
+                            id(index)
+                        }
+                    )
+                }
             }
+
+
 
             carousel {
                 id(productsType + "carousel")
@@ -115,11 +127,13 @@ class ShopEpoxyController(
 
 
 data class ShopHeader(
-    private val customer: Customer?
+    private val customer: Customer?,
+    private val onSearchClick: () -> Unit
 ) : ViewBindingKotlinModel<ShopHeaderItemBinding>(R.layout.shop_header_item) {
     override fun ShopHeaderItemBinding.bind() {
         if (customer != null) {
-            shopHeaderLocation.text = customer.address
+            shopHeaderLocation.text = customer.address.ifBlank { "Set your location" }
+            shopHeaderSearchTv.setOnClickListener { onSearchClick() }
         }
 
     }

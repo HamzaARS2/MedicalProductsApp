@@ -24,7 +24,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/explore_search_edt_container"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_43sdp"
+        android:layout_height="@dimen/_38sdp"
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:paddingHorizontal="@dimen/_10sdp"
@@ -33,17 +33,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/explore_find_products_title">
 
-        <EditText
-            android:id="@+id/explore_header_search_edt"
+        <TextView
+            android:id="@+id/explore_header_search_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/_43sdp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/gilroy_medium"
-            android:hint="@string/search_store"
-            android:inputType="text"
+            android:text="@string/search_store"
             android:paddingHorizontal="@dimen/_14sdp"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/subtitle_color"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/subtitle_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/explore_search_icon"
@@ -60,21 +60,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <ImageButton
-        android:id="@+id/clearSearchBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_close"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/explore_search_edt_container"
-        app:layout_constraintEnd_toEndOf="@+id/explore_search_edt_container"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="@+id/explore_search_edt_container"
-        app:layout_constraintTop_toTopOf="@+id/explore_search_edt_container"
-        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/explore_rv"

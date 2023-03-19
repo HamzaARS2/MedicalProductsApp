@@ -15,6 +15,7 @@ data class NetworkProduct(
     val nutrition: String,
     val exclusive: Boolean,
     val discountId: Int?,
+    val createdAt: String,
     @SerializedName("discount")
     val networkDiscount: NetworkDiscount?,
 )

@@ -62,7 +62,8 @@ class ShopFragment : Fragment() {
             homeViewModel.getCustomer(),
             ::onCategoryClicked,
             ::onProductClicked,
-            ::onAddToCartClick
+            ::onAddToCartClick,
+            ::onSearchClick
         )
         binding.epoxyRv.setController(controller)
 
@@ -82,8 +83,12 @@ class ShopFragment : Fragment() {
     private fun onProductClicked(product: Product) {
         navController.navigate(
             ShopFragmentDirections
-                .shopFragToProductDetailsFrag(product)
+                .shopFragToProductDetailsFrag(product.id)
         )
+    }
+
+    private fun onSearchClick() {
+        navController.navigate(ShopFragmentDirections.shopToSearch())
     }
 
     private fun onAddToCartClick(productId: Int, onFinish: () -> Unit) {

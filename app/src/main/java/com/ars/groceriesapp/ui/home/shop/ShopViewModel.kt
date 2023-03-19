@@ -16,8 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ShopViewModel @Inject constructor(
     private val saveCartItemUseCase: SaveCartItemUseCase,
-    private val loginRepo: LoginRepository,
-    private val getShopContentUseCase: GetShopContentUseCase
+    getShopContentUseCase: GetShopContentUseCase
 ) : ViewModel() {
 
     val productsAndCategories = getShopContentUseCase().asLiveData()
@@ -26,11 +25,6 @@ class ShopViewModel @Inject constructor(
 
     fun saveCartItem(customerId: String, productId: Int) =
         saveCartItemUseCase(customerId, productId).asLiveData()
-
-
-
-
-    fun logOut() = loginRepo.logout()
 
 
 }

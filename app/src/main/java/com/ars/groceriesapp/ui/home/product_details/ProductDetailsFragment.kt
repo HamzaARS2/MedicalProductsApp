@@ -36,7 +36,7 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProductDetailsBinding.inflate(layoutInflater)
-        productId = args.product.id
+        productId = args.productId
         return binding.root
     }
 
@@ -115,7 +115,7 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onAddToCartClick() {
-        viewModel.saveCartItem(homeViewModel.getCustomer().docId, args.product.id)
+        viewModel.saveCartItem(homeViewModel.getCustomer().docId, productId)
             .observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is Response.Success -> {

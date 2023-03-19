@@ -7,6 +7,6 @@ class SearchProductsUseCase @Inject constructor(
     private val productRepository: IProductRepository
 ) {
 
-    suspend operator fun invoke(query: String) =
-        productRepository.searchProducts(query)
+    operator fun invoke(query: String, categoryId: Int) =
+        productRepository.searchProducts(query, categoryId)
 }

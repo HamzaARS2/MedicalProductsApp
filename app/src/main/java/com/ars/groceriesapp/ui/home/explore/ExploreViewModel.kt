@@ -26,16 +26,6 @@ class ExploreViewModel @Inject constructor(
 
     val categoriesLiveData = getCategoriesUseCase().asLiveData()
 
-    private val _productsFlow: MutableSharedFlow<Resource<List<Product>?>?> = MutableSharedFlow()
-    val productsFlow: SharedFlow<Resource<List<Product>?>?> get() = _productsFlow
-
-
-
-    fun searchProduct(query: String) = viewModelScope.launch {
-        _productsFlow.emit(Resource.Loading)
-        val response = searchProductsUseCase(query)
-        _productsFlow.emit(response)
-    }
 
 
 }

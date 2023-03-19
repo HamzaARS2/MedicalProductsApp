@@ -17,6 +17,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.ars.domain.model.Category
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Resource
@@ -34,8 +36,9 @@ class ExploreFragment : Fragment() {
 
     private val binding by lazy { FragmentExploreBinding.inflate(layoutInflater) }
     private val viewModel by activityViewModels<ExploreViewModel>()
+
     private lateinit var categoriesAdapter: CategoriesAdapter
-    private lateinit var productsAdapter: ProductsAdapter
+    private lateinit var navController: NavController
 
 
 
@@ -50,34 +53,12 @@ class ExploreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
         categoriesAdapter = CategoriesAdapter(::onCategoryClick)
-        productsAdapter = ProductsAdapter(::onProductClick, ::onProductAddToCartClick)
         binding.exploreRv.run {
             adapter = categoriesAdapter
             setHasFixedSize(true)
         }
-
-        collectSearchedProducts()
-
-        binding.clearSearchBtn.setOnClickListener {
-            binding.exploreHeaderSearchEdt.setText("")
-        }
-
-        handleSearchViewsChanges()
-
-        binding.exploreHeaderSearchEdt.addTextChangedListener(textWatcher)
-
-        binding.exploreSearchIcon.setOnClickListener {
-            binding.run {
-                exploreHeaderSearchEdt.clearFocus()
-                exploreRv.adapter = categoriesAdapter
-                exploreSearchIcon.setImageResource(R.drawable.ic_search)
-                binding.exploreHeaderSearchEdt.setText("")
-                clearSearchBtn.isVisible = false
-            }
-
-        }
-
         viewModel.categoriesLiveData.observe(viewLifecycleOwner) { response ->
             categoriesAdapter.differ.submitList(response.data)
             when(response) {
@@ -91,76 +72,15 @@ class ExploreFragment : Fragment() {
             }
        }
 
-
-
-
-    }
-
-    private val textWatcher = object : TextWatcher {
-        private val handler = Handler(Looper.getMainLooper())
-        private var runnable: Runnable? = null
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+        binding.exploreSearchEdtContainer.setOnClickListener {
+            navController.navigate(ExploreFragmentDirections.exploreToSearch())
         }
 
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            runnable?.let {
-                handler.removeCallbacks(it)
-            }
-        }
-
-        override fun afterTextChanged(editable: Editable?) {
-            runnable = Runnable {
-                editable?.let {
-                    if (it.toString().isBlank()) return@let
-                    viewModel.searchProduct(it.toString())
-                }
-            }
-            handler.postDelayed(runnable!!, 500)
-        }
-
-    }
-
-
-    private fun handleSearchViewsChanges() {
-        binding.exploreHeaderSearchEdt.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused) {
-                binding.run {
-                    exploreRv.adapter = productsAdapter
-                    exploreSearchIcon.setImageResource(R.drawable.ic_back_arrow_2)
-                    clearSearchBtn.isVisible = true
-                }
-            }
-
-            binding.exploreFindProductsTitle.isVisible = !isFocused
-
-        }
-    }
-
-    private fun collectSearchedProducts() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.productsFlow.collectLatest { response ->
-                    if (response is Resource.Success) {
-                        productsAdapter.differ.submitList(response.result!!)
-                    }
-                }
-            }
-        }
     }
 
 
     private fun onCategoryClick(category: Category) {
         Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun onProductClick(product: Product) {
-        Toast.makeText(requireContext(), product.name, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun onProductAddToCartClick(product: Product) {
-        Toast.makeText(requireContext(), product.name + " Added to cart", Toast.LENGTH_SHORT).show()
     }
 
 

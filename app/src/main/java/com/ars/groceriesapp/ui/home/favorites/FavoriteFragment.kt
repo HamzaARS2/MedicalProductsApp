@@ -91,7 +91,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun onFavoriteProductClick(favoriteProduct: FavoriteProduct) {
-        navController.navigate(FavoriteFragmentDirections.favoriteToProductDetails(favoriteProduct.product))
+        navController.navigate(FavoriteFragmentDirections.favoriteToProductDetails(favoriteProduct.product.id))
     }
 
     private fun onDeleteFavoriteProduct(favoriteProduct: FavoriteProduct, onFinish: () -> Unit) {

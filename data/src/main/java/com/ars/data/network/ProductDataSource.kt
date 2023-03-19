@@ -1,5 +1,6 @@
 package com.ars.data.network
 
+import com.ars.data.extensions.asProduct
 import com.ars.data.extensions.asProductDetails
 import com.ars.data.network.api.ProductApi
 import com.ars.data.network.model.NetworkProduct
@@ -18,9 +19,7 @@ class ProductDataSource @Inject constructor(
     suspend fun fetchShopProducts(): List<NetworkProduct> =
         productApi.retrieveShopProducts()
 
-
-    suspend fun fetchProductsContaining(query: String): List<Product> =
-        productApi.searchProducts(query)
-
+    suspend fun fetchProductsContaining(query: String, categoryId: Int): List<Product> =
+        productApi.searchProducts(query, categoryId).map { it.asProduct() }
 
 }
