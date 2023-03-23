@@ -80,7 +80,7 @@ class ExploreFragment : Fragment() {
 
 
     private fun onCategoryClick(category: Category) {
-        Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()
+        navController.navigate(ExploreFragmentDirections.exploreToSearch(category.id))
     }
 
 

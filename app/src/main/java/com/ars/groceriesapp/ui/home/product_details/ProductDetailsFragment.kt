@@ -55,6 +55,10 @@ class ProductDetailsFragment : Fragment() {
         viewModel.getProductDetails(homeViewModel.getCustomer().docId, productId)
         observeProductDetails()
 
+        binding.productDetailsOrderNowBtn.setOnClickListener {
+            navController.navigate(ProductDetailsFragmentDirections.productDetailsToCheckout())
+        }
+
     }
 
     private fun observeProductDetails() {

@@ -1,23 +1,22 @@
 package com.ars.groceriesapp.ui.home.search
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Response
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentSearchBinding
 import com.ars.groceriesapp.ui.home.HomeViewModel
+import com.ars.groceriesapp.ui.home.search.filter.Filter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,18 +29,29 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val viewModel by activityViewModels<SearchViewModel>()
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private lateinit var navController: NavController
+    private val args by navArgs<SearchFragmentArgs>()
 
     private lateinit var searchProductsAdapter: SearchProductsAdapter
+    private lateinit var filterItemAdapter: FilterItemAdapter
+
+    private var filter: Filter = Filter()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchBinding.bind(view)
         navController = Navigation.findNavController(view)
+
+        viewModel.categoryId = args.categoryId
+
         searchProductsAdapter = SearchProductsAdapter(
             ::onProductClick,
             ::onProductAddToCartClick
         )
+
+        filterItemAdapter = FilterItemAdapter()
+
+        binding.searchFilterItemsRv.adapter = filterItemAdapter
 
         binding.searchRv.apply {
             setHasFixedSize(true)
@@ -58,7 +68,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             binding.searchProgress.isVisible = response is Response.Loading
             when(response) {
                 is Response.Success -> {
-                    searchProductsAdapter.differ.submitList(response.data)
+                    val sortedList = filter.sort(response.data)
+                    searchProductsAdapter.differ.submitList(sortedList)
+                    binding.searchRv.smoothScrollToPosition(0)
                 }
                 is Response.Error -> {
                     Toast.makeText(requireContext(), response.error?.localizedMessage, Toast.LENGTH_SHORT).show()
@@ -69,26 +81,33 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             }
         }
 
+        viewModel.appliedFilters.observe(viewLifecycleOwner) { updatedFilter ->
+            this.filter = updatedFilter
+            val query = binding.exploreHeaderSearchSv.query.toString()
+            viewModel.searchProducts(query)
+            filterItemAdapter.setItems(filter.getAppliedFiltersNames())
+
+        }
+
         binding.searchFilterBtn.setOnClickListener {
             navController.navigate(SearchFragmentDirections.searchToFilter())
         }
 
-        observeAppliedFilter()
+
 
     }
-
 
 
     private fun handleSearch() {
         binding.exploreHeaderSearchSv.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.searchProducts(query ?: "",0)
+                viewModel.searchProducts(query ?: "")
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText == "") {
-                    viewModel.searchProducts("", 0)
+                    viewModel.searchProducts("")
                 }
                 return false
             }
@@ -118,16 +137,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     }
                 }
             }
-    }
-
-    private fun observeAppliedFilter() {
-        viewModel.filterCategory.observe(viewLifecycleOwner) { filterItem ->
-            Log.d("appliedFilter", "observeAppliedFilter: filterCategory = " + filterItem?.filter { it.selected })
-        }
-
-        viewModel.sortValues.observe(viewLifecycleOwner) { filterItem ->
-            Log.d("appliedFilter", "observeAppliedFilter: sortValues = " + filterItem?.filter { it.selected })
-        }
     }
 
 

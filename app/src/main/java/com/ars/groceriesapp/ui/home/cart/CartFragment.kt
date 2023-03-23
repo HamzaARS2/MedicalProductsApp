@@ -12,6 +12,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ars.domain.model.CartItem
@@ -33,6 +35,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private val viewModel by activityViewModels<CartViewModel>()
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
+    private lateinit var navController: NavController
 
     private lateinit var cartManager: CartManager
     private lateinit var cartAdapter: CartAdapter
@@ -48,7 +51,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        navController = Navigation.findNavController(view)
         cartAdapter =
             CartAdapter(::onIncreaseQuantityClick, ::onDecreaseQuantityClick, ::onRemoveItemClick)
 
@@ -71,6 +74,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                     requireContext(), LinearLayoutManager.VERTICAL
                 )
             )
+        }
+
+        binding.cartCheckoutBtn.setOnClickListener {
+            navController.navigate(CartFragmentDirections.cartToCheckout())
         }
 
 

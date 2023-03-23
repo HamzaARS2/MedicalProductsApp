@@ -1,13 +1,15 @@
 package com.ars.groceriesapp.ui.home.search.filter
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentProductsFilterBinding
 import com.ars.groceriesapp.ui.home.search.SearchViewModel
+import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.ASCENDING_PRICE
+import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.DESCENDING_PRICE
+import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.HIGH_RATED
+import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.NEWEST
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
@@ -19,55 +21,41 @@ class ProductsFilterFragment : BottomSheetDialogFragment(R.layout.fragment_produ
 
     private val viewModel by activityViewModels<SearchViewModel>()
 
-    private lateinit var categoryFilterAdapter: FilterListAdapter
-    private lateinit var sortingAdapter: FilterListAdapter
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProductsFilterBinding.bind(view)
 
-        sortingAdapter = FilterListAdapter(requireContext())
-        categoryFilterAdapter = FilterListAdapter(requireContext())
 
-        binding.categoryFilterRv.apply {
-            adapter = categoryFilterAdapter
-            itemAnimator = null
-        }
-        binding.sortingRv.apply {
-            adapter = sortingAdapter
-            itemAnimator = null
+        viewModel.appliedFilters.observe(viewLifecycleOwner) { filter ->
+            binding.apply {
+                highRatedFilterItem.isChecked = filter.appliedFiltersMap[HIGH_RATED]!!
+                newestFilterItem.isChecked = filter.appliedFiltersMap[NEWEST]!!
+                highToLowFilterItem.isChecked = filter.appliedFiltersMap[DESCENDING_PRICE]!!
+                lowToHighFilterItem.isChecked = filter.appliedFiltersMap[ASCENDING_PRICE]!!
+            }
         }
 
 
-        viewModel.filterCategory.observe(viewLifecycleOwner) {
-            Log.d("filterCategory", "onViewCreated: dataList = $it")
-            categoryFilterAdapter.setData(it ?: emptyList())
-        }
-
-        viewModel.sortValues.observe(viewLifecycleOwner) {
-            sortingAdapter.setData(it ?: emptyList())
-        }
-
-
-
-//        binding.filterApplyBtn.setOnClickListener {
-//            dismiss()
-//        }
-
-        binding.filterResetBtn.setOnClickListener {
-            categoryFilterAdapter.resetList()
-            sortingAdapter.resetList()
+        binding.filterApplyBtn.setOnClickListener {
+            val ids =  binding.filterGroup.checkedChipIds + binding.chipGroup.checkedChipIds
+            val filter = Filter()
+            filter.appliedFiltersMap[HIGH_RATED] = R.id.high_rated_filter_item in ids
+            filter.appliedFiltersMap[NEWEST] = R.id.newest_filter_item in ids
+            filter.appliedFiltersMap[DESCENDING_PRICE] = R.id.high_to_low_filter_item in ids
+            filter.appliedFiltersMap[ASCENDING_PRICE] = R.id.low_to_high__filter_item in ids
+            viewModel.updateFilters(filter)
             dismiss()
         }
 
+        binding.filterResetBtn.setOnClickListener {
+            viewModel.updateFilters(Filter())
+            dismiss()
+        }
 
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        //viewModel.updateFilterLists(categoryFilterAdapter.items, sortingAdapter.items)
-    }
+
+
 
 
 

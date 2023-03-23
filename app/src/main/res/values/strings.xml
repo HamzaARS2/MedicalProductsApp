@@ -58,4 +58,7 @@
     <string name="cancel">Cancel</string>
     <string name="filter">Filter</string>
     <string name="reset">Reset</string>
+    <string name="apply_promo_code">Apply promo code</string>
+    <string name="apply">Apply</string>
+    <string name="go_to_payment">Go to Payment</string>
 </resources>
