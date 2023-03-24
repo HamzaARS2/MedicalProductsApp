@@ -27,10 +27,13 @@ class ProductRepositoryImpl @Inject constructor(
     private val discountDao = database.getDiscountDao()
     private val favoriteProductDao = database.getFavoriteProductDao()
 
-    override fun fetchProductDetails(customerId: String, productId: Int) = flow {
+    override fun fetchProductDetails(customerId: String?, productId: Int) = flow {
         emit(Response.Loading())
         val response = try {
-            val count = favoriteProductDao.retrieveFavoriteProductCount(customerId, productId)
+            var count = 0
+            if (customerId != null) {
+                count = favoriteProductDao.retrieveFavoriteProductCount(customerId, productId)
+            }
             val result = productDataSource.fetchProductDetailsById(productId)
                 .asProductDetails(count > 0)
             Response.Success(result)

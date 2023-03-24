@@ -15,14 +15,12 @@ class LocalCustomerRepository(private val sp: SharedPreferences) {
     }
 
     fun getLocalCustomer(): Customer? {
-        val id = sp.getInt(ID_KEY, 0)
         val docId = sp.getString(DOC_ID_KEY, null) ?: return null
         val name = sp.getString(NAME_KEY, "")!!
         val email = sp.getString(EMAIL_KEY, "")!!
         val phone = sp.getString(PHONE_KEY, "")!!
-        val address = sp.getString(ADDRESS_KEY, "")!!
 
-        return Customer(id, docId, name, email, phone, address)
+        return Customer( docId, name, email, phone)
     }
 
     fun saveLocalCustomer(customer: Customer?) {
@@ -30,12 +28,10 @@ class LocalCustomerRepository(private val sp: SharedPreferences) {
         customer.id ?: return
         val editor = sp.edit()
         editor.run {
-            putInt(ID_KEY, customer.id!!)
-            putString(DOC_ID_KEY, customer.docId)
+            putString(DOC_ID_KEY, customer.id)
             putString(NAME_KEY, customer.name)
             putString(EMAIL_KEY, customer.email)
             putString(PHONE_KEY, customer.phone)
-            putString(ADDRESS_KEY, customer.address)
             apply()
         }
     }

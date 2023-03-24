@@ -9,7 +9,7 @@ import com.ars.domain.utils.Response
 import kotlinx.coroutines.flow.Flow
 
 interface IProductRepository {
-    fun fetchProductDetails(customerId: String, productId: Int): Flow<Response<ProductDetails>>
+    fun fetchProductDetails(customerId: String?, productId: Int): Flow<Response<ProductDetails>>
     fun fetchShopProducts(): Flow<Response<List<Product>?>>
     fun searchProducts(query: String, categoryId: Int): Flow<Response<List<Product>>>
 }

@@ -1,5 +1,7 @@
 package com.ars.data.network
 
+import com.ars.data.extensions.asCustomer
+import com.ars.data.extensions.asNetworkCustomer
 import com.ars.data.network.api.CustomerApi
 import com.ars.domain.model.Customer
 import com.ars.domain.repository.ICRUDRepository
@@ -11,7 +13,7 @@ class CustomerDataSource @Inject constructor(
 ): ICRUDRepository<Customer,String> {
     override suspend fun insert(data: Customer): Resource<Customer> {
         return try {
-            val response = customerApi.insertCustomer(data)
+            val response = customerApi.insertCustomer(data.asNetworkCustomer()).asCustomer()
             Resource.Success(response)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -20,12 +22,12 @@ class CustomerDataSource @Inject constructor(
     }
 
     override suspend fun retrieve(id: String): Customer? {
-       return customerApi.retrieveCustomer(id)
+       return customerApi.retrieveCustomer(id)?.asCustomer()
     }
 
     override suspend fun retrieveAll(): Resource<List<Customer>> {
         return try {
-            val response = customerApi.retrieveAllCustomers()
+            val response = customerApi.retrieveAllCustomers().map { it.asCustomer() }
             Resource.Success(response)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -35,7 +37,7 @@ class CustomerDataSource @Inject constructor(
 
     override suspend fun update(data: Customer): Resource<Customer> {
         return try {
-            val response = customerApi.updateCustomer(data)
+            val response = customerApi.updateCustomer(data).asCustomer()
             Resource.Success(response)
         } catch (e: Exception) {
             e.printStackTrace()

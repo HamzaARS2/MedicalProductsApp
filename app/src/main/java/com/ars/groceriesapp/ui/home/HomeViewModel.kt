@@ -6,16 +6,16 @@ import androidx.lifecycle.ViewModel
 import com.ars.domain.model.Customer
  class HomeViewModel: ViewModel() {
 
-    private val mCustomer: MutableLiveData<Customer> = MutableLiveData(Customer())
+    private val mCustomer: MutableLiveData<Customer?> = MutableLiveData(null)
 
 
      fun setCustomer(customer: Customer) {
          mCustomer.value = customer
      }
 
-     fun getCustomerLiveData(): LiveData<Customer> =
+     fun getCustomerLiveData(): LiveData<Customer?> =
          mCustomer
 
-     fun getCustomer(): Customer =
-         mCustomer.value ?: Customer()
+     fun getCustomer(): Customer? =
+         mCustomer.value
 }

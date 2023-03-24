@@ -19,13 +19,13 @@ class PhoneLocationViewModel @Inject constructor(
     private val updateCustomerUseCase: UpdateCustomerUseCase
 ) : ViewModel() {
 
-    var customer = Customer()
+    var customer: Customer? = null
     var verificationId = ""
     var resendToken: PhoneAuthProvider.ForceResendingToken? = null
     var phoneNumber = ""
 
-    private val _updatedCustomer: MutableSharedFlow<Resource<Customer>> = MutableSharedFlow()
-    val updatedCustomer: SharedFlow<Resource<Customer>> get() = _updatedCustomer
+    private val _updatedCustomer: MutableSharedFlow<Resource<Customer?>> = MutableSharedFlow()
+    val updatedCustomer: SharedFlow<Resource<Customer?>> get() = _updatedCustomer
 
     fun linkPhoneWithCustomerAccount(
         verificationId: String, smsCode: String, onSuccess: (phone: String) -> Unit,
@@ -35,9 +35,9 @@ class PhoneLocationViewModel @Inject constructor(
     }
 
     fun updateCustomer() = viewModelScope.launch {
-        _updatedCustomer.tryEmit(Resource.Loading)
-        val updatedCustomer = updateCustomerUseCase(customer)
-        _updatedCustomer.emit(updatedCustomer)
+//        _updatedCustomer.tryEmit(Resource.Loading)
+//        val updatedCustomer = updateCustomerUseCase(customer)
+//        _updatedCustomer.emit(updatedCustomer)
     }
 
 }

@@ -25,7 +25,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ars.domain.utils.Resource
-import com.ars.groceriesapp.PhoneLocationGraphDirections
 import com.ars.groceriesapp.databinding.FragmentLocationBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
 import com.google.android.gms.location.*
@@ -75,8 +74,8 @@ class LocationFragment : Fragment() {
                 for (location in locationResult.locations) {
                     if (location != null) {
                         val address = getAddress(location)
-                        viewModel.customer.address = address
-                        viewModel.updateCustomer()
+                        //viewModel.customer.address = address
+//                        viewModel.updateCustomer()
 
                     } else
                         Log.d("locationCallback", "onLocationResult: Location = null")
@@ -107,9 +106,9 @@ class LocationFragment : Fragment() {
                 when(response) {
                     is Resource.Success -> {
                         Toast.makeText(requireContext(), "Registered Successfully", Toast.LENGTH_SHORT).show()
-                        Navigation
-                            .findNavController(requireView())
-                            .navigate(PhoneLocationGraphDirections.actionGlobalHomeGraph2(response.result))
+//                        Navigation
+//                            .findNavController(requireView())
+//                            .navigate(PhoneLocationGraphDirections.actionGlobalHomeGraph2(response.result))
                     }
                     is Resource.Failure -> {
                         Snackbar.make(requireView(),response.e.message ?: "Something went wrong!", Snackbar.LENGTH_SHORT).show()

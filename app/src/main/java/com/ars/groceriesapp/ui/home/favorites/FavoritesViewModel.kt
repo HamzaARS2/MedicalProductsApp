@@ -25,7 +25,7 @@ class FavoritesViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    var customer = Customer()
+    var customer: Customer? = null
     private val _favoriteProductsFlow: MutableStateFlow<Resource<List<FavoriteProduct>>?> =
         MutableStateFlow(null)
     val favoriteProductsFlow: StateFlow<Resource<List<FavoriteProduct>>?> get() = _favoriteProductsFlow

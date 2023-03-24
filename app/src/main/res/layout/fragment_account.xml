@@ -13,61 +13,46 @@
         android:layout_height="wrap_content">
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/account_customer_image_imv"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_55sdp"
-            android:layout_margin="@dimen/_16sdp"
-            android:src="@drawable/avatar_placeholder"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/account_customer_image_imv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/_55sdp"-->
+<!--            android:layout_margin="@dimen/_16sdp"-->
+<!--            android:src="@drawable/avatar_placeholder"-->
+<!--            app:layout_constraintDimensionRatio="1:1"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/account_customer_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_18sdp"
             android:ellipsize="end"
             android:fontFamily="@font/gilroy_extrabold"
             android:lines="1"
             android:maxLines="1"
-            android:text="Hamza El Arras"
             android:textColor="@color/title_color"
-            android:textSize="@dimen/_14ssp"
-            app:layout_constraintBottom_toTopOf="@+id/account_customer_email_tv"
+            android:textSize="@dimen/_17ssp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/account_customer_image_imv"
-            app:layout_constraintTop_toTopOf="@+id/account_customer_image_imv"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintHorizontal_bias="0.09"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Hello, Hamza!" />
 
-        <TextView
-            android:id="@+id/account_customer_email_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gilroy_medium"
-            android:lines="1"
-            android:maxLines="1"
-            android:text="hamza1arrastec@gmail.com"
-            android:textColor="@color/subtitle_color"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintBottom_toBottomOf="@+id/account_customer_image_imv"
-            app:layout_constraintStart_toStartOf="@+id/account_customer_name_tv"
-            app:layout_constraintTop_toBottomOf="@+id/account_customer_name_tv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/account_orders_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/account_customer_image_imv"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/account_customer_name_tv">
 
             <View
                 android:id="@+id/view2"
@@ -120,9 +105,9 @@
             android:id="@+id/account_details_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_orders_btn">
@@ -152,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/gilroy_semi_bold"
-                android:text="@string/my_details"
+                android:text="@string/my_information"
                 android:textColor="@color/title_color"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView121"
@@ -178,9 +163,9 @@
             android:id="@+id/account_address_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_details_btn">
@@ -236,9 +221,9 @@
             android:id="@+id/account_payment_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_address_btn">
@@ -294,9 +279,9 @@
             android:id="@+id/account_promo_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_payment_btn">
@@ -326,7 +311,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/gilroy_semi_bold"
-                android:text="@string/promo_card"
+                android:text="@string/promo_code"
                 android:textColor="@color/title_color"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView127"
@@ -352,9 +337,9 @@
             android:id="@+id/account_notifications_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_promo_btn">
@@ -410,9 +395,9 @@
             android:id="@+id/account_help_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_notifications_btn">
@@ -468,9 +453,9 @@
             android:id="@+id/account_about_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_help_btn">
@@ -538,26 +523,35 @@
             android:layout_height="@dimen/_56sdp"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/settings_box_ripple"
             android:text="@string/log_out"
             android:textColor="@color/main_btn_color"
             android:textSize="@dimen/_14ssp"
-            android:background="@drawable/settings_box_ripple"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_about_btn" />
 
-        <ImageView
-            android:id="@+id/imageView10"
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/account_customer_info_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_outline"
+            android:visibility="visible"
+            app:constraint_referenced_ids="account_customer_name_tv,account_logout_btn"
+            tools:visibility="invisible" />
+
+        <Button
+            android:id="@+id/account_login_btn"
+            style="@style/MainButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
             app:layout_constraintBottom_toBottomOf="@+id/account_customer_name_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.03"
-            app:layout_constraintStart_toEndOf="@+id/account_customer_name_tv"
-            app:layout_constraintTop_toTopOf="@+id/account_customer_name_tv"
-            app:tint="@color/main_btn_color" />
+            app:layout_constraintEnd_toEndOf="@+id/account_customer_name_tv"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/account_customer_name_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

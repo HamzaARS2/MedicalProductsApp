@@ -73,7 +73,7 @@ class RegisterFragment : Fragment() {
                 val customer = state.result
                 Log.d("customerRegisterFlow", "onViewCreated: State = $customer")
 
-                navController.navigate(AuthGraphDirections.actionGlobalPhoneLocationGraph(customer))
+                navController.navigate(RegisterFragmentDirections.registerToPhone(customer))
 
 
             }

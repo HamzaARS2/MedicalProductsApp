@@ -7,11 +7,10 @@ import com.google.firebase.auth.FirebaseUser
 
 fun FirebaseUser.toCustomer(name: String): Customer =
     Customer(
-        docId = this.uid,
+        id = this.uid,
         name = name,
         email = this.email!!,
-        phone = this.phoneNumber ?: "",
-        address = ""
+        phone = this.phoneNumber
     )
 
 fun Category.asFilterItem(type: String) =

@@ -9,11 +9,11 @@ interface ICustomerRepository {
 
     val isLoggedIn: Pair<Boolean,String?>
     suspend fun register(username: String, email: String, password: String): Resource<Customer>
-    fun login(email: String, password: String): Flow<Response<Customer>>
+    fun login(email: String, password: String): Flow<Response<Customer?>>
 
-    suspend fun update(customer: Customer): Resource<Customer>
+    suspend fun update(customer: Customer): Resource<Customer?>
 
-    fun getCustomer(id: String): Flow<Response<Customer>>
+    fun getCustomer(id: String): Flow<Response<Customer?>>
 
     suspend fun linkPhoneWithExistingAccount(
         verificationId: String, smsCode: String, onSuccess: (phone: String) -> Unit,

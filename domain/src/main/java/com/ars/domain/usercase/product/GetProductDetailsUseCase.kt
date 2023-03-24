@@ -7,6 +7,6 @@ class GetProductDetailsUseCase @Inject constructor(
     private val productRepository: IProductRepository
 ) {
 
-    operator fun invoke(customerId: String, productId: Int) =
+    operator fun invoke(customerId: String?, productId: Int) =
         productRepository.fetchProductDetails(customerId, productId)
 }

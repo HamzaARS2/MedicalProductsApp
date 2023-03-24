@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.ars.groceriesapp.R
 import com.ars.groceriesapp.StartingGraphDirections
 import com.ars.groceriesapp.databinding.FragmentGetStartedBinding
 
@@ -29,7 +30,7 @@ class GetStartedFragment : Fragment() {
 
         binding.getstartedBtn.setOnClickListener {
             Navigation.findNavController(requireView())
-                .navigate(StartingGraphDirections.toAuthGraph())
+                .navigate(StartingGraphDirections.startingToHome())
         }
 
     }

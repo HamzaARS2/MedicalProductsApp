@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -44,8 +45,14 @@ class AccountFragment : Fragment(), View.OnClickListener {
 
     private fun displayCustomerInfo() {
         binding.apply {
-            accountCustomerNameTv.text = customer.name
-            accountCustomerEmailTv.text = customer.email
+            if (customer == null) {
+                accountCustomerInfoGroup.visibility = View.INVISIBLE
+                accountLoginBtn.isVisible = true
+            } else {
+                accountCustomerInfoGroup.visibility = View.VISIBLE
+                accountLoginBtn.isVisible = false
+                accountCustomerNameTv.text = customer!!.name
+            }
         }
     }
 
@@ -59,6 +66,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
             accountNotificationsBtn.setOnClickListener(this@AccountFragment)
             accountHelpBtn.setOnClickListener(this@AccountFragment)
             accountAboutBtn.setOnClickListener(this@AccountFragment)
+            accountLoginBtn.setOnClickListener(this@AccountFragment)
             accountLogoutBtn.setOnClickListener(this@AccountFragment)
         }
     }
@@ -88,6 +96,9 @@ class AccountFragment : Fragment(), View.OnClickListener {
             }
             R.id.account_about_btn -> {
                 Toast.makeText(requireContext(), "account_about_btn", Toast.LENGTH_SHORT).show()
+            }
+            R.id.account_login_btn -> {
+                navController.navigate(HomeGraphDirections.actionGlobalAuthGraph())
             }
             R.id.account_logout_btn -> {
                 viewModel.logout()

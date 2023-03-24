@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Response
+import com.ars.groceriesapp.R
+import com.ars.groceriesapp.StartingGraphDirections
 import com.ars.groceriesapp.databinding.FragmentSplashBinding
 import kotlinx.coroutines.flow.collectLatest
 
@@ -57,7 +59,7 @@ class SplashFragment : Fragment() {
             if (isLoggedIn) {
                 observeCustomer(id!!)
             } else {
-                navController.navigate(SplashFragmentDirections.toAuthGraph())
+                navController.navigate(StartingGraphDirections.startingToHome())
             }
 
         }
@@ -65,27 +67,23 @@ class SplashFragment : Fragment() {
 
     private fun observeCustomer(id: String) {
         viewModel.getCustomer(id).observe(viewLifecycleOwner) { response ->
-            when(response) {
+            when (response) {
                 is Response.Success -> {
                     val customer = response.data
                     if (customer != null)
-                    navController.navigate(
-                        SplashFragmentDirections.actionGlobalHomeGraph(
-                            customer
-                        )
-                    )
-                    else navController.navigate(SplashFragmentDirections.toAuthGraph())
+                        navController.navigate(
+                            StartingGraphDirections.startingToHome(customer)
+                        ) else {
+                        navController.navigate(StartingGraphDirections.startingToHome())
+                    }
                 }
                 is Response.Error -> {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                     val customer = response.data
-                    if (customer != null)
-                        navController.navigate(
-                            SplashFragmentDirections.actionGlobalHomeGraph(
-                                customer
-                            )
-                        )
-                    else navController.navigate(SplashFragmentDirections.toAuthGraph())
+                    if (customer != null) {
+                        navController.navigate(StartingGraphDirections.startingToHome(customer))
+                    } else
+                        navController.navigate(StartingGraphDirections.startingToHome())
+
                 }
                 is Response.Loading -> {
                 }

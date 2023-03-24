@@ -35,7 +35,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val _productDetails = MutableLiveData<Response<ProductDetails>>()
     val productDetails: LiveData<Response<ProductDetails>> get() = _productDetails
-    fun getProductDetails(customerId: String, productId: Int) {
+    fun getProductDetails(customerId: String?, productId: Int) {
         viewModelScope.launch {
             getProductDetailsUseCase(customerId, productId).collectLatest {
                 _productDetails.postValue(it)

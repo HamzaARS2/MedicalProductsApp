@@ -13,9 +13,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Response
+import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.databinding.FragmentProductDetailsBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ProductDetailsEpoxyController
 import com.ars.groceriesapp.ui.home.HomeViewModel
+import com.ars.groceriesapp.ui.home.shop.ShopFragmentDirections
 
 
 class ProductDetailsFragment : Fragment() {
@@ -28,6 +30,7 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var binding: FragmentProductDetailsBinding
     private lateinit var controller: ProductDetailsEpoxyController
     private lateinit var navController: NavController
+
 
     private var productId: Int = 0
 
@@ -52,7 +55,7 @@ class ProductDetailsFragment : Fragment() {
             ::onProductClick
         )
         binding.productDetailsEpoxyRv.setController(controller)
-        viewModel.getProductDetails(homeViewModel.getCustomer().docId, productId)
+        viewModel.getProductDetails(homeViewModel.getCustomer()?.id, productId)
         observeProductDetails()
 
     }
@@ -86,7 +89,12 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onAddProductToCartClick(productId: Int, onFinish: () -> Unit) {
-        viewModel.saveCartItem(homeViewModel.getCustomer().docId, productId)
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            navigateToLogin()
+            return
+        }
+        viewModel.saveCartItem(customer.id, productId)
             .observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is Response.Success -> {
@@ -105,8 +113,13 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onProductClick(product: Product) {
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            navigateToLogin()
+            return
+        }
         this.productId = product.id
-        viewModel.getProductDetails(homeViewModel.getCustomer().docId,product.id)
+        viewModel.getProductDetails(customer.id, product.id)
         binding.productDetailsEpoxyRv.smoothScrollToPosition(0)
     }
 
@@ -115,7 +128,12 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onAddToCartClick() {
-        viewModel.saveCartItem(homeViewModel.getCustomer().docId, productId)
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            navigateToLogin()
+            return
+        }
+        viewModel.saveCartItem(customer.id, productId)
             .observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is Response.Success -> {
@@ -131,17 +149,22 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onFavoriteStateChanged(isChecked: Boolean, onFinish: () -> Unit) {
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            navigateToLogin()
+            return
+        }
         if (isChecked) {
-            saveProductToFavorites(onFinish)
+            saveProductToFavorites(customer.id, onFinish)
         } else {
-            removeProductFromFavorites(onFinish)
+            removeProductFromFavorites(customer.id, onFinish)
         }
 
     }
 
 
-    private fun saveProductToFavorites(onFinish: () -> Unit) {
-        viewModel.saveFavoriteProduct(productId, homeViewModel.getCustomer().docId)
+    private fun saveProductToFavorites(customerId: String, onFinish: () -> Unit) {
+        viewModel.saveFavoriteProduct(productId, customerId)
             .observe(viewLifecycleOwner) {
                 if (it is Response.Error)
                 Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
@@ -149,13 +172,18 @@ class ProductDetailsFragment : Fragment() {
             }
     }
 
-    private fun removeProductFromFavorites(onFinish: () -> Unit) {
-        viewModel.removeProductFromFavorites(homeViewModel.getCustomer().docId, productId)
+    private fun removeProductFromFavorites(customerId: String, onFinish: () -> Unit) {
+
+        viewModel.removeProductFromFavorites(customerId, productId)
             .observe(viewLifecycleOwner) {
                 if (it is Response.Error)
                 Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
                 onFinish()
             }
+    }
+
+    private fun navigateToLogin() {
+        navController.navigate(HomeGraphDirections.actionGlobalAuthGraph())
     }
 
 

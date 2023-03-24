@@ -58,18 +58,9 @@ class LoginFragment : Fragment() {
                 .navigate(LoginFragmentDirections.toRegister())
         }
 
-        GlobalScope.launch {
-            val goal = flowOf("ssss", "dddd", "aaa").toList()
-            val assist = flowOf("aaa", "www", "edd").toList()
-            val list = (goal + assist).distinctBy { it.first() }
-            flowOf(list)
-            Log.d("GlobalScope", "onViewCreated: $list")
-
-        }
-
     }
 
-    private fun observeCustomer(customerLiveData: LiveData<Response<Customer>>) {
+    private fun observeCustomer(customerLiveData: LiveData<Response<Customer?>>) {
         customerLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Response.Success -> {

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.ars.domain.validation.Validation
+import com.ars.groceriesapp.AuthGraphDirections
 import com.ars.groceriesapp.databinding.FragmentPhoneVerificationBinding
 import com.ars.groceriesapp.ui.auth.phone_location.PhoneLocationViewModel
 import com.ars.groceriesapp.PhoneVerifier
@@ -54,10 +55,10 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun onSuccess(phone: String) {
         // Phone verified successfully
-        viewModel.customer.phone = phone
+        viewModel.customer?.phone = phone
         Navigation
             .findNavController(requireView())
-            .navigate(PhoneVerificationFragmentDirections.toLocationFrag())
+            .navigate(AuthGraphDirections.toHomeGraph(viewModel.customer!!))
     }
 
     private fun onFailure(e: Exception) {

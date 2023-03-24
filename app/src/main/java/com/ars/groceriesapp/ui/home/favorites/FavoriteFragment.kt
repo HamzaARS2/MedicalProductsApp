@@ -8,24 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ars.domain.model.FavoriteProduct
-import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Response
-import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentFavoriteBinding
-import com.ars.groceriesapp.mapper.toCartItem
 import com.ars.groceriesapp.ui.home.HomeViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 class FavoriteFragment : Fragment() {
@@ -52,12 +42,28 @@ class FavoriteFragment : Fragment() {
         favoritesAdapter =
             FavoritesAdapter(deleteOnSwipe, ::onFavoriteProductClick, ::onDeleteFavoriteProduct)
         initRecyclerView()
-        viewModel.fetchFavoriteProducts(homeViewModel.getCustomer().docId)
+        fetchFavorites()
+
+
+        handleAddAllToCart()
+    }
+
+    private fun fetchFavorites() {
+
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            // Show a dialog to ask the user to login first
+            displayDialog()
+            return
+        }
+        viewModel.fetchFavoriteProducts(customer.id)
             .observe(viewLifecycleOwner) { response ->
                 favoritesAdapter.differ.submitList(response.data)
             }
+    }
 
-        handleAddAllToCart()
+    private fun displayDialog() {
+
     }
 
     private fun initRecyclerView() {
@@ -75,11 +81,17 @@ class FavoriteFragment : Fragment() {
 
     private fun handleAddAllToCart() {
         binding.favoriteAddToCartBtn.setOnClickListener {
+            val customer = homeViewModel.getCustomer()
+            if (customer == null) {
+                // Show a dialog to ask the user to login first
+                displayDialog()
+                return@setOnClickListener
+            }
             binding.run {
                 favoriteProgress.isVisible = true
                 favoriteAddToCartBtn.visibility = View.INVISIBLE
             }
-            viewModel.saveMultipleCartItems(homeViewModel.getCustomer().docId,favoritesAdapter.differ.currentList)
+            viewModel.saveMultipleCartItems(customer.id, favoritesAdapter.differ.currentList)
                 .observe(viewLifecycleOwner) { response ->
                     binding.run {
                         favoriteProgress.isVisible = false
@@ -95,8 +107,9 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun onDeleteFavoriteProduct(favoriteProduct: FavoriteProduct, onFinish: () -> Unit) {
+        val customer = homeViewModel.getCustomer() ?: return
         viewModel.removeProductFromFavorites(
-            homeViewModel.getCustomer().docId,
+            customer.id,
             favoriteProduct.product.id
         )
             .observe(viewLifecycleOwner) {
@@ -106,8 +119,6 @@ class FavoriteFragment : Fragment() {
                 onFinish()
             }
     }
-
-
 
 
 }

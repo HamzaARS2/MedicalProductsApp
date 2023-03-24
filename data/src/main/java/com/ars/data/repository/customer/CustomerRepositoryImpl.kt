@@ -39,7 +39,7 @@ class CustomerRepositoryImpl @Inject constructor(
         } else authResource as Resource.Failure
     }
 
-    override fun login(email: String, password: String): Flow<Response<Customer>> = flow {
+    override fun login(email: String, password: String): Flow<Response<Customer?>> = flow {
         val loginResponse = loginRepo.signInCustomer(email, password).first()
         val result =  if (loginResponse is Response.Success) {
             val user = loginResponse.data
@@ -48,14 +48,14 @@ class CustomerRepositoryImpl @Inject constructor(
         emitAll(result)
     }
 
-    override suspend fun update(customer: Customer): Resource<Customer> {
+    override suspend fun update(customer: Customer): Resource<Customer?> {
         return customerDataSource.update(customer)
     }
 
-    override fun getCustomer(id: String): Flow<Response<Customer>> =
+    override fun getCustomer(id: String): Flow<Response<Customer?>> =
         networkBoundResource(
             query = {
-                val customer = localCustomerRepo.getLocalCustomer() ?: Customer()
+                val customer = localCustomerRepo.getLocalCustomer()
                 flowOf(customer)
             },
 

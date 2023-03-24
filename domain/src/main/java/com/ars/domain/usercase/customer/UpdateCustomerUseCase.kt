@@ -9,7 +9,7 @@ class UpdateCustomerUseCase @Inject constructor(
     private val customerRepository: ICustomerRepository
 ) {
 
-    suspend operator fun invoke(customer: Customer): Resource<Customer> {
+    suspend operator fun invoke(customer: Customer): Resource<Customer?> {
         return customerRepository.update(customer)
     }
 }

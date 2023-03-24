@@ -1,22 +1,23 @@
 package com.ars.data.network.api
 
+import com.ars.data.network.model.NetworkCustomer
 import com.ars.domain.model.Customer
 import retrofit2.http.*
 
 interface CustomerApi {
 
-    @POST("customer/create")
-    suspend fun insertCustomer(@Body customer: Customer): Customer
+    @POST("customers")
+    suspend fun insertCustomer(@Body networkCustomer: NetworkCustomer): NetworkCustomer
 
-    @GET("customer/doc/{docId}")
-    suspend fun retrieveCustomer(@Path("docId") docId: String): Customer?
+    @GET("customers/{id}")
+    suspend fun retrieveCustomer(@Path("id") id: String): NetworkCustomer?
 
-    @GET("customer/all")
-    suspend fun retrieveAllCustomers(): List<Customer>
+    @GET("customers")
+    suspend fun retrieveAllCustomers(): List<NetworkCustomer>
 
     @PUT("customer/update")
-    suspend fun updateCustomer(@Body customer: Customer): Customer
+    suspend fun updateCustomer(@Body customer: Customer): NetworkCustomer
 
-    @DELETE("customer/delete/{docId}")
-    suspend fun deleteCustomer(@Path("docId") docId: String): String
+    @DELETE("customer/delete/{id}")
+    suspend fun deleteCustomer(@Path("id") id: String): String
 }

@@ -1,30 +1,22 @@
 package com.ars.groceriesapp.ui.home.shop
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.ars.domain.model.CartItem
 import com.ars.domain.model.Category
-import com.ars.domain.model.FavoriteProduct
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Response
-import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.databinding.FragmentShopBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ShopEpoxyController
 import com.ars.groceriesapp.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -92,7 +84,13 @@ class ShopFragment : Fragment() {
     }
 
     private fun onAddToCartClick(productId: Int, onFinish: () -> Unit) {
-        viewModel.saveCartItem(homeViewModel.getCustomer().docId, productId)
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            navigateToLogin()
+            onFinish()
+            return
+        }
+        viewModel.saveCartItem(customer.id, productId)
             .observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is Response.Success -> {
@@ -108,6 +106,10 @@ class ShopFragment : Fragment() {
                     }
                 }
             }
+    }
+
+    private fun navigateToLogin() {
+        navController.navigate(ShopFragmentDirections.actionGlobalAuthGraph())
     }
 
 

@@ -1,19 +1,15 @@
 package com.ars.groceriesapp.ui.home.search
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.ars.domain.model.Product
 import com.ars.domain.utils.Response
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentSearchBinding
@@ -102,7 +98,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun onProductAddToCartClick(productId: Int, onFinish: () -> Unit) {
-        viewModel.saveCartItem(homeViewModel.getCustomer().docId, productId)
+        val customer = homeViewModel.getCustomer() ?: return
+        viewModel.saveCartItem(customer.id, productId)
             .observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is Response.Success -> {

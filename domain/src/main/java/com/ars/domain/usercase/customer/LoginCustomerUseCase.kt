@@ -13,7 +13,7 @@ class LoginCustomerUseCase @Inject constructor(
     private val customerRepository: ICustomerRepository
 ) {
 
-    operator fun invoke(email: String, password: String,onValidation: (response: Validation.LoginResponse) -> Unit): Flow<Response<Customer>> {
+    operator fun invoke(email: String, password: String,onValidation: (response: Validation.LoginResponse) -> Unit): Flow<Response<Customer?>> {
         val response = Validation.loginValidation(email, password)
         onValidation(response)
         if (!response.isValidEmail || !response.isValidPassword)

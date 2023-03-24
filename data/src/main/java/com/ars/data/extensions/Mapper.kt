@@ -13,6 +13,39 @@ import java.util.*
 
 
 
+
+fun NetworkCustomer.asCustomer() =
+    Customer(
+        id = id,
+        name = name,
+        email = email,
+        phone = phone,
+        address = address?.asAddress(),
+        location = location
+    )
+
+fun Customer.asNetworkCustomer() =
+    NetworkCustomer(
+        id = id,
+        name = name,
+        email = email,
+        phone = phone,
+        addressId = address?.id,
+        locationId = location?.id
+    )
+
+fun NetworkAddress.asAddress() =
+    Address(
+        id = id,
+        streetAddress = addressLine,
+        city = city,
+        state = state,
+        country = country,
+        streetName =  streetName,
+        number = number,
+        createdAt = convertDateToLong(createdAt),
+        updatedAt = convertDateToLong(updatedAt)
+    )
 fun NetworkReview.asReview() =
     Review(
         id = this.id,
