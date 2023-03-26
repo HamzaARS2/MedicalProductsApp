@@ -47,6 +47,8 @@ class SplashFragment : Fragment() {
             checkCustomerState()
         }, 2000)
 
+        observeCustomer()
+
     }
 
 
@@ -57,7 +59,7 @@ class SplashFragment : Fragment() {
         } else {
             val (isLoggedIn, id) = viewModel.isLoggedIn()
             if (isLoggedIn) {
-                observeCustomer(id!!)
+                viewModel.getCustomer(id!!)
             } else {
                 navController.navigate(StartingGraphDirections.startingToHome())
             }
@@ -65,8 +67,9 @@ class SplashFragment : Fragment() {
         }
     }
 
-    private fun observeCustomer(id: String) {
-        viewModel.getCustomer(id).observe(viewLifecycleOwner) { response ->
+    private fun observeCustomer() {
+        viewModel.customerLiveData.observe(viewLifecycleOwner) { response ->
+            Log.d("getCustomer", "observeCustomer: customer = ${response?.data}")
             when (response) {
                 is Response.Success -> {
                     val customer = response.data
@@ -78,10 +81,6 @@ class SplashFragment : Fragment() {
                     }
                 }
                 is Response.Error -> {
-                    val customer = response.data
-                    if (customer != null) {
-                        navController.navigate(StartingGraphDirections.startingToHome(customer))
-                    } else
                         navController.navigate(StartingGraphDirections.startingToHome())
 
                 }

@@ -1,6 +1,7 @@
 package com.ars.data.network.model
 
 import com.ars.domain.model.Customer
+import com.google.gson.annotations.SerializedName
 
 data class NetworkReview(
     val id: Int,
@@ -10,5 +11,6 @@ data class NetworkReview(
     val rating: Float,
     val createdAt: String,
     val updatedAt: String,
-    val customer: Customer
+    @SerializedName("customer")
+    val networkCustomer: NetworkCustomer
 )

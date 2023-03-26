@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
         navController = navHostFragment.navController
-        //navController.setGraph(R.navigation.startup_nav_graph)
         setBottomNavigationBarVisibility(navController)
         binding.bottomNavigationView.setupWithNavController(navController)
+
 
     }
 

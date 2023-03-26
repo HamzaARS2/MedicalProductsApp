@@ -7,7 +7,8 @@
     tools:context=".ui.home.search.filter.ProductsFilterFragment"
     android:paddingTop="@dimen/_8sdp"
     android:paddingHorizontal="@dimen/_16sdp"
-    android:paddingBottom="@dimen/_16sdp">
+    android:paddingBottom="@dimen/_16sdp"
+    android:backgroundTint="@android:color/white">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -26,7 +27,6 @@
         android:fontFamily="@font/gilroy_semi_bold"
         android:text="@string/filter"
         android:textSize="@dimen/_18ssp"
-        android:textColor="@color/title_color"
         app:layout_constraintBottom_toBottomOf="@+id/filter_reset_btn"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
@@ -55,20 +55,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filter_reset_btn" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/category_filter_rv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/_4sdp"
-        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_title_tv2"
-        app:spanCount="3"
-        tools:listitem="@layout/filter_item" >
-
-    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/filter_title_tv2"
@@ -76,37 +62,79 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_4sdp"
         android:fontFamily="@font/gilroy_semi_bold"
-        android:text="Category"
+        android:text="Price"
+        android:layout_marginTop="@dimen/_8sdp"
         android:textColor="@color/title_color"
         android:textSize="@dimen/_14ssp"
-        android:layout_marginTop="@dimen/_8sdp"
-        app:layout_constraintStart_toStartOf="@+id/category_filter_rv"
-        app:layout_constraintTop_toBottomOf="@+id/sorting_rv" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_group" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/sorting_rv"
+    <Button
+        android:id="@+id/filter_apply_btn"
+        style="@style/MainButtonStyle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/_4sdp"
-        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+        android:layout_height="@dimen/_55sdp"
+        android:text="Apply Filter"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:textSize="@dimen/_13ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_title_tv"
-        app:spanCount="2"
-        tools:listitem="@layout/filter_item" />
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
-<!--    <Button-->
-<!--        android:id="@+id/filter_apply_btn"-->
-<!--        style="@style/MainButtonStyle"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="@dimen/_55sdp"-->
-<!--        android:layout_marginTop="@dimen/_16sdp"-->
-<!--        android:text="Apply Filter"-->
-<!--        android:textSize="@dimen/_13ssp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/category_filter_rv" />-->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_title_tv">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/high_rated_filter_item"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High rated" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/newest_filter_item"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Newest" />
+
+
+    </com.google.android.material.chip.ChipGroup>
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_title_tv2"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/low_to_high__filter_item"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price: Low to high" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/high_to_low_filter_item"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Price: High to low" />
+    </com.google.android.material.chip.ChipGroup>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

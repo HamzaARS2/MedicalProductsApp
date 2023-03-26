@@ -9,4 +9,6 @@ data class Customer(
     var phone: String?,
     var address: Address? = null,
     var location: Location? = null
-): Serializable
+): Serializable {
+
+}

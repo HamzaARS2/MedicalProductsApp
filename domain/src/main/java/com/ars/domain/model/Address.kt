@@ -16,4 +16,7 @@ data class Address(
             "$streetName, $number"
         else null
     }
+
+    fun getFullAddress() =
+        "$streetName $number $city, $country"
 }

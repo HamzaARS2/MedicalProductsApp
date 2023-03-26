@@ -1,6 +1,7 @@
 package com.ars.groceriesapp.ui.home.product_details
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,10 @@ class ProductDetailsFragment : Fragment() {
         viewModel.getProductDetails(homeViewModel.getCustomer()?.id, productId)
         observeProductDetails()
 
+        binding.productDetailsCheckoutBtn.setOnClickListener {
+            navController.navigate(ProductDetailsFragmentDirections.productDetailsToCheckout())
+        }
+
     }
 
     private fun observeProductDetails() {
@@ -67,7 +72,7 @@ class ProductDetailsFragment : Fragment() {
                 controller.setData(response.data)
                 binding.run {
                     productDetailsProgress.isVisible = response is Response.Loading
-                    productDetailsOrderNowBtn.isVisible = response is Response.Success
+                    productDetailsCheckoutBtn.isVisible = response is Response.Success
 
                 }
 
@@ -80,6 +85,7 @@ class ProductDetailsFragment : Fragment() {
                             "Error " + response.error?.message,
                             Toast.LENGTH_SHORT
                         ).show()
+                        Log.d("ProductDetails", "observeProductDetails: ${response.error?.message}")
                     }
                     is Response.Loading -> {
                     }

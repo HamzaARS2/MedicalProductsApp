@@ -245,11 +245,14 @@ class LocationFragment : Fragment() {
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
 
             val address = addresses!![0]
+            val streetAddress = address.getAddressLine(0)
 
             // Get the full address by concatenating all the address lines
-            val countryName = address.countryName ?: "Unknown"
-            val cityName = address.locality ?: "Unknown"
-            "$countryName, $cityName"
+            val country = address.countryName ?: ""
+            val city = address.locality ?: ""
+            val state = address.adminArea?: ""
+
+            "$streetAddress, $city, $state, $country"
         } catch (e: IOException) {
             e.printStackTrace()
             return ""

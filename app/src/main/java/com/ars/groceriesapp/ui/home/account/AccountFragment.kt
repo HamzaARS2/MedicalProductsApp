@@ -1,5 +1,6 @@
 package com.ars.groceriesapp.ui.home.account
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.R
@@ -43,6 +45,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun displayCustomerInfo() {
         binding.apply {
             if (customer == null) {
@@ -51,7 +54,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
             } else {
                 accountCustomerInfoGroup.visibility = View.VISIBLE
                 accountLoginBtn.isVisible = false
-                accountCustomerNameTv.text = customer!!.name
+                accountCustomerNameTv.text = "Welcome, ${customer!!.name}"
             }
         }
     }
@@ -61,7 +64,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
             accountOrdersBtn.setOnClickListener(this@AccountFragment)
             accountDetailsBtn.setOnClickListener(this@AccountFragment)
             accountAddressBtn.setOnClickListener(this@AccountFragment)
-            accountPaymentBtn.setOnClickListener(this@AccountFragment)
+//            accountPaymentBtn.setOnClickListener(this@AccountFragment)
             accountPromoBtn.setOnClickListener(this@AccountFragment)
             accountNotificationsBtn.setOnClickListener(this@AccountFragment)
             accountHelpBtn.setOnClickListener(this@AccountFragment)
@@ -82,9 +85,9 @@ class AccountFragment : Fragment(), View.OnClickListener {
             R.id.account_address_btn -> {
                 Toast.makeText(requireContext(), "account_address_btn", Toast.LENGTH_SHORT).show()
             }
-            R.id.account_payment_btn -> {
-                Toast.makeText(requireContext(), "account_payment_btn", Toast.LENGTH_SHORT).show()
-            }
+//            R.id.account_payment_btn -> {
+//                Toast.makeText(requireContext(), "account_payment_btn", Toast.LENGTH_SHORT).show()
+//            }
             R.id.account_promo_btn -> {
                 Toast.makeText(requireContext(), "account_promo_btn", Toast.LENGTH_SHORT).show()
             }
@@ -98,7 +101,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(requireContext(), "account_about_btn", Toast.LENGTH_SHORT).show()
             }
             R.id.account_login_btn -> {
-                navController.navigate(HomeGraphDirections.actionGlobalAuthGraph())
+                navController.navigate(R.id.auth_graph)
             }
             R.id.account_logout_btn -> {
                 viewModel.logout()

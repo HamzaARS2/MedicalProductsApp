@@ -13,7 +13,7 @@ interface ICustomerRepository {
 
     suspend fun update(customer: Customer): Resource<Customer?>
 
-    fun getCustomer(id: String): Flow<Response<Customer?>>
+    suspend fun getCustomer(id: String): Flow<Response<Customer?>>
 
     suspend fun linkPhoneWithExistingAccount(
         verificationId: String, smsCode: String, onSuccess: (phone: String) -> Unit,

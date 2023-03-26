@@ -50,7 +50,7 @@ fun NetworkReview.asReview() =
     Review(
         id = this.id,
         productId = this.productId,
-        customer = this.customer,
+        customer = this.networkCustomer.asCustomer(),
         comment = this.comment,
         rating = this.rating,
         createdAt = this.createdAt,

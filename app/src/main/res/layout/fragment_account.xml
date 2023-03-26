@@ -13,16 +13,6 @@
         android:layout_height="wrap_content">
 
 
-<!--        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--            android:id="@+id/account_customer_image_imv"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="@dimen/_55sdp"-->
-<!--            android:layout_margin="@dimen/_16sdp"-->
-<!--            android:src="@drawable/avatar_placeholder"-->
-<!--            app:layout_constraintDimensionRatio="1:1"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
         <TextView
             android:id="@+id/account_customer_name_tv"
             android:layout_width="wrap_content"
@@ -217,63 +207,63 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/account_payment_btn"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_45sdp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/account_address_btn">
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/account_payment_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/_45sdp"-->
+<!--            android:background="?attr/selectableItemBackground"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/account_address_btn">-->
 
-            <View
-                android:id="@+id/view7"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_1sdp"
-                android:background="@drawable/divider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <View-->
+<!--                android:id="@+id/view7"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="@dimen/_1sdp"-->
+<!--                android:background="@drawable/divider"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <ImageView
-                android:id="@+id/imageView125"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:src="@drawable/ic_payment"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view7" />
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView125"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_16sdp"-->
+<!--                android:src="@drawable/ic_payment"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/view7" />-->
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/gilroy_semi_bold"
-                android:text="@string/payment_methods"
-                android:textColor="@color/title_color"
-                android:textSize="@dimen/_13ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView125"
-                app:layout_constraintEnd_toStartOf="@+id/imageView124"
-                app:layout_constraintStart_toEndOf="@+id/imageView125"
-                app:layout_constraintTop_toTopOf="@+id/imageView125" />
-
-
-            <ImageView
-                android:id="@+id/imageView124"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:src="@drawable/ic_small_forward_arrow_round"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView10"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_10sdp"-->
+<!--                android:fontFamily="@font/gilroy_semi_bold"-->
+<!--                android:text="@string/payment_methods"-->
+<!--                android:textColor="@color/title_color"-->
+<!--                android:textSize="@dimen/_13ssp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/imageView125"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/imageView124"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/imageView125"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/imageView125" />-->
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView124"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="@dimen/_16sdp"-->
+<!--                android:src="@drawable/ic_small_forward_arrow_round"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/account_promo_btn"
@@ -284,7 +274,7 @@
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/account_payment_btn">
+            app:layout_constraintTop_toBottomOf="@+id/account_address_btn">
 
             <View
                 android:id="@+id/view8"
@@ -548,10 +538,11 @@
             android:layout_height="wrap_content"
             android:text="@string/login"
             app:layout_constraintBottom_toBottomOf="@+id/account_customer_name_tv"
-            app:layout_constraintEnd_toEndOf="@+id/account_customer_name_tv"
-            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.074"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/account_customer_name_tv" />
+            app:layout_constraintTop_toTopOf="@+id/account_customer_name_tv"
+            app:layout_constraintVertical_bias="0.35" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

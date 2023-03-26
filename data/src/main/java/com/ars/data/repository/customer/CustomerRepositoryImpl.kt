@@ -41,9 +41,14 @@ class CustomerRepositoryImpl @Inject constructor(
 
     override fun login(email: String, password: String): Flow<Response<Customer?>> = flow {
         val loginResponse = loginRepo.signInCustomer(email, password).first()
-        val result =  if (loginResponse is Response.Success) {
+        val result = if (loginResponse is Response.Success) {
             val user = loginResponse.data
-            getCustomer(user!!.uid)
+            try {
+                getCustomer(user!!.uid)
+            } catch (throwable: Throwable) {
+                throwable.printStackTrace()
+                flowOf(Response.Error(Throwable("Something went wrong!")))
+            }
         } else flowOf(Response.Error(Throwable("Something went wrong!")))
         emitAll(result)
     }
@@ -52,22 +57,11 @@ class CustomerRepositoryImpl @Inject constructor(
         return customerDataSource.update(customer)
     }
 
-    override fun getCustomer(id: String): Flow<Response<Customer?>> =
-        networkBoundResource(
-            query = {
-                val customer = localCustomerRepo.getLocalCustomer()
-                flowOf(customer)
-            },
 
-            fetch = {
-                val customer = customerDataSource.retrieve(id)
-                customer
-            },
-
-            saveFetchResult = {
-                localCustomerRepo.saveLocalCustomer(it)
-            },
-        )
+    override suspend fun getCustomer(id: String): Flow<Response<Customer?>> {
+        val customer = customerDataSource.retrieve(id)
+        return flowOf(Response.Success(customer))
+    }
 
 
     override suspend fun linkPhoneWithExistingAccount(
@@ -86,6 +80,7 @@ class CustomerRepositoryImpl @Inject constructor(
     }
 
     override fun logOut() {
+        localCustomerRepo.clearCustomerInfo()
         loginRepo.logout()
     }
 

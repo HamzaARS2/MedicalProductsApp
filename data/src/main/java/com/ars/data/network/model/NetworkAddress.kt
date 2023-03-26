@@ -12,4 +12,6 @@ data class NetworkAddress(
     val number: Int?,
     val createdAt: String,
     val updatedAt: String
-)
+){
+    fun getStreetInfo() = "$streetName, $number"
+}

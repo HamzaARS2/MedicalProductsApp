@@ -132,6 +132,11 @@ data class ShopHeader(
 ) : ViewBindingKotlinModel<ShopHeaderItemBinding>(R.layout.shop_header_item) {
     @SuppressLint("SetTextI18n")
     override fun ShopHeaderItemBinding.bind() {
+        shopHeaderSearchTv.setOnClickListener {
+            Log.d("SearchClicked", "bind: SearchClicked")
+            onSearchClick()
+        }
+
         if (customer == null)
             return
 
@@ -140,7 +145,7 @@ data class ShopHeader(
         if (customerStreetInfo != null)
             shopHeaderLocation.text = customerStreetInfo
 
-        shopHeaderSearchTv.setOnClickListener { onSearchClick() }
+
 
     }
 }

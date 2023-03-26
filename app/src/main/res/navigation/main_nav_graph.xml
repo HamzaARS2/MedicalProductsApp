@@ -66,7 +66,11 @@
             android:id="@+id/cartFragment"
             android:name="com.ars.groceriesapp.ui.home.cart.CartFragment"
             android:label="fragment_cart"
-            tools:layout="@layout/fragment_cart" />
+            tools:layout="@layout/fragment_cart" >
+            <action
+                android:id="@+id/cartToCheckout"
+                app:destination="@id/orderDetailsFragment" />
+        </fragment>
         <fragment
             android:id="@+id/favoriteFragment"
             android:name="com.ars.groceriesapp.ui.home.favorites.FavoriteFragment"
@@ -116,6 +120,9 @@
             <argument
                 android:name="productId"
                 app:argType="integer" />
+            <action
+                android:id="@+id/productDetailsToCheckout"
+                app:destination="@id/orderDetailsFragment" />
         </fragment>
 
         <fragment
@@ -129,6 +136,10 @@
             <action
                 android:id="@+id/searchToFilter"
                 app:destination="@id/productsFilterFragment" />
+            <argument
+                android:name="categoryId"
+                app:argType="integer"
+                android:defaultValue="0" />
         </fragment>
 
         <dialog
@@ -136,6 +147,13 @@
             android:name="com.ars.groceriesapp.ui.home.search.filter.ProductsFilterFragment"
             android:label="fragment_products_filter"
             tools:layout="@layout/fragment_products_filter" />
+
+        <fragment
+            android:id="@+id/orderDetailsFragment"
+            android:name="com.ars.groceriesapp.ui.home.order_details.OrderDetailsFragment"
+            android:label="fragment_order_details"
+            tools:layout="@layout/fragment_order_details" />
+
 
         <argument
             android:name="customer"
@@ -146,9 +164,10 @@
         <action
             android:id="@+id/action_global_auth_graph"
             app:destination="@id/auth_graph"
+            app:popUpTo="@id/home_graph"
+            app:popUpToInclusive="true"
+
             />
-<!--            app:popUpTo="@id/home_graph"-->
-<!--            app:popUpToInclusive="true"-->
 
     </navigation>
 
@@ -185,7 +204,6 @@
             app:popUpTo="@id/starting_graph"
             app:popUpToInclusive="true"/>
     </navigation>
-
 
 
 </navigation>
