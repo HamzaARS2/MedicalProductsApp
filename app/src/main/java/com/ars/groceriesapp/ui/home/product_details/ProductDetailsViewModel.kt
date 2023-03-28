@@ -5,22 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.ars.data.repository.ReviewsRepository
-import com.ars.domain.model.CartItem
-import com.ars.domain.model.FavoriteProduct
 import com.ars.domain.model.ProductDetails
-import com.ars.domain.model.Review
-import com.ars.domain.repository.IFavoritesRepository
-import com.ars.domain.usercase.cart.DeleteCartItemUseCase
 import com.ars.domain.usercase.cart.SaveCartItemUseCase
 import com.ars.domain.usercase.favorite_product.DeleteFavoriteProductUseCase
 import com.ars.domain.usercase.favorite_product.SaveFavoriteProductUseCase
 import com.ars.domain.usercase.product.GetProductDetailsUseCase
-import com.ars.domain.utils.Resource
 import com.ars.domain.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +25,7 @@ class ProductDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _productDetails = MutableLiveData<Response<ProductDetails>>()
-    val productDetails: LiveData<Response<ProductDetails>> get() = _productDetails
+    val liveProductDetails: LiveData<Response<ProductDetails>> get() = _productDetails
     fun getProductDetails(customerId: String?, productId: Int) {
         viewModelScope.launch {
             getProductDetailsUseCase(customerId, productId).collectLatest {

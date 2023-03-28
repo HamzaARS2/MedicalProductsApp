@@ -12,13 +12,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.ars.domain.model.Order
+import com.ars.domain.model.OrderItem
 import com.ars.domain.model.Product
+import com.ars.domain.model.ProductDetails
 import com.ars.domain.utils.Response
 import com.ars.groceriesapp.HomeGraphDirections
+import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentProductDetailsBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ProductDetailsEpoxyController
 import com.ars.groceriesapp.ui.home.HomeViewModel
-import com.ars.groceriesapp.ui.home.shop.ShopFragmentDirections
 
 
 class ProductDetailsFragment : Fragment() {
@@ -31,6 +34,10 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var binding: FragmentProductDetailsBinding
     private lateinit var controller: ProductDetailsEpoxyController
     private lateinit var navController: NavController
+
+    private var productDetails: ProductDetails? = null
+
+    private var productQuantity: Int = 1
 
 
     private var productId: Int = 0
@@ -53,31 +60,70 @@ class ProductDetailsFragment : Fragment() {
             ::onAddToCartClick,
             ::onFavoriteStateChanged,
             ::onAddProductToCartClick,
-            ::onProductClick
+            ::onProductClick,
+            ::onQuantityChanged
         )
         binding.productDetailsEpoxyRv.setController(controller)
         viewModel.getProductDetails(homeViewModel.getCustomer()?.id, productId)
         observeProductDetails()
 
         binding.productDetailsCheckoutBtn.setOnClickListener {
-            navController.navigate(ProductDetailsFragmentDirections.productDetailsToCheckout())
+            val customer = homeViewModel.getCustomer()
+            if (customer == null) {
+                navigateToLogin()
+                return@setOnClickListener
+            }
+            val newOrder = createOrder()
+            newOrder ?: return@setOnClickListener
+            navController.navigate(
+                ProductDetailsFragmentDirections.productDetailsToCheckout(
+                    newOrder
+                )
+            )
         }
 
     }
 
+    private fun onQuantityChanged(quantity: Int) {
+        productQuantity = quantity
+        Toast.makeText(requireContext(), "quantity = $quantity", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createOrder(): Order? {
+
+        productDetails ?: return null
+        val subTotalPrice = productDetails?.price!!.times(productQuantity.toBigDecimal())
+        val orderItems = listOf(
+            OrderItem(
+                productId = productDetails?.id!!,
+                productName = productDetails?.name!!,
+                productImage = productDetails?.image!!,
+                productUnitPrice = productDetails?.priceUnit!!,
+                quantity = productQuantity,
+                subTotalPrice = subTotalPrice
+            )
+        )
+        return Order(
+            customerId = homeViewModel.getCustomer()?.id!!,
+            totalPrice = subTotalPrice,
+            orderItems
+        )
+    }
+
     private fun observeProductDetails() {
-        viewModel.productDetails
+        viewModel.liveProductDetails
             .observe(viewLifecycleOwner) { response ->
 
-                controller.setData(response.data)
                 binding.run {
                     productDetailsProgress.isVisible = response is Response.Loading
                     productDetailsCheckoutBtn.isVisible = response is Response.Success
 
                 }
 
-                when(response) {
+                when (response) {
                     is Response.Success -> {
+                        this.productDetails = response.data
+                        controller.setData(response.data)
                     }
                     is Response.Error -> {
                         Toast.makeText(
@@ -86,6 +132,7 @@ class ProductDetailsFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.d("ProductDetails", "observeProductDetails: ${response.error?.message}")
+                        navController.popBackStack()
                     }
                     is Response.Loading -> {
                     }
@@ -173,7 +220,7 @@ class ProductDetailsFragment : Fragment() {
         viewModel.saveFavoriteProduct(productId, customerId)
             .observe(viewLifecycleOwner) {
                 if (it is Response.Error)
-                Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
                 onFinish()
             }
     }
@@ -183,13 +230,13 @@ class ProductDetailsFragment : Fragment() {
         viewModel.removeProductFromFavorites(customerId, productId)
             .observe(viewLifecycleOwner) {
                 if (it is Response.Error)
-                Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
                 onFinish()
             }
     }
 
     private fun navigateToLogin() {
-        navController.navigate(HomeGraphDirections.actionGlobalAuthGraph())
+        navController.navigate(R.id.auth_graph)
     }
 
 

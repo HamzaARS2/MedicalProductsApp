@@ -16,7 +16,8 @@ data class PriceModel(
     private val unitPrice: String,
     private val price: BigDecimal,
     private val isFavorite: Boolean,
-    private val onFavoriteChanged: (isChecked: Boolean, onFinish: () -> Unit) -> Unit
+    private val onFavoriteChanged: (isChecked: Boolean, onFinish: () -> Unit) -> Unit,
+    private val onProductQuantityChanged: (quantity: Int) -> Unit
 ) : ViewBindingKotlinModel<ProductDetailsPriceItemBinding>(
     R.layout.product_details_price_item
 ) {
@@ -33,7 +34,9 @@ data class PriceModel(
         val onQuantityChanged = {
             productDetailsPriceTv.text = getPriceOfQuantity(currentQuantity)
             productDetailsQuantityTv.text = currentQuantity.toString()
+            onProductQuantityChanged(currentQuantity)
         }
+
 
 
         productDetailsIncreaseBtn.setOnClickListener {

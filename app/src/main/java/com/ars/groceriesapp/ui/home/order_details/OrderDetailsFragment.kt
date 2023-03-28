@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentOrderDetailsBinding
@@ -20,6 +22,7 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
     val binding get() = _binding!!
 
     private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val args by navArgs<OrderDetailsFragmentArgs>()
 
     private lateinit var navController: NavController
 
@@ -28,13 +31,32 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
         _binding = FragmentOrderDetailsBinding.bind(view)
         navController = Navigation.findNavController(view)
 
-        binding.recyclerView.apply {
-            adapter = OrderItemsAdapter()
+        binding.checkoutOrderItemsRv.apply {
+            adapter = OrderItemsAdapter(args.orderInfo.orderItems)
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
         binding.checkoutAddressTv.text = homeViewModel.getCustomer()?.address?.getFullAddress()
 
+        setButtonsClickListeners()
+
     }
-  
+
+    private fun setButtonsClickListeners() {
+        binding.run {
+            checkoutBackBtn.setOnClickListener {
+                navController.popBackStack()
+            }
+            checkoutAddressEditBtn.setOnClickListener {
+                navController.navigate(R.id.addressFragment)
+            }
+            checkoutCodeApplyBtn.setOnClickListener {
+                // TODO(Apply the promo code to the current order)
+            }
+            checkoutOrderBtn.setOnClickListener {
+                Toast.makeText(requireContext(), "Ordered successfully!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }

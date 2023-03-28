@@ -1,12 +1,14 @@
 package com.ars.domain.model
 
+import java.io.Serializable
 import java.math.BigDecimal
 
 data class OrderItem(
-    val id: Int? = null,
-    val orderId: Int = 0,
-    val productId: Int = 0,
-    val quantity: Int = 1,
-    val subTotalPrice: BigDecimal = BigDecimal("0.00")
-)
+    val productId: Int,
+    val productName: String,
+    val productImage: String,
+    val productUnitPrice: String,
+    val quantity: Int,
+    val subTotalPrice: BigDecimal
+): Serializable
 

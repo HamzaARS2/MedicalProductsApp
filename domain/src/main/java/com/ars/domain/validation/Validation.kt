@@ -33,6 +33,22 @@ object Validation {
         }
     }
 
+    fun validateFirstname(firstName: String): ValidationResponse {
+        return when {
+            firstName.isBlank() -> ValidationResponse(false, "Required field")
+            firstName.length < 2 -> ValidationResponse(false, "At least 2 characters")
+            else -> ValidationResponse(true, null)
+        }
+    }
+
+    fun validateLastName(lastName: String): ValidationResponse {
+        return when {
+            lastName.isBlank() -> ValidationResponse(false, "Required field")
+            lastName.length < 2 -> ValidationResponse(false, "At least 2 characters")
+            else -> ValidationResponse(true, null)
+        }
+    }
+
     private fun validatePassword(password: String): ValidationResponse {
         return if (password.isBlank())
             ValidationResponse(false, "Please enter your password")
@@ -55,7 +71,7 @@ object Validation {
     fun validatePhoneNumber(phoneNumber: String): ValidationResponse {
         return if (phoneNumber.isBlank())
             ValidationResponse(false, "Please enter your phone number")
-        else if (phoneNumber.length < 9)
+        else if (phoneNumber.length <= 9)
             ValidationResponse(false, "Please enter a valid phone number")
         else ValidationResponse(true, null)
     }

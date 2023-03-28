@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ars.domain.model.CartItem
 import com.ars.domain.model.Customer
+import com.ars.domain.model.Order
 import com.ars.domain.utils.Response
+import com.ars.domain.utils.asOrderItem
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentCartBinding
 import com.ars.groceriesapp.ui.home.HomeViewModel
@@ -60,10 +62,24 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         }
 
         binding.cartCheckoutBtn.setOnClickListener {
-            navController.navigate(CartFragmentDirections.cartToCheckout())
+            val newOrder = createOrder()
+            newOrder ?: return@setOnClickListener
+            navController.navigate(CartFragmentDirections.cartToCheckout(newOrder))
         }
 
 
+    }
+
+    private fun createOrder(): Order? {
+        val orderItems = cartAdapter.differ.currentList.map { it.asOrderItem() }
+        val customerId = homeViewModel.getCustomer()?.id
+        customerId ?: return null
+        val totalPrice = orderItems.sumOf { it.subTotalPrice }
+        return Order(
+            customerId = customerId,
+            totalPrice = totalPrice,
+            orderItems
+        )
     }
 
     private fun getCustomerCartItems() {

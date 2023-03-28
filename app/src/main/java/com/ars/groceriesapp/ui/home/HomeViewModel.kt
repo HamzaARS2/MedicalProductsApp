@@ -9,7 +9,7 @@ import com.ars.domain.model.Customer
     private val mCustomer: MutableLiveData<Customer?> = MutableLiveData(null)
 
 
-     fun setCustomer(customer: Customer) {
+     fun setCustomer(customer: Customer?) {
          mCustomer.value = customer
      }
 

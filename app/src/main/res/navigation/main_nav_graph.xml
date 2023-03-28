@@ -21,7 +21,7 @@
             android:id="@+id/registerFragment"
             android:name="com.ars.groceriesapp.ui.auth.register.RegisterFragment"
             android:label="fragment_register"
-            tools:layout="@layout/fragment_register" >
+            tools:layout="@layout/fragment_register">
             <action
                 android:id="@+id/registerToPhone"
                 app:destination="@id/phoneFragment" />
@@ -47,8 +47,7 @@
             android:id="@+id/phoneVerificationFragment"
             android:name="com.ars.groceriesapp.ui.auth.phone_location.phone.PhoneVerificationFragment"
             android:label="fragment_phone_verification"
-            tools:layout="@layout/fragment_phone_verification">
-        </fragment>
+            tools:layout="@layout/fragment_phone_verification"/>
 
         <action
             android:id="@+id/toHomeGraph"
@@ -66,7 +65,7 @@
             android:id="@+id/cartFragment"
             android:name="com.ars.groceriesapp.ui.home.cart.CartFragment"
             android:label="fragment_cart"
-            tools:layout="@layout/fragment_cart" >
+            tools:layout="@layout/fragment_cart">
             <action
                 android:id="@+id/cartToCheckout"
                 app:destination="@id/orderDetailsFragment" />
@@ -75,7 +74,7 @@
             android:id="@+id/favoriteFragment"
             android:name="com.ars.groceriesapp.ui.home.favorites.FavoriteFragment"
             android:label="fragment_favorite"
-            tools:layout="@layout/fragment_favorite" >
+            tools:layout="@layout/fragment_favorite">
             <action
                 android:id="@+id/favoriteToProductDetails"
                 app:destination="@id/productDetailsFragment" />
@@ -84,29 +83,41 @@
             android:id="@+id/accountFragment"
             android:name="com.ars.groceriesapp.ui.home.account.AccountFragment"
             android:label="fragment_account"
-            tools:layout="@layout/fragment_account" />
+            tools:layout="@layout/fragment_account" >
+            <action
+                android:id="@+id/accountToAddress"
+                app:destination="@id/addressFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/addressFragment"
+            android:name="com.ars.groceriesapp.ui.home.address.AddressFragment"
+            android:label="fragment_address"
+            tools:layout="@layout/fragment_address" />
         <fragment
             android:id="@+id/shopFragment"
             android:name="com.ars.groceriesapp.ui.home.shop.ShopFragment"
             android:label="fragment_shop"
-            tools:layout="@layout/fragment_shop" >
+            tools:layout="@layout/fragment_shop">
             <argument
                 android:name="customer"
+                android:defaultValue="@null"
                 app:argType="com.ars.domain.model.Customer"
-                app:nullable="true"
-                android:defaultValue="@null" />
+                app:nullable="true" />
             <action
                 android:id="@+id/shopFragToProductDetailsFrag"
                 app:destination="@id/productDetailsFragment" />
             <action
                 android:id="@+id/shopToSearch"
                 app:destination="@id/searchFragment" />
+            <action
+                android:id="@+id/shopToAddress"
+                app:destination="@id/addressFragment" />
         </fragment>
         <fragment
             android:id="@+id/exploreFragment"
             android:name="com.ars.groceriesapp.ui.home.explore.ExploreFragment"
             android:label="fragment_account"
-            tools:layout="@layout/fragment_explore" >
+            tools:layout="@layout/fragment_explore">
             <action
                 android:id="@+id/exploreToSearch"
                 app:destination="@id/searchFragment" />
@@ -116,7 +127,7 @@
             android:id="@+id/productDetailsFragment"
             android:name="com.ars.groceriesapp.ui.home.product_details.ProductDetailsFragment"
             android:label="fragment_product_details"
-            tools:layout="@layout/fragment_product_details" >
+            tools:layout="@layout/fragment_product_details">
             <argument
                 android:name="productId"
                 app:argType="integer" />
@@ -129,7 +140,7 @@
             android:id="@+id/searchFragment"
             android:name="com.ars.groceriesapp.ui.home.search.SearchFragment"
             android:label="fragment_search"
-            tools:layout="@layout/fragment_search" >
+            tools:layout="@layout/fragment_search">
             <action
                 android:id="@+id/searchToProductDetails"
                 app:destination="@id/productDetailsFragment" />
@@ -138,8 +149,13 @@
                 app:destination="@id/productsFilterFragment" />
             <argument
                 android:name="categoryId"
-                app:argType="integer"
-                android:defaultValue="0" />
+                android:defaultValue="0"
+                app:argType="integer" />
+            <argument
+                android:name="filterInfo"
+                android:defaultValue="@null"
+                app:argType="com.ars.groceriesapp.ui.home.search.filter.Filter"
+                app:nullable="true" />
         </fragment>
 
         <dialog
@@ -152,14 +168,18 @@
             android:id="@+id/orderDetailsFragment"
             android:name="com.ars.groceriesapp.ui.home.order_details.OrderDetailsFragment"
             android:label="fragment_order_details"
-            tools:layout="@layout/fragment_order_details" />
+            tools:layout="@layout/fragment_order_details" >
+            <argument
+                android:name="orderInfo"
+                app:argType="com.ars.domain.model.Order" />
+        </fragment>
 
 
         <argument
             android:name="customer"
+            android:defaultValue="@null"
             app:argType="com.ars.domain.model.Customer"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_global_auth_graph"
@@ -172,9 +192,8 @@
     </navigation>
 
 
-
-
-    <navigation android:id="@+id/starting_graph"
+    <navigation
+        android:id="@+id/starting_graph"
         app:startDestination="@id/splashFragment">
         <fragment
             android:id="@+id/splashFragment"
@@ -193,16 +212,16 @@
             android:name="com.ars.groceriesapp.ui.startup.GetStartedFragment"
             android:label="fragment_get_started"
             tools:layout="@layout/fragment_get_started" />
-<!--        <action-->
-<!--            android:id="@+id/toAuthGraph"-->
-<!--            app:destination="@id/auth_graph"-->
-<!--            app:popUpTo="@id/starting_graph"-->
-<!--            app:popUpToInclusive="true"/>-->
+        <!--        <action-->
+        <!--            android:id="@+id/toAuthGraph"-->
+        <!--            app:destination="@id/auth_graph"-->
+        <!--            app:popUpTo="@id/starting_graph"-->
+        <!--            app:popUpToInclusive="true"/>-->
         <action
             android:id="@+id/startingToHome"
             app:destination="@id/home_graph"
             app:popUpTo="@id/starting_graph"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </navigation>
 
 

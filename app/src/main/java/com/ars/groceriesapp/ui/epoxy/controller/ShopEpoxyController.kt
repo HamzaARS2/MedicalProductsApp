@@ -20,6 +20,9 @@ import com.ars.domain.model.Product
 import com.ars.domain.utils.Response
 import com.ars.groceriesapp.databinding.ShopOffersImagesVpBinding
 import com.ars.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
+import com.ars.groceriesapp.utils.EXCLUSIVE_SECTION
+import com.ars.groceriesapp.utils.MOST_RATED_SECTION
+import com.ars.groceriesapp.utils.ON_SALE_SECTION
 import java.util.Date
 
 class ShopEpoxyController(
@@ -28,7 +31,9 @@ class ShopEpoxyController(
     private val onCategoryClicked: (category: Category) -> Unit,
     private val onProductClicked: (product: Product) -> Unit,
     private val onAddToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit,
-    private val onSearchClick: () -> Unit
+    private val onSearchClick: () -> Unit,
+    private val onAddressClick: () -> Unit,
+    private val onSeeAllClick: (section: String) -> Unit
 ) : Typed2EpoxyController<List<Product>?, List<Category>?>() {
 
 
@@ -37,7 +42,7 @@ class ShopEpoxyController(
         categories: List<Category>?
     ) {
 
-        ShopHeader(customer, onSearchClick)
+        ShopHeader(customer, onSearchClick, onAddressClick)
             .id("shop_header")
             .addTo(this)
 
@@ -60,17 +65,17 @@ class ShopEpoxyController(
         }?.sortedByDescending { it.discount?.percentage }
         val mostRated = products?.sortedByDescending { it.rating }?.take(7)
 
-        loadProducts(exclusives, "Exclusive Offer", "exclusives")
+        loadProducts(exclusives, EXCLUSIVE_SECTION, "exclusives")
         loadCategories(categories)
-        loadProducts(onSale, "On Sale", "onSale")
-        loadProducts(mostRated, "Most Rated", "mostRated")
+        loadProducts(onSale, ON_SALE_SECTION, "onSale")
+        loadProducts(mostRated, MOST_RATED_SECTION, "mostRated")
     }
 
 
     private fun loadProducts(products: List<Product?>?, productsType: String, sectionId: String) {
         val productsModels = mutableListOf<ShopProduct>()
 
-        ShopSection(productsType)
+        ShopSection(productsType, onSeeAllClick)
             .id(sectionId)
             .addTo(this)
 
@@ -103,7 +108,7 @@ class ShopEpoxyController(
 
     private fun loadCategories(categories: List<Category>?) {
         categories ?: return
-        ShopSection("Popular Categories")
+        ShopSection("Popular Categories", onSeeAllClick)
             .id("shop_section_2")
             .addTo(this)
         val categoriesModels = mutableListOf<ShopCategory>()
@@ -128,22 +133,26 @@ class ShopEpoxyController(
 
 data class ShopHeader(
     private val customer: Customer?,
-    private val onSearchClick: () -> Unit
+    private val onSearchClick: () -> Unit,
+    private val onAddressClick: () -> Unit
 ) : ViewBindingKotlinModel<ShopHeaderItemBinding>(R.layout.shop_header_item) {
     @SuppressLint("SetTextI18n")
     override fun ShopHeaderItemBinding.bind() {
         shopHeaderSearchTv.setOnClickListener {
-            Log.d("SearchClicked", "bind: SearchClicked")
             onSearchClick()
+        }
+
+        shopHeaderAddress.setOnClickListener {
+            onAddressClick()
         }
 
         if (customer == null)
             return
 
-        val customerStreetInfo = customer.address?.getStreetInfo()
+        val customerStreetInfo = customer.address?.streetAddress
 
         if (customerStreetInfo != null)
-            shopHeaderLocation.text = customerStreetInfo
+            shopHeaderAddress.text = customerStreetInfo
 
 
 
@@ -158,9 +167,13 @@ class ShopOfferImages :
 }
 
 data class ShopSection(
-    val sectionTitle: String
+    val sectionTitle: String,
+    val onSeeAllClick: (section: String) -> Unit
 ) : ViewBindingKotlinModel<ShopSectionTitleItemBinding>(R.layout.shop_section_title_item) {
     override fun ShopSectionTitleItemBinding.bind() {
+        shopSectionTitleSeeAllTv.setOnClickListener {
+                onSeeAllClick(sectionTitle)
+        }
         shopSectionTitleTv.text = sectionTitle
     }
 }

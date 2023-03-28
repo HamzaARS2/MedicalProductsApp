@@ -43,12 +43,7 @@ class CustomerRepositoryImpl @Inject constructor(
         val loginResponse = loginRepo.signInCustomer(email, password).first()
         val result = if (loginResponse is Response.Success) {
             val user = loginResponse.data
-            try {
-                getCustomer(user!!.uid)
-            } catch (throwable: Throwable) {
-                throwable.printStackTrace()
-                flowOf(Response.Error(Throwable("Something went wrong!")))
-            }
+            getCustomer(user!!.uid)
         } else flowOf(Response.Error(Throwable("Something went wrong!")))
         emitAll(result)
     }
@@ -58,9 +53,15 @@ class CustomerRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getCustomer(id: String): Flow<Response<Customer?>> {
-        val customer = customerDataSource.retrieve(id)
-        return flowOf(Response.Success(customer))
+    override suspend fun getCustomer(id: String) = flow {
+        emit(Response.Loading())
+        val result = try {
+            val response = customerDataSource.retrieve(id)
+            Response.Success(response)
+        } catch (throwable: Throwable) {
+            Response.Error(throwable)
+        }
+        emit(result)
     }
 
 

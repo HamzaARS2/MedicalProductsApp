@@ -67,7 +67,20 @@
         android:textColor="@color/title_color"
         android:textSize="@dimen/_14ssp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_group" />
+        app:layout_constraintTop_toBottomOf="@+id/sorting_group" />
+
+    <TextView
+        android:id="@+id/filter_title_tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:fontFamily="@font/gilroy_semi_bold"
+        android:text="Products are"
+        android:textColor="@color/title_color"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/price_group" />
 
     <Button
         android:id="@+id/filter_apply_btn"
@@ -79,10 +92,10 @@
         android:textSize="@dimen/_13ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/filter_group" />
 
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/filter_group"
+        android:id="@+id/sorting_group"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
@@ -110,7 +123,7 @@
 
 
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup"
+        android:id="@+id/price_group"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
@@ -133,6 +146,32 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="Price: High to low" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_group"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_title_tv3"
+        >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/exclusive_filter_item"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exclusive" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/on_sale_filter_item"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="On Sale" />
     </com.google.android.material.chip.ChipGroup>
 
 

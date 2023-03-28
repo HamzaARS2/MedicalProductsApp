@@ -1,7 +1,6 @@
 package com.ars.groceriesapp.ui.home.search
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -42,6 +41,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         navController = Navigation.findNavController(view)
 
         viewModel.categoryId = args.categoryId
+        prepareAppliedFilters()
         viewModel.searchProducts(binding.exploreHeaderSearchSv.query.toString(), viewModel.categoryId)
 
         searchProductsAdapter = SearchProductsAdapter(
@@ -68,8 +68,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             binding.searchProgress.isVisible = response is Response.Loading
             when(response) {
                 is Response.Success -> {
-                    val sortedList = filter.sort(response.data)
-                    searchProductsAdapter.differ.submitList(sortedList)
+                    val filteredList = filter.filterProducts(response.data)
+                    searchProductsAdapter.differ.submitList(filteredList)
                     binding.searchRv.smoothScrollToPosition(0)
                 }
                 is Response.Error -> {
@@ -95,6 +95,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
 
 
+    }
+
+    private fun prepareAppliedFilters() {
+        val filter = args.filterInfo
+        filter ?: return
+        viewModel.updateFilters(filter)
     }
 
 

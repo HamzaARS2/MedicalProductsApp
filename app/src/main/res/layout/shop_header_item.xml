@@ -18,10 +18,10 @@
         app:srcCompat="@drawable/app_logo" />
 
     <TextView
-        android:id="@+id/shop_header_location"
+        android:id="@+id/shop_header_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/set_your_location"
+        android:text="@string/set_your_address"
         android:layout_marginTop="@dimen/_4sdp"
         android:fontFamily="@font/gilroy_semi_bold"
         android:textSize="@dimen/_12ssp"
@@ -48,7 +48,7 @@
         android:drawablePadding="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shop_header_location"
+        app:layout_constraintTop_toBottomOf="@+id/shop_header_address"
         app:drawableStartCompat="@drawable/ic_search"
         app:drawableTint="@color/subtitle_color"
         android:focusable="true" />

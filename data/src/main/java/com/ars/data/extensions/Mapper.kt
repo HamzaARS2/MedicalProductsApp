@@ -37,14 +37,27 @@ fun Customer.asNetworkCustomer() =
 fun NetworkAddress.asAddress() =
     Address(
         id = id,
-        streetAddress = addressLine,
+        firstName = firstName,
+        lastName = lastName,
+        phone = phone,
+        streetAddress = streetAddress,
         city = city,
         state = state,
         country = country,
-        streetName =  streetName,
-        number = number,
         createdAt = convertDateToLong(createdAt),
         updatedAt = convertDateToLong(updatedAt)
+    )
+
+fun Address.asNetworkAddress() =
+    NetworkAddress(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        phone = phone,
+        streetAddress = streetAddress,
+        city = city,
+        state = state,
+        country = country
     )
 fun NetworkReview.asReview() =
     Review(
@@ -175,6 +188,8 @@ fun NetworkProductDetails.asProductDetails(isFavorite: Boolean = false) =
         reviews = reviews?.map { it.asReview() },
         similarProducts = similarProducts?.map { it.asProduct() }
     )
+
+
 
 
 fun NetworkCartItem.asCartItemEntity() =

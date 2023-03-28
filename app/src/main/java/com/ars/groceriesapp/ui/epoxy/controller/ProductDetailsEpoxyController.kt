@@ -15,6 +15,7 @@ class ProductDetailsEpoxyController(
     private val onFavoriteStateChanged: (isChecked: Boolean, onFinish: () -> Unit) -> Unit,
     private val onAddProductToCartClick: (productId: Int, onFinish: () -> Unit) -> Unit,
     private val onProductClick: (product: Product) -> Unit,
+    private val onQuantityChanged: (quantity: Int) -> Unit
 ) : TypedEpoxyController<ProductDetails>() {
     private val reviewsAdapter: ReviewsAdapter = ReviewsAdapter()
 
@@ -33,7 +34,8 @@ class ProductDetailsEpoxyController(
             productDetails.priceUnit,
             productDetails.price,
             productDetails.isFavorite,
-            onFavoriteStateChanged
+            onFavoriteStateChanged,
+            onQuantityChanged
         )
             .id("product_details_price")
             .addTo(this)

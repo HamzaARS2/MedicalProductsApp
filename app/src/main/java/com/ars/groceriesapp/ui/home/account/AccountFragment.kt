@@ -77,27 +77,31 @@ class AccountFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when(view?.id) {
             R.id.account_orders_btn -> {
+                if (checkCustomerState())
                 Toast.makeText(requireContext(), "account_orders_btn", Toast.LENGTH_SHORT).show()
             }
             R.id.account_details_btn -> {
+                if (checkCustomerState())
                 Toast.makeText(requireContext(), "account_details_btn", Toast.LENGTH_SHORT).show()
             }
             R.id.account_address_btn -> {
-                Toast.makeText(requireContext(), "account_address_btn", Toast.LENGTH_SHORT).show()
+                if (checkCustomerState())
+                navController.navigate(R.id.addressFragment)
             }
-//            R.id.account_payment_btn -> {
-//                Toast.makeText(requireContext(), "account_payment_btn", Toast.LENGTH_SHORT).show()
-//            }
             R.id.account_promo_btn -> {
+                if (checkCustomerState())
                 Toast.makeText(requireContext(), "account_promo_btn", Toast.LENGTH_SHORT).show()
             }
             R.id.account_notifications_btn -> {
+                if (checkCustomerState())
                 Toast.makeText(requireContext(), "account_notifications_btn", Toast.LENGTH_SHORT).show()
             }
             R.id.account_help_btn -> {
+                if (checkCustomerState())
                 Toast.makeText(requireContext(), "account_help_btn", Toast.LENGTH_SHORT).show()
             }
             R.id.account_about_btn -> {
+                if (checkCustomerState())
                 Toast.makeText(requireContext(), "account_about_btn", Toast.LENGTH_SHORT).show()
             }
             R.id.account_login_btn -> {
@@ -108,6 +112,15 @@ class AccountFragment : Fragment(), View.OnClickListener {
                 navController.navigate(HomeGraphDirections.actionGlobalAuthGraph())
             }
         }
+    }
+
+    private fun checkCustomerState(): Boolean {
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            navController.navigate(R.id.auth_graph)
+            return false
+        }
+        return true
     }
 
 }

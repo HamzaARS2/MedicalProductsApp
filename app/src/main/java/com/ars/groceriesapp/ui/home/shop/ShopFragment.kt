@@ -13,9 +13,17 @@ import androidx.navigation.fragment.navArgs
 import com.ars.domain.model.Category
 import com.ars.domain.model.Product
 import com.ars.domain.utils.Response
+import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentShopBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ShopEpoxyController
 import com.ars.groceriesapp.ui.home.HomeViewModel
+import com.ars.groceriesapp.ui.home.search.filter.Filter
+import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.EXCLUSIVE_FILTER
+import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.HIGH_RATED
+import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.ON_SALE_FILTER
+import com.ars.groceriesapp.utils.EXCLUSIVE_SECTION
+import com.ars.groceriesapp.utils.MOST_RATED_SECTION
+import com.ars.groceriesapp.utils.ON_SALE_SECTION
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -55,7 +63,9 @@ class ShopFragment : Fragment() {
             ::onCategoryClicked,
             ::onProductClicked,
             ::onAddToCartClick,
-            ::onSearchClick
+            ::onSearchClick,
+            ::onAddressClick,
+            ::onSeeAllClick
         )
         binding.epoxyRv.setController(controller)
 
@@ -68,6 +78,31 @@ class ShopFragment : Fragment() {
 
     }
 
+    private fun onAddressClick() {
+        val customer = homeViewModel.getCustomer()
+        if (customer == null) {
+            navigateToLogin()
+            return
+        }
+        navController.navigate(ShopFragmentDirections.shopToAddress())
+    }
+
+    private fun onSeeAllClick(section: String) {
+        val filter = Filter()
+        when (section) {
+            EXCLUSIVE_SECTION -> {
+                filter.appliedFiltersMap[EXCLUSIVE_FILTER] = true
+            }
+            ON_SALE_SECTION -> {
+                filter.appliedFiltersMap[ON_SALE_FILTER] = true
+            }
+            MOST_RATED_SECTION -> {
+                filter.appliedFiltersMap[HIGH_RATED] = true
+            }
+        }
+            navController.navigate(ShopFragmentDirections.shopToSearch(filterInfo = filter))
+
+    }
     private fun onCategoryClicked(category: Category) {
         Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()
     }
@@ -109,7 +144,7 @@ class ShopFragment : Fragment() {
     }
 
     private fun navigateToLogin() {
-        navController.navigate(ShopFragmentDirections.actionGlobalAuthGraph())
+        navController.navigate(R.id.auth_graph)
     }
 
 
