@@ -71,7 +71,7 @@ object Validation {
     fun validatePhoneNumber(phoneNumber: String): ValidationResponse {
         return if (phoneNumber.isBlank())
             ValidationResponse(false, "Please enter your phone number")
-        else if (phoneNumber.length <= 9)
+        else if (phoneNumber.length <= 8)
             ValidationResponse(false, "Please enter a valid phone number")
         else ValidationResponse(true, null)
     }
