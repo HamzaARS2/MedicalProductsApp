@@ -15,8 +15,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-//    private const val BASE_URL = "https://groceries-app-spring-boot-production.up.railway.app/api/"
-    private const val BASE_URL = "http://192.168.1.80:8080/api/"
+    private const val BASE_URL = "https://groceries-app-spring-boot-production.up.railway.app/api/"
+//    private const val BASE_URL = "http://192.168.1.80:8080/api/"
 
 
     @Singleton
@@ -59,6 +59,10 @@ object NetworkModule {
     @Provides
     fun provideAddressApi(retrofit: Retrofit): AddressApi =
         retrofit.create(AddressApi::class.java)
+    @Singleton
+    @Provides
+    fun provideOrderApi(retrofit: Retrofit): OrderApi =
+        retrofit.create(OrderApi::class.java)
 
     @Provides
     fun provideProductDataSource(productApi: ProductApi) =

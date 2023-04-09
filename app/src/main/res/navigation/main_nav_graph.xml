@@ -174,6 +174,18 @@
                 app:argType="com.ars.domain.model.Order" />
         </fragment>
 
+        <dialog
+            android:id="@+id/orderDialogFragment"
+            android:name="com.ars.groceriesapp.ui.home.OrderDialogFragment"
+            android:label="fragment_order_dialog"
+            tools:layout="@layout/fragment_order_dialog" />
+
+        <dialog
+            android:id="@+id/orderFailedDialogFragment"
+            android:name="com.ars.groceriesapp.ui.home.OrderFailedDialogFragment"
+            android:label="OrderFailedDialogFragment"
+            tools:layout="@layout/fragment_order_failed_dialog"/>
+
 
         <argument
             android:name="customer"
@@ -223,6 +235,7 @@
             app:popUpTo="@id/starting_graph"
             app:popUpToInclusive="true" />
     </navigation>
+
 
 
 </navigation>

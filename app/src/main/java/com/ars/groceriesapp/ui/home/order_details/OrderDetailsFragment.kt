@@ -1,6 +1,8 @@
 package com.ars.groceriesapp.ui.home.order_details
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ars.domain.utils.Response
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentOrderDetailsBinding
 import com.ars.groceriesapp.ui.home.HomeViewModel
@@ -22,10 +25,12 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
     val binding get() = _binding!!
 
     private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val viewModel by activityViewModels<OrderDetailsViewModel>()
     private val args by navArgs<OrderDetailsFragmentArgs>()
 
     private lateinit var navController: NavController
 
+    var bool = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentOrderDetailsBinding.bind(view)
@@ -36,9 +41,18 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
-        binding.checkoutAddressTv.text = homeViewModel.getCustomer()?.address?.getFullAddress()
+        setOrderInfo()
 
         setButtonsClickListeners()
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setOrderInfo() {
+        binding.apply {
+            checkoutAddressTv.text = homeViewModel.getCustomer()?.address?.getFullAddress()
+            checkoutTotalPriceTv.text = "$${args.orderInfo.totalPrice}"
+        }
 
     }
 
@@ -50,11 +64,23 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
             checkoutAddressEditBtn.setOnClickListener {
                 navController.navigate(R.id.addressFragment)
             }
-            checkoutCodeApplyBtn.setOnClickListener {
-                // TODO(Apply the promo code to the current order)
-            }
             checkoutOrderBtn.setOnClickListener {
-                Toast.makeText(requireContext(), "Ordered successfully!", Toast.LENGTH_SHORT).show()
+                viewModel.placeOrder(args.orderInfo)
+                    .observe(viewLifecycleOwner) { response ->
+
+                        when(response) {
+                            is Response.Success -> {
+                                navController.navigate(R.id.orderDialogFragment)
+                            }
+                            is Response.Error -> {
+                                navController.navigate(R.id.orderFailedDialogFragment)
+                                Log.d("placeOrder", "setButtonsClickListeners: ${response.error?.localizedMessage}")
+                            }
+                            is Response.Loading -> {
+
+                            }
+                        }
+                    }
             }
         }
     }

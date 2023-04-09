@@ -14,6 +14,21 @@ import java.util.*
 
 
 
+
+fun OrderItem.asNetworkOrderItem() =
+    NetworkOrderItem(
+        productId = productId,
+        quantity = quantity,
+        subTotalPrice = subTotalPrice
+    )
+
+
+fun Order.asNetworkOrder() =
+    NetworkOrder(
+        customerId = customerId,
+        totalPrice = totalPrice,
+        orderItems = orderItems.map { it.asNetworkOrderItem() }
+    )
 fun NetworkCustomer.asCustomer() =
     Customer(
         id = id,

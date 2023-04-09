@@ -45,4 +45,8 @@
         <item name="colorSurface">@android:color/holo_red_dark</item>
         <item name="colorOnSurfaceVariant">@android:color/holo_green_dark</item>
     </style>
+
+    <style name="DialogTheme" parent="Theme.Material3.Light.Dialog">
+        <item name="dialogCornerRadius">@dimen/_20sdp</item>
+    </style>
 </resources>
