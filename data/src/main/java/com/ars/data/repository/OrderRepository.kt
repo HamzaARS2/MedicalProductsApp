@@ -2,12 +2,11 @@ package com.ars.data.repository
 
 import android.util.Log
 import com.ars.data.extensions.asNetworkOrder
+import com.ars.data.extensions.asOrder
 import com.ars.data.network.api.OrderApi
-import com.ars.domain.model.Order
+import com.ars.domain.model.OrderRequest
 import com.ars.domain.utils.Response
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 class OrderRepository @Inject constructor(
@@ -18,7 +17,9 @@ class OrderRepository @Inject constructor(
     fun getOrders(customerId: String) = flow {
         emit(Response.Loading())
         val result = try {
-            val response = orderApi.getCustomerOrders(customerId)
+            val response = orderApi.getCustomerOrders(customerId).map {
+                it.asOrder()
+            }
             Response.Success(response)
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
@@ -29,10 +30,10 @@ class OrderRepository @Inject constructor(
     }
 
 
-    fun placeNewOrder(order: Order) = flow {
+    fun placeNewOrder(orderRequest: OrderRequest) = flow {
         emit(Response.Loading())
         val result = try {
-            val response = orderApi.createOrder(order.asNetworkOrder())
+            val response = orderApi.createOrder(orderRequest.asNetworkOrder())
             Log.d("placeNewOrder", "placeNewOrder: response = $response")
             Response.Success(response)
         } catch (throwable: Throwable) {

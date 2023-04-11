@@ -5,16 +5,23 @@ import com.ars.data.local.relations.CartAndProduct
 import com.ars.data.local.relations.DiscountAndProduct
 import com.ars.data.local.relations.FavoriteAndProduct
 import com.ars.data.network.model.*
+import com.ars.data.util.convertToReadableDate
 import com.ars.domain.model.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-
-
-
+fun NetworkOrder.asOrder() =
+    Order(
+        id = id,
+        customerId = customerId,
+        status = status,
+        trackNumber = trackNumber,
+        totalPrice = totalPrice,
+        paymentMethod = paymentMethod,
+        createdAt = timestamp.time.convertToReadableDate()
+    )
 fun OrderItem.asNetworkOrderItem() =
     NetworkOrderItem(
         productId = productId,
@@ -23,8 +30,8 @@ fun OrderItem.asNetworkOrderItem() =
     )
 
 
-fun Order.asNetworkOrder() =
-    NetworkOrder(
+fun OrderRequest.asNetworkOrder() =
+    NetworkOrderRequest(
         customerId = customerId,
         totalPrice = totalPrice,
         orderItems = orderItems.map { it.asNetworkOrderItem() }

@@ -171,8 +171,14 @@
             tools:layout="@layout/fragment_order_details" >
             <argument
                 android:name="orderInfo"
-                app:argType="com.ars.domain.model.Order" />
+                app:argType="com.ars.domain.model.OrderRequest" />
         </fragment>
+
+        <fragment
+            android:id="@+id/ordersFragment"
+            android:name="com.ars.groceriesapp.ui.home.account.orders_history.OrdersFragment"
+            android:label="fragment_orders"
+            tools:layout="@layout/fragment_orders" />
 
         <dialog
             android:id="@+id/orderDialogFragment"

@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.ars.domain.model.CartItem
-import com.ars.domain.model.Order
 import com.ars.domain.model.OrderItem
 import com.ars.groceriesapp.databinding.OrderDetailsItemBinding
 import com.bumptech.glide.Glide

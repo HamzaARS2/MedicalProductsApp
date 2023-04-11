@@ -12,12 +12,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.ars.domain.model.Order
+import com.ars.domain.model.OrderRequest
 import com.ars.domain.model.OrderItem
 import com.ars.domain.model.Product
 import com.ars.domain.model.ProductDetails
 import com.ars.domain.utils.Response
-import com.ars.groceriesapp.HomeGraphDirections
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentProductDetailsBinding
 import com.ars.groceriesapp.ui.epoxy.controller.ProductDetailsEpoxyController
@@ -89,7 +88,7 @@ class ProductDetailsFragment : Fragment() {
         Toast.makeText(requireContext(), "quantity = $quantity", Toast.LENGTH_SHORT).show()
     }
 
-    private fun createOrder(): Order? {
+    private fun createOrder(): OrderRequest? {
 
         productDetails ?: return null
         val subTotalPrice = productDetails?.price!!.times(productQuantity.toBigDecimal())
@@ -103,7 +102,7 @@ class ProductDetailsFragment : Fragment() {
                 subTotalPrice = subTotalPrice
             )
         )
-        return Order(
+        return OrderRequest(
             customerId = homeViewModel.getCustomer()?.id!!,
             totalPrice = subTotalPrice,
             orderItems
