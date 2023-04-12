@@ -1,7 +1,9 @@
 package com.ars.domain.model
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Customer(
     val id: String,
     val name: String,
@@ -9,6 +11,4 @@ data class Customer(
     var phone: String?,
     var address: Address? = null,
     var location: Location? = null
-): Serializable {
-
-}
+): Parcelable

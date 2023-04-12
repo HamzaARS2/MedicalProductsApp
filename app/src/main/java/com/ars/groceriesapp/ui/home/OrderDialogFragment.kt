@@ -33,6 +33,16 @@ class OrderDialogFragment : DialogFragment(R.layout.fragment_order_dialog) {
         _binding = FragmentOrderDialogBinding.bind(view)
         navController = findNavController()
 
+        binding.apply {
+            orderPlacedTrackOrderBtn.setOnClickListener {
+                navController.navigate(OrderDialogFragmentDirections.orderPlacedToOrdersHistory())
+            }
+
+            orderPlacedContinueShopBtn.setOnClickListener {
+                navController.navigate(OrderDialogFragmentDirections.orderPlacedToShop())
+            }
+        }
+
     }
 
     override fun onDestroyView() {

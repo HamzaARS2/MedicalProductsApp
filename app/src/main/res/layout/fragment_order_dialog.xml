@@ -68,28 +68,30 @@
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/order_placed_continue_shop_btn"
+            style="@style/Widget.Material3.Button.TextButton.Dialog.Flush"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_4sdp"
+            android:text="@string/continue_shopping"
+            android:textColor="@color/main_btn_color"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/order_placed_track_order_btn"
+            app:layout_constraintStart_toStartOf="@+id/order_placed_track_order_btn"
+            app:layout_constraintTop_toBottomOf="@+id/order_placed_track_order_btn" />
+
+        <Button
+            android:id="@+id/order_placed_track_order_btn"
             style="@style/MainButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_46sdp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:text="Continue shopping"
+            android:layout_marginTop="@dimen/_12sdp"
             android:paddingHorizontal="@dimen/_23sdp"
-            android:textSize="@dimen/_12ssp"
+            android:text="@string/track_order"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:text="Track Order"
-            android:textColor="@color/main_btn_color"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -72,4 +72,5 @@
     <string name="active">Active</string>
     <string name="delivered">Delivered</string>
     <string name="track_order">Track Order</string>
+    <string name="continue_shopping">Continue shopping</string>
 </resources>

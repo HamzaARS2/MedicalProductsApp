@@ -67,14 +67,13 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
             checkoutOrderBtn.setOnClickListener {
                 viewModel.placeOrder(args.orderInfo)
                     .observe(viewLifecycleOwner) { response ->
-
                         when(response) {
                             is Response.Success -> {
                                 navController.navigate(R.id.orderDialogFragment)
                             }
                             is Response.Error -> {
                                 navController.navigate(R.id.orderFailedDialogFragment)
-                                Log.d("placeOrder", "setButtonsClickListeners: ${response.error?.localizedMessage}")
+
                             }
                             is Response.Loading -> {
 

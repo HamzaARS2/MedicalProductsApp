@@ -100,9 +100,9 @@
             tools:layout="@layout/fragment_shop">
             <argument
                 android:name="customer"
-                android:defaultValue="@null"
                 app:argType="com.ars.domain.model.Customer"
-                app:nullable="true" />
+                app:nullable="true"
+                android:defaultValue="@null" />
             <action
                 android:id="@+id/shopFragToProductDetailsFrag"
                 app:destination="@id/productDetailsFragment" />
@@ -184,7 +184,17 @@
             android:id="@+id/orderDialogFragment"
             android:name="com.ars.groceriesapp.ui.home.OrderDialogFragment"
             android:label="fragment_order_dialog"
-            tools:layout="@layout/fragment_order_dialog" />
+            tools:layout="@layout/fragment_order_dialog" >
+            <action
+                android:id="@+id/orderPlacedToOrdersHistory"
+                app:destination="@id/ordersFragment"
+                app:popUpTo="@id/shopFragment"/>
+            <action
+                android:id="@+id/orderPlacedToShop"
+                app:destination="@id/shopFragment"
+                app:popUpTo="@id/shopFragment"
+                app:popUpToInclusive="true"/>
+        </dialog>
 
         <dialog
             android:id="@+id/orderFailedDialogFragment"
