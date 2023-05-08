@@ -30,7 +30,7 @@ fun OrderItem.asNetworkOrderItem() =
     )
 
 
-fun OrderRequest.asNetworkOrder() =
+fun OrderRequest.asNetworkOrderRequest() =
     NetworkOrderRequest(
         customerId = customerId,
         totalPrice = totalPrice,

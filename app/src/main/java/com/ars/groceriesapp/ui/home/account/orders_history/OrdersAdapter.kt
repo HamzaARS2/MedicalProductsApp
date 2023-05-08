@@ -14,7 +14,9 @@ import com.ars.groceriesapp.utils.ACTIVE_ORDERS
 import com.ars.groceriesapp.utils.DELIVERED_ORDERS
 import com.ars.groceriesapp.utils.STATUS_DELIVERED
 
-class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersHolder>() {
+class OrdersAdapter(
+    private val onTrackOrderClicked: (order: Order) -> Unit
+) : RecyclerView.Adapter<OrdersAdapter.OrdersHolder>() {
 
     private var allOrders: List<Order>? = emptyList()
 
@@ -67,7 +69,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersHolder>() {
 
         init {
             binding.orderItemTrackOrderBtn.setOnClickListener {
-                Log.d("TrackBtn", "TrackBtn:  Clicked")
+                onTrackOrderClicked(differ.currentList[bindingAdapterPosition])
             }
         }
 

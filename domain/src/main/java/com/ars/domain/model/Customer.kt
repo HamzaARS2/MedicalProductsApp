@@ -6,8 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Customer(
     val id: String,
-    val name: String,
-    val email: String,
+    var name: String,
+    var email: String,
     var phone: String?,
     var address: Address? = null,
     var location: Location? = null

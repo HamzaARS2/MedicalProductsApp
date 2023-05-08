@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ars.domain.model.Order
 import com.ars.domain.utils.Response
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentOrdersBinding
@@ -58,6 +59,11 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
 
     }
 
+    private fun onTrackOrderClicked(order: Order) {
+        navController
+            .navigate(OrdersFragmentDirections.ordersHistoryToTrackOrder(order))
+    }
+
     private fun observeOrders() {
         viewModel.getOrdersLiveData(customerId).observe(viewLifecycleOwner) { response ->
             binding.ordersProgress.isVisible = response is Response.Loading
@@ -76,7 +82,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     }
 
     private fun initRecyclerView() {
-        ordersAdapter = OrdersAdapter()
+        ordersAdapter = OrdersAdapter(::onTrackOrderClicked)
         binding.ordersRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = ordersAdapter

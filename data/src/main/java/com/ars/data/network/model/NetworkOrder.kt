@@ -7,6 +7,8 @@ import java.sql.Timestamp
 data class NetworkOrder(
     val id: Int,
     val customerId: String,
+    @SerializedName("address_id")
+    val addressId: Int,
     val status: String,
     val trackNumber: String,
     val estimatedDeliveryDate: String,

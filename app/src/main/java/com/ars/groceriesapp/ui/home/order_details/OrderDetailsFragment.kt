@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ars.domain.model.Order
 import com.ars.domain.utils.Response
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentOrderDetailsBinding
@@ -69,15 +70,16 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
                     .observe(viewLifecycleOwner) { response ->
                         when(response) {
                             is Response.Success -> {
-                                navController.navigate(R.id.orderDialogFragment)
+                                navController.navigate(OrderDetailsFragmentDirections
+                                    .orderDetailsToOrderDialog(response.data!!)
+                                )
                             }
                             is Response.Error -> {
+                                Log.d("PlaceOrder", "setButtonsClickListeners: " + response.error?.message)
                                 navController.navigate(R.id.orderFailedDialogFragment)
 
                             }
-                            is Response.Loading -> {
-
-                            }
+                            is Response.Loading -> Unit
                         }
                     }
             }

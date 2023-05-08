@@ -24,6 +24,7 @@ import com.ars.groceriesapp.ui.home.search.filter.Filter.Companion.ON_SALE_FILTE
 import com.ars.groceriesapp.utils.EXCLUSIVE_SECTION
 import com.ars.groceriesapp.utils.MOST_RATED_SECTION
 import com.ars.groceriesapp.utils.ON_SALE_SECTION
+import com.ars.groceriesapp.utils.POPULAR_CATEGORIES_SECTION
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -92,6 +93,10 @@ class ShopFragment : Fragment() {
         when (section) {
             EXCLUSIVE_SECTION -> {
                 filter.appliedFiltersMap[EXCLUSIVE_FILTER] = true
+            }
+            POPULAR_CATEGORIES_SECTION -> {
+                navController.navigate(R.id.exploreFragment)
+                return
             }
             ON_SALE_SECTION -> {
                 filter.appliedFiltersMap[ON_SALE_FILTER] = true

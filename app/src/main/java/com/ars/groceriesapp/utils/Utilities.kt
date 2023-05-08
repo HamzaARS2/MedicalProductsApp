@@ -9,6 +9,7 @@ const val FILTER_CATEGORY_TYPE = "category"
 const val EXCLUSIVE_SECTION = "Exclusive Offers"
 const val ON_SALE_SECTION = "On Sale"
 const val MOST_RATED_SECTION = "Most Rated"
+const val POPULAR_CATEGORIES_SECTION = "Popular Categories"
 
 const val STATUS_PENDING = "Pending"
 const val STATUS_PROCESSING = "Processing"

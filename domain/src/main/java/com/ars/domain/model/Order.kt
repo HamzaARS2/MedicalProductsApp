@@ -1,7 +1,10 @@
 package com.ars.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
+@Parcelize
 data class Order(
     val id: Int,
     val customerId: String,
@@ -10,4 +13,4 @@ data class Order(
     val totalPrice: BigDecimal,
     val paymentMethod: String,
     val createdAt: String
-)
+): Parcelable

@@ -1,7 +1,7 @@
 package com.ars.data.repository
 
 import android.util.Log
-import com.ars.data.extensions.asNetworkOrder
+import com.ars.data.extensions.asNetworkOrderRequest
 import com.ars.data.extensions.asOrder
 import com.ars.data.network.api.OrderApi
 import com.ars.domain.model.OrderRequest
@@ -33,9 +33,9 @@ class OrderRepository @Inject constructor(
     fun placeNewOrder(orderRequest: OrderRequest) = flow {
         emit(Response.Loading())
         val result = try {
-            val response = orderApi.createOrder(orderRequest.asNetworkOrder())
+            val response = orderApi.createOrder(orderRequest.asNetworkOrderRequest())
             Log.d("placeNewOrder", "placeNewOrder: response = $response")
-            Response.Success(response)
+            Response.Success(response.asOrder())
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
             Response.Error(throwable)

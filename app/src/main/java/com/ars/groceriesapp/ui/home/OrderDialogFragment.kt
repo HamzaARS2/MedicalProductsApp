@@ -8,6 +8,7 @@ import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentOrderDialogBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,6 +20,8 @@ class OrderDialogFragment : DialogFragment(R.layout.fragment_order_dialog) {
     private val binding get() = _binding!!
 
     private lateinit var navController: NavController
+
+    private val args by navArgs<OrderDialogFragmentArgs>()
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -35,7 +38,7 @@ class OrderDialogFragment : DialogFragment(R.layout.fragment_order_dialog) {
 
         binding.apply {
             orderPlacedTrackOrderBtn.setOnClickListener {
-                navController.navigate(OrderDialogFragmentDirections.orderPlacedToOrdersHistory())
+                navController.navigate(OrderDialogFragmentDirections.orderPlacedToTrackOrder(args.orderInfo))
             }
 
             orderPlacedContinueShopBtn.setOnClickListener {

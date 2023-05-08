@@ -48,12 +48,11 @@ class CustomerRepositoryImpl @Inject constructor(
         emitAll(result)
     }
 
-    override suspend fun update(customer: Customer): Resource<Customer?> {
-        return customerDataSource.update(customer)
-    }
+    override fun update(customer: Customer) = customerDataSource.update(customer)
+    
 
 
-    override suspend fun getCustomer(id: String) = flow {
+    override fun getCustomer(id: String) = flow {
         emit(Response.Loading())
         val result = try {
             val response = customerDataSource.retrieve(id)

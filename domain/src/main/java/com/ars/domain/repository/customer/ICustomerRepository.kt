@@ -11,9 +11,9 @@ interface ICustomerRepository {
     suspend fun register(username: String, email: String, password: String): Resource<Customer>
     fun login(email: String, password: String): Flow<Response<Customer?>>
 
-    suspend fun update(customer: Customer): Resource<Customer?>
+    fun update(customer: Customer): Flow<Response<Customer>>
 
-    suspend fun getCustomer(id: String): Flow<Response<Customer?>>
+    fun getCustomer(id: String): Flow<Response<Customer?>>
 
     suspend fun linkPhoneWithExistingAccount(
         verificationId: String, smsCode: String, onSuccess: (phone: String) -> Unit,

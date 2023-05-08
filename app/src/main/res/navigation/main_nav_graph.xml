@@ -172,13 +172,36 @@
             <argument
                 android:name="orderInfo"
                 app:argType="com.ars.domain.model.OrderRequest" />
+            <action
+                android:id="@+id/orderDetailsToOrderDialog"
+                app:destination="@id/orderDialogFragment" />
         </fragment>
 
         <fragment
             android:id="@+id/ordersFragment"
             android:name="com.ars.groceriesapp.ui.home.account.orders_history.OrdersFragment"
             android:label="fragment_orders"
-            tools:layout="@layout/fragment_orders" />
+            tools:layout="@layout/fragment_orders" >
+            <action
+                android:id="@+id/ordersHistoryToTrackOrder"
+                app:destination="@id/trackOrderFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/trackOrderFragment"
+            android:name="com.ars.groceriesapp.ui.home.account.orders_history.track_order.TrackOrderFragment"
+            android:label="fragment_track_order"
+            tools:layout="@layout/fragment_track_order" >
+            <argument
+                android:name="orderInfo"
+                app:argType="com.ars.domain.model.Order" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/customerInfoFragment"
+            android:name="com.ars.groceriesapp.ui.home.account.customer_info.CustomerInfoFragment"
+            android:label="fragment_customer_info"
+            tools:layout="@layout/fragment_customer_info" />
 
         <dialog
             android:id="@+id/orderDialogFragment"
@@ -186,14 +209,17 @@
             android:label="fragment_order_dialog"
             tools:layout="@layout/fragment_order_dialog" >
             <action
-                android:id="@+id/orderPlacedToOrdersHistory"
-                app:destination="@id/ordersFragment"
+                android:id="@+id/orderPlacedToTrackOrder"
+                app:destination="@id/trackOrderFragment"
                 app:popUpTo="@id/shopFragment"/>
             <action
                 android:id="@+id/orderPlacedToShop"
                 app:destination="@id/shopFragment"
                 app:popUpTo="@id/shopFragment"
                 app:popUpToInclusive="true"/>
+            <argument
+                android:name="orderInfo"
+                app:argType="com.ars.domain.model.Order" />
         </dialog>
 
         <dialog

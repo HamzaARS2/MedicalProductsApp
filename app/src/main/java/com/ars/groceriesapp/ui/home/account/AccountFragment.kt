@@ -82,7 +82,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
             }
             R.id.account_details_btn -> {
                 if (checkCustomerState())
-                Toast.makeText(requireContext(), "account_details_btn", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.customerInfoFragment)
             }
             R.id.account_address_btn -> {
                 if (checkCustomerState())

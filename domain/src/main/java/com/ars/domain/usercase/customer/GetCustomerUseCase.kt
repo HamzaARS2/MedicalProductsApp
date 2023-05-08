@@ -11,6 +11,6 @@ class GetCustomerUseCase @Inject constructor(
     private val customerRepository: ICustomerRepository
 ) {
 
-    suspend operator fun invoke(id: String): Flow<Response<Customer?>> =
+    operator fun invoke(id: String): Flow<Response<Customer?>> =
         customerRepository.getCustomer(id)
 }
