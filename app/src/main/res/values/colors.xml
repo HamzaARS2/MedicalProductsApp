@@ -68,11 +68,12 @@
     <color name="title_color">#181725</color>
     <color name="gray_1">#FF181B19</color>
     <color name="gray_4">#BCB9B9</color>
-    <color name="gray_5">#F2F3F2</color>
+    <color name="gray_5">#D5D6D5</color>
 
     <color name="getstarted_subtitle_color">#B3FCFCFC</color>
     <color name="outline_color">#F0F0F0</color>
     <color name="divider_color">#E2E2E2</color>
     <color name="main_green_A50">#8053B175</color>
     <color name="white">#FFFFFF</color>
+    <color name="gray_6">#E1E3E1</color>
 </resources>

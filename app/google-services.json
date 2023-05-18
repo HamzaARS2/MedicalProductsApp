@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "272453513449",
-    "project_id": "groceriesapp-56d91",
-    "storage_bucket": "groceriesapp-56d91.appspot.com"
+    "project_number": "550490183921",
+    "project_id": "medicalproductsecom",
+    "storage_bucket": "medicalproductsecom.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:272453513449:android:eda58fde5e1f4e48240078",
+        "mobilesdk_app_id": "1:550490183921:android:7fdb8cbf369581895bb150",
         "android_client_info": {
           "package_name": "com.ars.groceriesapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "272453513449-vj7sh66phf3k82skga65olaqnno6otei.apps.googleusercontent.com",
+          "client_id": "550490183921-4fnacu6vr67qnahb0ft4co4j6095i7d6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ars.groceriesapp",
+            "certificate_hash": "2b5e92fe9634861b1548d3a75bc2176d1d3f3df1"
+          }
+        },
+        {
+          "client_id": "550490183921-psqo4ot26e8hug1p86qgp6ui8h6jrh31.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCKs7EIlSWlEBaR3aI7tWgbQaJ8C7wUcSo"
+          "current_key": "AIzaSyAAd9aGosQD0VUVQkf7euuai7d-NYvYzL4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "272453513449-vj7sh66phf3k82skga65olaqnno6otei.apps.googleusercontent.com",
+              "client_id": "550490183921-psqo4ot26e8hug1p86qgp6ui8h6jrh31.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

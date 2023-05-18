@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
@@ -62,9 +63,10 @@ class LoginFragment : Fragment() {
 
     private fun observeCustomer(customerLiveData: LiveData<Response<Customer?>>) {
         customerLiveData.observe(viewLifecycleOwner) { response ->
+            binding.loginProgress.isVisible = response is Response.Loading
             when (response) {
                 is Response.Success -> {
-
+                    binding.loginLoginBtn.visibility = View.VISIBLE
                     val customer = response.data
                     if (customer != null) {
                         navController.navigate(
@@ -85,6 +87,8 @@ class LoginFragment : Fragment() {
 
                 }
                 is Response.Error -> {
+                    binding.loginLoginBtn.visibility = View.VISIBLE
+
                     Toast.makeText(
                         requireContext(),
                         "Error: ${response.error?.message}",
@@ -93,6 +97,8 @@ class LoginFragment : Fragment() {
 
                 }
                 is Response.Loading -> {
+                    binding.loginLoginBtn.visibility = View.INVISIBLE
+
                     Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                 }
             }

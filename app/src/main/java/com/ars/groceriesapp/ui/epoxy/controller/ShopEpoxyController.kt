@@ -23,6 +23,7 @@ import com.ars.groceriesapp.ui.epoxy.helper.ViewBindingKotlinModel
 import com.ars.groceriesapp.utils.EXCLUSIVE_SECTION
 import com.ars.groceriesapp.utils.MOST_RATED_SECTION
 import com.ars.groceriesapp.utils.ON_SALE_SECTION
+import com.ars.groceriesapp.utils.POPULAR_CATEGORIES_SECTION
 import java.util.Date
 
 class ShopEpoxyController(
@@ -171,6 +172,7 @@ data class ShopSection(
     val onSeeAllClick: (section: String) -> Unit
 ) : ViewBindingKotlinModel<ShopSectionTitleItemBinding>(R.layout.shop_section_title_item) {
     override fun ShopSectionTitleItemBinding.bind() {
+        shopSectionTitleSeeAllTv.isVisible = sectionTitle != POPULAR_CATEGORIES_SECTION
         shopSectionTitleSeeAllTv.setOnClickListener {
                 onSeeAllClick(sectionTitle)
         }

@@ -1,15 +1,20 @@
 package com.ars.groceriesapp.ui.epoxy.controller
 
 import android.content.Context
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.epoxy.carousel
 import com.ars.domain.model.Product
 import com.ars.domain.model.ProductDetails
 import com.ars.groceriesapp.ui.epoxy.epoxy_models.product_details.*
+import com.ars.groceriesapp.ui.home.HomeViewModel
 import com.ars.groceriesapp.ui.home.product_details.ReviewsAdapter
 
 class ProductDetailsEpoxyController(
     private val context: Context,
+    private val homeViewModel: HomeViewModel,
+    private val lifecycle: LifecycleOwner,
     private val onBackClick: () -> Unit,
     private val onAddToCartClick: () -> Unit,
     private val onFavoriteStateChanged: (isChecked: Boolean, onFinish: () -> Unit) -> Unit,
@@ -30,6 +35,8 @@ class ProductDetailsEpoxyController(
 
         PriceModel(
             context,
+            homeViewModel,
+            lifecycle,
             productDetails.name,
             productDetails.priceUnit,
             productDetails.price,
@@ -64,7 +71,12 @@ class ProductDetailsEpoxyController(
 
         products?.forEachIndexed { index, product ->
             productsModels.add(
-                SimilarProductModel(context, product,onAddProductToCartClick, onProductClick).apply {
+                SimilarProductModel(
+                    context,
+                    product,
+                    onAddProductToCartClick,
+                    onProductClick
+                ).apply {
                     id(index)
                 }
             )
@@ -77,7 +89,6 @@ class ProductDetailsEpoxyController(
             models(productsModels)
         }
     }
-
 
 
 }

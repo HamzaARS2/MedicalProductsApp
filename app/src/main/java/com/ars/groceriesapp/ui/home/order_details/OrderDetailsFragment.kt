@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -31,7 +32,6 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
 
     private lateinit var navController: NavController
 
-    var bool = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentOrderDetailsBinding.bind(view)
@@ -68,18 +68,28 @@ class OrderDetailsFragment : Fragment(R.layout.fragment_order_details) {
             checkoutOrderBtn.setOnClickListener {
                 viewModel.placeOrder(args.orderInfo)
                     .observe(viewLifecycleOwner) { response ->
-                        when(response) {
+                        binding.checkoutOrderProgress.isVisible = response is Response.Loading
+                        when (response) {
                             is Response.Success -> {
-                                navController.navigate(OrderDetailsFragmentDirections
-                                    .orderDetailsToOrderDialog(response.data!!)
+                                binding.checkoutOrderBtn.visibility = View.VISIBLE
+                                navController.navigate(
+                                    OrderDetailsFragmentDirections
+                                        .orderDetailsToOrderDialog(response.data!!)
                                 )
                             }
                             is Response.Error -> {
-                                Log.d("PlaceOrder", "setButtonsClickListeners: " + response.error?.message)
+                                binding.checkoutOrderBtn.visibility = View.VISIBLE
+
+                                Log.d(
+                                    "PlaceOrder",
+                                    "setButtonsClickListeners: " + response.error?.message
+                                )
                                 navController.navigate(R.id.orderFailedDialogFragment)
 
                             }
-                            is Response.Loading -> Unit
+                            is Response.Loading -> binding.checkoutOrderBtn.visibility =
+                                View.INVISIBLE
+
                         }
                     }
             }

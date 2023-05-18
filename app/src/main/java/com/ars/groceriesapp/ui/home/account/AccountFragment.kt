@@ -42,6 +42,10 @@ class AccountFragment : Fragment(), View.OnClickListener {
         setListeners()
         displayCustomerInfo()
 
+        binding.wholesaleModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            homeViewModel.setWholesaleMode(isChecked)
+        }
+
 
     }
 
@@ -65,7 +69,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
             accountDetailsBtn.setOnClickListener(this@AccountFragment)
             accountAddressBtn.setOnClickListener(this@AccountFragment)
 //            accountPaymentBtn.setOnClickListener(this@AccountFragment)
-            accountPromoBtn.setOnClickListener(this@AccountFragment)
+//            accountPromoBtn.setOnClickListener(this@AccountFragment)
             accountNotificationsBtn.setOnClickListener(this@AccountFragment)
             accountHelpBtn.setOnClickListener(this@AccountFragment)
             accountAboutBtn.setOnClickListener(this@AccountFragment)
@@ -88,13 +92,14 @@ class AccountFragment : Fragment(), View.OnClickListener {
                 if (checkCustomerState())
                 navController.navigate(R.id.addressFragment)
             }
-            R.id.account_promo_btn -> {
-                if (checkCustomerState())
-                Toast.makeText(requireContext(), "account_promo_btn", Toast.LENGTH_SHORT).show()
-            }
+            //TODO: We will delay PromoCode feature for sometime
+//            R.id.account_promo_btn -> {
+//                if (checkCustomerState())
+//                Toast.makeText(requireContext(), "account_promo_btn", Toast.LENGTH_SHORT).show()
+//            }
             R.id.account_notifications_btn -> {
                 if (checkCustomerState())
-                Toast.makeText(requireContext(), "account_notifications_btn", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.notificationsFragment)
             }
             R.id.account_help_btn -> {
                 if (checkCustomerState())

@@ -185,6 +185,9 @@
             <action
                 android:id="@+id/ordersHistoryToTrackOrder"
                 app:destination="@id/trackOrderFragment" />
+            <action
+                android:id="@+id/ordersToReviewOrderProducts"
+                app:destination="@id/addReviewFragment" />
         </fragment>
 
         <fragment
@@ -202,6 +205,38 @@
             android:name="com.ars.groceriesapp.ui.home.account.customer_info.CustomerInfoFragment"
             android:label="fragment_customer_info"
             tools:layout="@layout/fragment_customer_info" />
+
+        <fragment
+            android:id="@+id/notificationsFragment"
+            android:name="com.ars.groceriesapp.ui.home.account.notifications.NotificationsFragment"
+            android:label="fragment_notifications"
+            tools:layout="@layout/fragment_notifications" />
+
+        <fragment
+            android:id="@+id/reviewFragment"
+            android:name="com.ars.groceriesapp.ui.home.review.ReviewFragment"
+            android:label="fragment_review"
+            tools:layout="@layout/fragment_review" >
+            <argument
+                android:name="productReview"
+                app:argType="com.ars.domain.model.ProductReview" />
+            <argument
+                android:name="customerId"
+                app:argType="string" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/addReviewFragment"
+            android:name="com.ars.groceriesapp.ui.home.review.AddReviewFragment"
+            android:label="fragment_add_review"
+            tools:layout="@layout/fragment_add_review" >
+            <action
+                android:id="@+id/addReviewToReviewProduct"
+                app:destination="@id/reviewFragment" />
+            <argument
+                android:name="order"
+                app:argType="com.ars.domain.model.Order" />
+        </fragment>
 
         <dialog
             android:id="@+id/orderDialogFragment"

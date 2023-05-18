@@ -22,4 +22,7 @@ class ProductDataSource @Inject constructor(
     suspend fun fetchProductsContaining(query: String, categoryId: Int): List<Product> =
         productApi.searchProducts(query, categoryId).map { it.asProduct() }
 
+    suspend fun fetchOrderProductsById(orderId: Int) =
+        productApi.fetchOrderProducts(orderId)
+
 }

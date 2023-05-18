@@ -14,10 +14,11 @@ import com.ars.groceriesapp.databinding.CartProductItemBinding
 import com.bumptech.glide.Glide
 
 class CartAdapter(
-    val onIncreaseQuantityClick: (position: Int, id: Int) -> Unit,
-    val onDecreaseQuantityClick: (position: Int, id: Int) -> Unit,
+    val onItemQuantityChanged: (position: Int, id: Int) -> Unit,
     val onRemoveItemClick: (cartItem: CartItem, onFinish:() -> Unit) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.CartItemHolder>() {
+
+    private var minQuantity = 1
 
 
     private val differCallBack = object : DiffUtil.ItemCallback<CartItem>() {
@@ -42,22 +43,22 @@ class CartAdapter(
 
     override fun getItemCount(): Int = differ.currentList.size
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setMinQuantity(quantity: Int) {
+        minQuantity = quantity
+        notifyDataSetChanged()
+    }
+
     inner class CartItemHolder(private val binding: CartProductItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.apply {
                 cartItemIncreaseBtn.setOnClickListener {
-                    onIncreaseQuantityClick(
-                        bindingAdapterPosition,
-                        differ.currentList[bindingAdapterPosition].id!!
-                    )
+                   increaseItemQuantity(bindingAdapterPosition)
                 }
                 cartItemDecreaseBtn.setOnClickListener {
-                    onDecreaseQuantityClick(
-                        bindingAdapterPosition,
-                        differ.currentList[bindingAdapterPosition].id!!
-                    )
+                   decreaseItemQuantity(bindingAdapterPosition)
                 }
                 cartItemRemoveImb.setOnClickListener {
                     cartItemRemoveImb.visibility = View.INVISIBLE
@@ -68,6 +69,28 @@ class CartAdapter(
                     }
                 }
             }
+        }
+
+        private fun increaseItemQuantity(position: Int) {
+            val updatedQuantity = differ.currentList[position].quantity + 1
+            differ.currentList[position].quantity = updatedQuantity
+            onItemQuantityChanged(
+                updatedQuantity,
+                differ.currentList[bindingAdapterPosition].id!!
+            )
+            notifyItemChanged(position)
+
+        }
+
+        private fun decreaseItemQuantity(position: Int) {
+            var updatedQuantity = differ.currentList[position].quantity - 1
+            if (updatedQuantity <= minQuantity) updatedQuantity = minQuantity
+            differ.currentList[position].quantity = updatedQuantity
+            onItemQuantityChanged(
+                updatedQuantity,
+                differ.currentList[bindingAdapterPosition].id!!
+            )
+            notifyItemChanged(position)
         }
 
         @SuppressLint("SetTextI18n")

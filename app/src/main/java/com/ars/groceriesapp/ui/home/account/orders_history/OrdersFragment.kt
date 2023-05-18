@@ -1,12 +1,8 @@
 package com.ars.groceriesapp.ui.home.account.orders_history
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -20,7 +16,7 @@ import com.ars.groceriesapp.databinding.FragmentOrdersBinding
 import com.ars.groceriesapp.ui.home.HomeViewModel
 import com.ars.groceriesapp.utils.ACTIVE_ORDERS
 import com.ars.groceriesapp.utils.DELIVERED_ORDERS
-import com.google.android.material.button.MaterialButton
+import com.ars.groceriesapp.utils.STATUS_DELIVERED
 
 class OrdersFragment : Fragment(R.layout.fragment_orders) {
 
@@ -33,8 +29,6 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     private lateinit var ordersAdapter: OrdersAdapter
 
     private lateinit var customerId: String
-
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,9 +53,16 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
 
     }
 
+    private fun currentOrderSection()  =
+        if (binding.toggleButton.checkedButtonId == R.id.orders_active_btn)
+            ACTIVE_ORDERS else DELIVERED_ORDERS
+
     private fun onTrackOrderClicked(order: Order) {
-        navController
-            .navigate(OrdersFragmentDirections.ordersHistoryToTrackOrder(order))
+        if (order.status == STATUS_DELIVERED) {
+            navController.navigate(OrdersFragmentDirections.ordersToReviewOrderProducts(order))
+        } else {
+            navController.navigate(OrdersFragmentDirections.ordersHistoryToTrackOrder(order))
+        }
     }
 
     private fun observeOrders() {
@@ -69,7 +70,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
             binding.ordersProgress.isVisible = response is Response.Loading
             when (response) {
                 is Response.Success ->
-                    ordersAdapter.setData(response.data)
+                    ordersAdapter.setData(response.data, currentOrderSection())
                 is Response.Error ->
                     Toast.makeText(
                         requireContext(),

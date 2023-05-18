@@ -33,6 +33,7 @@ fun OrderItem.asNetworkOrderItem() =
 fun OrderRequest.asNetworkOrderRequest() =
     NetworkOrderRequest(
         customerId = customerId,
+        addressId = addressId,
         totalPrice = totalPrice,
         orderItems = orderItems.map { it.asNetworkOrderItem() }
     )
@@ -117,6 +118,7 @@ fun NetworkProduct.asProduct() =
         priceUnit = priceUnit,
         rating = rating,
         exclusive = exclusive,
+        reviewed = reviewed,
         discount = networkDiscount?.asDiscount(),
         createdAt = convertDateToLong(createdAt)
     )
@@ -131,6 +133,7 @@ fun ProductEntity.asProduct() =
         image = image,
         rating = rating,
         exclusive = exclusive,
+        reviewed = false,
         createdAt = createdAt
     )
 
@@ -146,6 +149,7 @@ fun DiscountAndProduct.asProduct(): Product {
         image = productEntity.image,
         rating = productEntity.rating,
         exclusive = productEntity.exclusive,
+        reviewed = false,
         discount = discountEntity?.asDiscount(),
         createdAt = productEntity.createdAt
     )

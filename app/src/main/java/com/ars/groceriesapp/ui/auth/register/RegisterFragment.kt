@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -52,33 +53,37 @@ class RegisterFragment : Fragment() {
             }
         }
 
-            binding.registerSigninBtn.setOnClickListener {
-                navController
-                    .popBackStack()
-            }
-
-
-           viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                   viewModel.customerRegisterFlow.collectLatest { state ->
-                       updateUi(state)
-                   }
-           }
+        binding.registerSigninBtn.setOnClickListener {
+            navController
+                .popBackStack()
         }
 
 
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.customerRegisterFlow.collectLatest { state ->
+                updateUi(state)
+            }
+        }
+    }
+
+
     private fun updateUi(state: Resource<Customer>?) {
+
+        binding.registerProgress.isVisible = state is Resource.Loading
+
         when (state) {
             is Resource.Success -> {
-                Toast.makeText(requireContext(), "Register Successfully!", Toast.LENGTH_SHORT).show()
+                binding.registerSignupBtn.visibility = View.VISIBLE
+                Toast.makeText(requireContext(), "Register Successfully!", Toast.LENGTH_SHORT)
+                    .show()
                 val customer = state.result
                 Log.d("customerRegisterFlow", "onViewCreated: State = $customer")
 
                 navController.navigate(RegisterFragmentDirections.registerToPhone(customer))
 
-
             }
             is Resource.Failure -> {
-                // TODO: Show an error to the user
+                binding.registerSignupBtn.visibility = View.VISIBLE
                 val exception = state.e
                 Snackbar.make(
                     requireView(),
@@ -87,13 +92,13 @@ class RegisterFragment : Fragment() {
                 ).show()
                 Log.d("RegisterFragment", "onCreate Failure : ${state.e}")
 
+
             }
             is Resource.Loading -> {
-                Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                binding.registerSignupBtn.visibility = View.INVISIBLE
                 Log.d("RegisterLoading", "onViewCreated: Register Loading")
-                // TODO: Show loading view
             }
-            else ->{}
+            else -> {}
         }
     }
 

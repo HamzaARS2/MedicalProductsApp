@@ -12,6 +12,7 @@ data class Product(
     val priceUnit: String,
     val rating: Float,
     val exclusive: Boolean,
+    val reviewed: Boolean,
     val createdAt: Long,
     val discount: Discount? = null
 ): Serializable

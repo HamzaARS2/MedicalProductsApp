@@ -48,18 +48,6 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/transparent"
-        android:src="@drawable/ic_back_arrow"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.131" />
 
     <EditText
         android:id="@+id/phone_verify_sms_code_edt"
@@ -134,9 +122,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/app_logo"
+        android:layout_marginTop="@dimen/_22sdp"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,7 @@ data class NetworkProduct(
     val rating: Float,
     val nutrition: String,
     val exclusive: Boolean,
+    val reviewed: Boolean,
     val discountId: Int?,
     val createdAt: String,
     @SerializedName("discount")

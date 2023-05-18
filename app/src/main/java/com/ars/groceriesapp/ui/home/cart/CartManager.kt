@@ -1,17 +1,34 @@
 package com.ars.groceriesapp.ui.home.cart
 
+import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ars.domain.model.CartItem
+import com.ars.groceriesapp.ui.home.HomeViewModel
+import kotlin.math.min
 
 class CartManager(
-    private val items: List<CartItem>
+    private var items: List<CartItem>,
+    private val cartViewModel: CartViewModel,
+    homeViewModel: HomeViewModel,
+    lifecycleOwner: LifecycleOwner
 ) {
+
+    private var minQuantity = 1
+
+    fun setItems(data: List<CartItem>) {
+        this.items = data
+    }
+
+    fun getItemsIds() = this.items.map { it.id }
+
     private fun calculateTotalPrice(): String {
         return "$" + items.sumOf { item ->
             (item.product!!.price).times(item.quantity.toBigDecimal())
         }
     }
+
     private val _totalPrice: MutableLiveData<String> =
         MutableLiveData(calculateTotalPrice())
     val totalPrice: LiveData<String> get() = _totalPrice
@@ -30,7 +47,7 @@ class CartManager(
 
     fun decreaseQuantity(position: Int): Int {
         val updatedItem = items[position].apply {
-            if (quantity <= 1) quantity = 1
+            if (quantity <= minQuantity) quantity = minQuantity
             else quantity -= 1
         }
         _cartItem.value = updatedItem to position
@@ -38,7 +55,15 @@ class CartManager(
         return updatedItem.quantity
     }
 
+    fun refreshTotalPrice() {
+        _totalPrice.value = calculateTotalPrice()
+    }
 
+    fun setMinQuantity(quantity: Int) {
+        minQuantity = quantity
+    }
+
+    fun getMinQuantity() = minQuantity
 
 
 }

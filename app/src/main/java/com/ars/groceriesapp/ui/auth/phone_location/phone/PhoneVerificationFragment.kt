@@ -43,7 +43,12 @@ class PhoneVerificationFragment : Fragment() {
             val verificationId = viewModel.verificationId
             val result = Validation.validateSmsCode(smsCode)
             if (result.isValid)
-            viewModel.linkPhoneWithCustomerAccount(verificationId,smsCode,::onSuccess,::onFailure)
+                viewModel.linkPhoneWithCustomerAccount(
+                    verificationId,
+                    smsCode,
+                    ::onSuccess,
+                    ::onFailure
+                )
             else
                 Toast.makeText(requireContext(), "${result.message}", Toast.LENGTH_SHORT).show()
         }
@@ -81,13 +86,17 @@ class PhoneVerificationFragment : Fragment() {
 
             viewModel.verificationId = verificationId
             viewModel.resendToken = resendToken
-            Toast.makeText(requireContext(), "id = ${viewModel.verificationId} and resendCode = ${viewModel.resendToken}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "id = ${viewModel.verificationId} and resendCode = ${viewModel.resendToken}",
+                Toast.LENGTH_SHORT
+            ).show()
 
         }
     }
 
     private fun resendSMSCode() {
-        phoneVerifier = PhoneVerifier(viewModel.phoneNumber,requireActivity(),mCallback)
+        phoneVerifier = PhoneVerifier(viewModel.phoneNumber, requireActivity(), mCallback)
         phoneVerifier.resendSMSCode(viewModel.resendToken)
 
     }

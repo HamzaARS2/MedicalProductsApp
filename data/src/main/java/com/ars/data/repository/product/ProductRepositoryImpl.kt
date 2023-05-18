@@ -11,6 +11,7 @@ import com.ars.data.local.entity.DiscountEntity
 import com.ars.data.network.ProductDataSource
 import com.ars.data.util.networkBoundResource
 import com.ars.domain.model.Product
+import com.ars.domain.model.ProductReview
 import com.ars.domain.utils.Resource
 import com.ars.domain.repository.product.IProductRepository
 import com.ars.domain.utils.Response
@@ -83,6 +84,18 @@ class ProductRepositoryImpl @Inject constructor(
         emit(Response.Loading())
         val result = try {
             val response = productDataSource.fetchProductsContaining(query, categoryId)
+            Response.Success(response)
+        } catch (throwable: Throwable) {
+            throwable.printStackTrace()
+            Response.Error(throwable)
+        }
+        emit(result)
+    }
+
+    override fun getOrderProducts(orderId: Int) = flow {
+        emit(Response.Loading())
+        val result = try {
+            val response = productDataSource.fetchOrderProductsById(orderId)
             Response.Success(response)
         } catch (throwable: Throwable) {
             throwable.printStackTrace()

@@ -21,11 +21,11 @@ class OrdersAdapter(
     private var allOrders: List<Order>? = emptyList()
 
     private val onSectionChanged = { section: Int ->
-       val filteredList =  if (section == ACTIVE_ORDERS) {
+        val filteredList = if (section == ACTIVE_ORDERS) {
             allOrders?.filter { it.status != STATUS_DELIVERED }
         } else {
             allOrders?.filter { it.status == STATUS_DELIVERED }
-       }
+        }
 
         differ.submitList(filteredList)
     }
@@ -55,9 +55,9 @@ class OrdersAdapter(
     override fun getItemCount(): Int =
         differ.currentList.size
 
-    fun setData(data: List<Order>?) {
+    fun setData(data: List<Order>?, section: Int) {
         allOrders = data
-        setOnSectionChanged(ACTIVE_ORDERS)
+        setOnSectionChanged(section)
     }
 
     fun setOnSectionChanged(section: Int) {
@@ -82,6 +82,8 @@ class OrdersAdapter(
                 orderItemPaymentMethodTv.text = order.paymentMethod
                 orderItemTotalPriceTv.text = "$${order.totalPrice}"
                 orderItemTrackNumberTv.text = order.trackNumber
+                if (order.status == STATUS_DELIVERED)
+                    orderItemTrackOrderBtn.text = "Add Review"
             }
         }
 

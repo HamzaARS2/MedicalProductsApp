@@ -17,17 +17,17 @@
             android:id="@+id/account_customer_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_18sdp"
             android:ellipsize="end"
             android:fontFamily="@font/gilroy_extrabold"
             android:lines="1"
             android:maxLines="1"
+            android:layout_marginTop="@dimen/_8sdp"
             android:textColor="@color/title_color"
             android:textSize="@dimen/_17ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.09"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wholesale_mode_switch"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="Hello, Hamza!" />
 
@@ -265,63 +265,63 @@
 
 <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/account_promo_btn"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_45sdp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/account_address_btn">
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/account_promo_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/_45sdp"-->
+<!--            android:background="?attr/selectableItemBackground"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/account_address_btn">-->
 
-            <View
-                android:id="@+id/view8"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_1sdp"
-                android:background="@drawable/divider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <View-->
+<!--                android:id="@+id/view8"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="@dimen/_1sdp"-->
+<!--                android:background="@drawable/divider"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <ImageView
-                android:id="@+id/imageView127"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:src="@drawable/ic_promo_code"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view8" />
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView127"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_16sdp"-->
+<!--                android:src="@drawable/ic_promo_code"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/view8" />-->
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/gilroy_semi_bold"
-                android:text="@string/promo_code"
-                android:textColor="@color/title_color"
-                android:textSize="@dimen/_13ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView127"
-                app:layout_constraintEnd_toStartOf="@+id/imageView126"
-                app:layout_constraintStart_toEndOf="@+id/imageView127"
-                app:layout_constraintTop_toTopOf="@+id/imageView127" />
-
-
-            <ImageView
-                android:id="@+id/imageView126"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:src="@drawable/ic_small_forward_arrow_round"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView11"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_10sdp"-->
+<!--                android:fontFamily="@font/gilroy_semi_bold"-->
+<!--                android:text="@string/promo_code"-->
+<!--                android:textColor="@color/title_color"-->
+<!--                android:textSize="@dimen/_13ssp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/imageView127"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/imageView126"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/imageView127"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/imageView127" />-->
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView126"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="@dimen/_16sdp"-->
+<!--                android:src="@drawable/ic_small_forward_arrow_round"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/account_notifications_btn"
@@ -332,7 +332,7 @@
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/account_promo_btn">
+            app:layout_constraintTop_toBottomOf="@+id/account_address_btn">
 
             <View
                 android:id="@+id/view9"
@@ -543,6 +543,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/account_customer_name_tv"
             app:layout_constraintVertical_bias="0.35" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/wholesale_mode_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wholesale_mode"
+            android:checked="false"
+            android:textSize="@dimen/_11ssp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:fontFamily="@font/gilroy_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.86"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

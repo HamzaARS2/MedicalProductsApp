@@ -94,10 +94,6 @@ class ShopFragment : Fragment() {
             EXCLUSIVE_SECTION -> {
                 filter.appliedFiltersMap[EXCLUSIVE_FILTER] = true
             }
-            POPULAR_CATEGORIES_SECTION -> {
-                navController.navigate(R.id.exploreFragment)
-                return
-            }
             ON_SALE_SECTION -> {
                 filter.appliedFiltersMap[ON_SALE_FILTER] = true
             }

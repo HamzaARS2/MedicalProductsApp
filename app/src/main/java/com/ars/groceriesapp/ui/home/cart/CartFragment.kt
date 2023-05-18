@@ -1,6 +1,8 @@
 package com.ars.groceriesapp.ui.home.cart
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,22 +21,21 @@ import com.ars.domain.utils.asOrderItem
 import com.ars.groceriesapp.R
 import com.ars.groceriesapp.databinding.FragmentCartBinding
 import com.ars.groceriesapp.ui.home.HomeViewModel
+import java.math.BigDecimal
 
 
 class CartFragment : Fragment(R.layout.fragment_cart) {
 
 
     private val binding by lazy { FragmentCartBinding.inflate(layoutInflater) }
-    private val viewModel by activityViewModels<CartViewModel>()
     private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val viewModel by activityViewModels<CartViewModel>()
 
     private lateinit var navController: NavController
 
-    private lateinit var cartManager: CartManager
     private lateinit var cartAdapter: CartAdapter
 
-
-
+    private var totalPrice = "$0.00"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,11 +44,13 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
+        viewModel.getCustomerCartItems(homeViewModel.getCustomer()?.id ?: "")
         cartAdapter =
-            CartAdapter(::onIncreaseQuantityClick, ::onDecreaseQuantityClick, ::onRemoveItemClick)
+            CartAdapter(::onItemQuantityChanged, ::onRemoveItemClick)
         getCustomerCartItems()
         addCartItemsListener()
 
@@ -66,16 +69,28 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             navController.navigate(CartFragmentDirections.cartToCheckout(newOrder))
         }
 
+        homeViewModel.wholesaleMode.observe(viewLifecycleOwner) { isActive ->
+            Log.d("wholesaleMode", "wholesaleMode: is active $isActive")
+            val minQuantity = if (isActive) 10 else 1
+            val cartItems = cartAdapter.differ.currentList
+            cartItems.forEach {
+                it.id ?: return@forEach
+                viewModel.updateCartItemQuantity(it.id!!, minQuantity)
+            }
+            cartAdapter.setMinQuantity(minQuantity)
+        }
+
 
     }
 
     private fun createOrderRequest(): OrderRequest? {
         val orderItems = cartAdapter.differ.currentList.map { it.asOrderItem() }
-        val customerId = homeViewModel.getCustomer()?.id
-        customerId ?: return null
+        val customer = homeViewModel.getCustomer()
+        customer?.id ?: return null
         val totalPrice = orderItems.sumOf { it.subTotalPrice }
         return OrderRequest(
-            customerId = customerId,
+            customerId = customer.id,
+            addressId = customer.address?.id!!,
             totalPrice = totalPrice,
             orderItems
         )
@@ -89,16 +104,21 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             return
         }
 
-        viewModel.getCustomerCartItems(customer.id)
+        viewModel.cartItems
             .observe(viewLifecycleOwner) { response ->
-                cartManager = CartManager(response.data ?: emptyList())
-                observeCartManager()
+                Log.d("getCustomerCartItems", "getCustomerCartItems:" + response.data?.map { it.quantity })
                 binding.cartProgress.isVisible = response is Response.Loading
                 binding.cartCheckoutBtn.isVisible = response !is Response.Loading
-
                 cartAdapter.differ.submitList(response.data)
+                binding.cartTotalPriceTv.text = calculateTotalPrice(response.data ?: emptyList())
 
             }
+    }
+
+    private fun calculateTotalPrice(items: List<CartItem>): String {
+        return "$" + items.sumOf { item ->
+            (item.product!!.price).times(item.quantity.toBigDecimal())
+        }
     }
 
     private fun displayDialog() {
@@ -114,27 +134,9 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         }
     }
 
-    private fun observeCartManager() {
-        cartManager.apply {
-            cartItem.observe(viewLifecycleOwner) { (cartItem, position) ->
-                cartAdapter.notifyItemChanged(position)
-            }
 
-            totalPrice.observe(viewLifecycleOwner) { totalPrice ->
-                binding.cartTotalPriceTv.text = totalPrice
-            }
-        }
-    }
-
-
-    private fun onIncreaseQuantityClick(position: Int, id: Int) {
-        val updatedQuantity = cartManager.increaseQuantity(position)
-        viewModel.updateCartItemQuantity(id, updatedQuantity)
-    }
-
-    private fun onDecreaseQuantityClick(position: Int, id: Int) {
-        val updatedQuantity = cartManager.decreaseQuantity(position)
-        viewModel.updateCartItemQuantity(id, updatedQuantity)
+    private fun onItemQuantityChanged(quantity: Int, id: Int) {
+        viewModel.updateCartItemQuantity(id, quantity)
     }
 
     private fun onRemoveItemClick(cartItem: CartItem, onFinish: () -> Unit) {

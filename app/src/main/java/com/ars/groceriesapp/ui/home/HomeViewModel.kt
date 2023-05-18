@@ -4,18 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ars.domain.model.Customer
- class HomeViewModel: ViewModel() {
+
+class HomeViewModel : ViewModel() {
 
     private val mCustomer: MutableLiveData<Customer?> = MutableLiveData(null)
 
+    private val _wholesaleMode: MutableLiveData<Boolean> = MutableLiveData(false)
+    val wholesaleMode: LiveData<Boolean> get() = _wholesaleMode
 
-     fun setCustomer(customer: Customer?) {
-         mCustomer.value = customer
-     }
+    fun setWholesaleMode(value: Boolean) {
+        _wholesaleMode.value = value
+    }
 
-     fun getCustomerLiveData(): LiveData<Customer?> =
-         mCustomer
+    fun setCustomer(customer: Customer?) {
+        mCustomer.value = customer
+    }
 
-     fun getCustomer(): Customer? =
-         mCustomer.value
+    fun getCustomerLiveData(): LiveData<Customer?> =
+        mCustomer
+
+    fun getCustomer(): Customer? =
+        mCustomer.value
 }

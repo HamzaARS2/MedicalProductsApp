@@ -55,6 +55,8 @@ class ProductDetailsFragment : Fragment() {
         navController = Navigation.findNavController(view)
         controller = ProductDetailsEpoxyController(
             requireContext(),
+            homeViewModel,
+            viewLifecycleOwner,
             ::onBackClick,
             ::onAddToCartClick,
             ::onFavoriteStateChanged,
@@ -65,6 +67,7 @@ class ProductDetailsFragment : Fragment() {
         binding.productDetailsEpoxyRv.setController(controller)
         viewModel.getProductDetails(homeViewModel.getCustomer()?.id, productId)
         observeProductDetails()
+        observeWholesaleMode()
 
         binding.productDetailsCheckoutBtn.setOnClickListener {
             val customer = homeViewModel.getCustomer()
@@ -83,9 +86,14 @@ class ProductDetailsFragment : Fragment() {
 
     }
 
+    private fun observeWholesaleMode() {
+        homeViewModel.wholesaleMode.observe(viewLifecycleOwner) { isActive ->
+
+        }
+    }
+
     private fun onQuantityChanged(quantity: Int) {
         productQuantity = quantity
-        Toast.makeText(requireContext(), "quantity = $quantity", Toast.LENGTH_SHORT).show()
     }
 
     private fun createOrder(): OrderRequest? {
@@ -102,8 +110,12 @@ class ProductDetailsFragment : Fragment() {
                 subTotalPrice = subTotalPrice
             )
         )
+
+        val customer = homeViewModel.getCustomer()!!
+
         return OrderRequest(
-            customerId = homeViewModel.getCustomer()?.id!!,
+            customerId = customer.id,
+            addressId = customer.address?.id!!,
             totalPrice = subTotalPrice,
             orderItems
         )

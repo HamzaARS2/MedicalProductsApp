@@ -73,4 +73,11 @@
     <string name="delivered">Delivered</string>
     <string name="track_order">Track Order</string>
     <string name="continue_shopping">Continue shopping</string>
+    <string name="wholesale_mode">Wholesale Mode</string>
+    <string name="review">Review</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="add_review">Add Review</string>
+    <string name="choose_a_product_nyou_ordered_to_review_it">Choose a product \nyou ordered to review it</string>
+    <string name="reviewed">Reviewed</string>
+    <string name="share_your_product_experience">Share your product experience.</string>
 </resources>
